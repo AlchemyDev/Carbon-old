@@ -512,7 +512,8 @@ public:
 								S32 visible = 0;
 								cost += object->getStreamingCost(&bytes, &visible);
 								S32 vt = 0;
-								count += object->getTriangleCount();
+								count += object->getTriangleCount(&vt);
+								vcount += vt;
 								total_bytes += bytes;
 								visible_bytes += visible;
 							}
@@ -523,15 +524,15 @@ public:
 				{
 					label = "Selection";
 					cost = LLSelectMgr::getInstance()->getSelection()->getSelectedObjectStreamingCost(&total_bytes, &visible_bytes);
-					count = LLSelectMgr::getInstance()->getSelection()->getSelectedObjectTriangleCount();
+					count = LLSelectMgr::getInstance()->getSelection()->getSelectedObjectTriangleCount(&vcount);
 					object_count = LLSelectMgr::getInstance()->getSelection()->getObjectCount();
 				}
 					
 				addText(xpos,ypos, llformat("%s streaming cost: %.1f", label, cost));
 				ypos += y_inc;
 
-				addText(xpos, ypos, llformat("    %.3f KTris, %.1f/%.1f KB, %d objects",
-										count/1000.f, visible_bytes/1024.f, total_bytes/1024.f, object_count));
+				addText(xpos, ypos, llformat("    %.3f KTris, %.3f KVerts, %.1f/%.1f KB, %d objects",
+										count/1000.f, vcount/1000.f, visible_bytes/1024.f, total_bytes/1024.f, object_count));
 				ypos += y_inc;
 			
 			}
