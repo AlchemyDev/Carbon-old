@@ -226,7 +226,7 @@ void LLDrawPoolTree::renderTree(BOOL selecting)
 			}
 			
 			gGLLastMatrix = NULL;
-			glLoadMatrixd(gGLModelView);
+			gGL.loadMatrix(gGLModelView);
 			//gGL.pushMatrix();
 			F32 mat[16];
 			for (U32 i = 0; i < 16; i++)

@@ -473,7 +473,7 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask)
 							tex_setup = true;
 							gGL.getTexUnit(0)->activate();
 							gGL.matrixMode(GL_TEXTURE);
-							glLoadMatrixf((GLfloat*) params.mTextureMatrix->mMatrix);
+							gGL.loadMatrix((GLfloat*) params.mTextureMatrix->mMatrix);
 							gPipeline.mTextureMatrixOps++;
 						}
 					}

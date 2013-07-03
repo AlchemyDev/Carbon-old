@@ -141,7 +141,7 @@ void LLViewerJoint::setValid( BOOL valid, BOOL recursive )
 // 	// rotate to our orientation
 // 	//----------------------------------------------------------------
 // 	gGL.loadIdentity();
-// 	glMultMatrixf( &getWorldMatrix().mMatrix[0][0] );
+// 	gGL.multMatrix( &getWorldMatrix().mMatrix[0][0] );
 
 // 	//----------------------------------------------------------------
 // 	// render joint axes
@@ -362,7 +362,7 @@ U32 LLViewerJoint::render( F32 pixelArea, BOOL first_pass, BOOL is_dummy )
 // 	rotateMat.setFwdRow( boneX );
 // 	rotateMat.setLeftRow( boneY );
 // 	rotateMat.setUpRow( boneZ );
-// 	glMultMatrixf( &rotateMat.mMatrix[0][0] );
+// 	gGL.multMatrix( &rotateMat.mMatrix[0][0] );
 
 // 	// render the bone
 // 	gGL.color3f( 0.5f, 0.5f, 0.0f );
@@ -541,7 +541,7 @@ void LLViewerJointCollisionVolume::renderCollision()
 	updateWorldMatrix();
 	
 	gGL.pushMatrix();
-	glMultMatrixf( &mXform.getWorldMatrix().mMatrix[0][0] );
+	gGL.multMatrix( &mXform.getWorldMatrix().mMatrix[0][0] );
 
 	gGL.color3f( 0.f, 0.f, 1.f );
 	

@@ -496,11 +496,11 @@ void LLFace::renderSelected(LLViewerTexture *imagep, const LLColor4& color)
 		gGL.pushMatrix();
 		if (mDrawablep->isActive())
 		{
-			glMultMatrixf((GLfloat*)mDrawablep->getRenderMatrix().mMatrix);
+			gGL.multMatrix((GLfloat*)mDrawablep->getRenderMatrix().mMatrix);
 		}
 		else
 		{
-			glMultMatrixf((GLfloat*)mDrawablep->getRegion()->mRenderMatrix.mMatrix);
+			gGL.multMatrix((GLfloat*)mDrawablep->getRegion()->mRenderMatrix.mMatrix);
 		}
 
 		glColor4fv(color.mV);
@@ -515,7 +515,7 @@ void LLFace::renderSelected(LLViewerTexture *imagep, const LLColor4& color)
 				{
 					LLGLEnable offset(GL_POLYGON_OFFSET_FILL);
 					glPolygonOffset(-1.f, -1.f);
-					glMultMatrixf((F32*) volume->getRelativeXform().mMatrix);
+					gGL.multMatrix((F32*) volume->getRelativeXform().mMatrix);
 					const LLVolumeFace& vol_face = rigged->getVolumeFace(getTEOffset());
 					LLVertexBuffer::unbind();
 					glVertexPointer(3, GL_FLOAT, 16, vol_face.mPositions);
@@ -2131,7 +2131,7 @@ S32 LLFace::renderElements(const U16 *index_array) const
 	else
 	{
 		gGL.pushMatrix();
-		glMultMatrixf((float*)getRenderMatrix().mMatrix);
+		gGL.multMatrix((float*)getRenderMatrix().mMatrix);
 		ret = pushVertices(index_array);
 		gGL.popMatrix();
 	}

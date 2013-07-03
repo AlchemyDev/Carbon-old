@@ -605,7 +605,7 @@ U32 LLViewerJointMesh::drawShape( F32 pixelArea, BOOL first_pass, BOOL is_dummy)
 	{
 		gGL.pushMatrix();
 		LLMatrix4 jointToWorld = getWorldMatrix();
-		glMultMatrixf((GLfloat*)jointToWorld.mMatrix);
+		gGL.multMatrix((GLfloat*)jointToWorld.mMatrix);
 		mFace->getVertexBuffer()->drawRange(LLRender::TRIANGLES, start, end, count, offset);
 		gGL.popMatrix();
 	}

@@ -4837,7 +4837,7 @@ void LLSelectMgr::processForceObjectSelect(LLMessageSystem* msg, void**)
 	LLSelectMgr::getInstance()->highlightObjectAndFamily(objects);
 }
 
-extern LLGLdouble	gGLModelView[16];
+extern F32	gGLModelView[16];
 
 void LLSelectMgr::updateSilhouettes()
 {
@@ -5144,7 +5144,7 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		gGL.pushUIMatrix();
 		gGL.loadUIIdentity();
 		gGL.loadIdentity();
-		glLoadMatrixf(OGL_TO_CFR_ROTATION);		// Load Cory's favorite reference frame
+		gGL.loadMatrix(OGL_TO_CFR_ROTATION);		// Load Cory's favorite reference frame
 		gGL.translatef(-hud_bbox.getCenterLocal().mV[VX] + (depth *0.5f), 0.f, 0.f);
 		gGL.scalef(cur_zoom, cur_zoom, cur_zoom);
 	}
@@ -5566,7 +5566,7 @@ void pushWireframe(LLDrawable* drawable)
 			{
 				LLVertexBuffer::unbind();
 				gGL.pushMatrix();
-				glMultMatrixf((F32*) vobj->getRelativeXform().mMatrix);
+				gGL.multMatrix((F32*) vobj->getRelativeXform().mMatrix);
 				for (S32 i = 0; i < rigged_volume->getNumVolumeFaces(); ++i)
 				{
 					const LLVolumeFace& face = rigged_volume->getVolumeFace(i);
@@ -5611,13 +5611,13 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 
 	if (drawable->isActive())
 	{
-		glLoadMatrixd(gGLModelView);
-		glMultMatrixf((F32*) objectp->getRenderMatrix().mMatrix);
+		gGL.loadMatrix(gGLModelView);
+		gGL.multMatrix((F32*) objectp->getRenderMatrix().mMatrix);
 	}
 	else if (!is_hud_object)
 	{
 		gGL.loadIdentity();
-		glMultMatrixd(gGLModelView);
+		gGL.multMatrix(gGLModelView);
 		LLVector3 trans = objectp->getRegion()->getOriginAgent();		
 		gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);		
 	}
@@ -5700,13 +5700,13 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 	if (!is_hud_object)
 	{
 		gGL.loadIdentity();
-		glMultMatrixd(gGLModelView);
+		gGL.multMatrix(gGLModelView);
 	}
 	
 	
 	if (drawable->isActive())
 	{
-		glMultMatrixf((F32*) objectp->getRenderMatrix().mMatrix);
+		gGL.multMatrix((F32*) objectp->getRenderMatrix().mMatrix);
 	}
 
 	LLVolume *volume = objectp->getVolume();

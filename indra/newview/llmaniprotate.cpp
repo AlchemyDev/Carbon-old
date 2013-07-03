@@ -177,7 +177,7 @@ void LLManipRotate::render()
 				LLMatrix4 mat;
 				mat.initRows(a, b, c, LLVector4(0.f, 0.f, 0.f, 1.f));
 
-				glMultMatrixf( &mat.mMatrix[0][0] );
+				gGL.multMatrix( &mat.mMatrix[0][0] );
 
 				gGL.rotatef( -90, 0.f, 1.f, 0.f);
 				LLColor4 color;

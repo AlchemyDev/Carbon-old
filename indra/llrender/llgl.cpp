@@ -2131,7 +2131,7 @@ void LLGLUserClipPlane::setPlane(F32 a, F32 b, F32 c, F32 d)
     glh::matrix4f newP = suffix * P;
     gGL.matrixMode(GL_PROJECTION);
 	gGL.pushMatrix();
-    glLoadMatrixf(newP.m);
+    gGL.loadMatrix(newP.m);
 	gGLObliqueProjectionInverse = LLMatrix4(newP.inverse().transpose().m);
     gGL.matrixMode(GL_MODELVIEW);
 }
@@ -2334,7 +2334,7 @@ LLGLSquashToFarClip::LLGLSquashToFarClip(glh::matrix4f P, U32 layer)
 
 	gGL.matrixMode(GL_PROJECTION);
 	gGL.pushMatrix();
-	glLoadMatrixf(P.m);
+	gGL.loadMatrix(P.m);
 	gGL.matrixMode(GL_MODELVIEW);
 }
 

@@ -38,10 +38,10 @@
 LLRender gGL;
 
 // Handy copies of last good GL matrices
-F64	gGLModelView[16];
-F64	gGLLastModelView[16];
-F64 gGLLastProjection[16];
-F64 gGLProjection[16];
+F32	gGLModelView[16];
+F32	gGLLastModelView[16];
+F32 gGLLastProjection[16];
+F32 gGLProjection[16];
 S32	gGLViewport[4];
 
 U32 LLRender::sUICalls = 0;
@@ -1058,6 +1058,18 @@ void LLRender::popMatrix()
 {
 	flush();
 	glPopMatrix();
+}
+
+void LLRender::loadMatrix(const GLfloat* m)
+{
+	flush();
+	glLoadMatrixf(m);
+}
+
+void LLRender::multMatrix(const GLfloat* m)
+{
+	flush();
+	glMultMatrixf(m);
 }
 
 void LLRender::matrixMode(U32 mode)

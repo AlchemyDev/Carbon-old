@@ -3000,7 +3000,7 @@ void renderNormals(LLDrawable* drawablep)
 	{
 		LLVolume* volume = vol->getVolume();
 		gGL.pushMatrix();
-		glMultMatrixf((F32*) vol->getRelativeXform().mMatrix);
+		gGL.multMatrix((F32*) vol->getRelativeXform().mMatrix);
 		
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 
@@ -3154,7 +3154,7 @@ void renderPhysicsShape(LLDrawable* drawable, LLVOVolume* volume)
 	LLVector3 size(0.25f,0.25f,0.25f);
 
 	gGL.pushMatrix();
-	glMultMatrixf((F32*) volume->getRelativeXform().mMatrix);
+	gGL.multMatrix((F32*) volume->getRelativeXform().mMatrix);
 		
 	if (type == LLPhysicsShapeBuilderUtil::PhysicsShapeSpecification::USER_MESH)
 	{
@@ -3766,7 +3766,7 @@ void renderRaycast(LLDrawable* drawablep)
 
 					gGL.pushMatrix();
 					gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);					
-					glMultMatrixf((F32*) vobj->getRelativeXform().mMatrix);
+					gGL.multMatrix((F32*) vobj->getRelativeXform().mMatrix);
 
 					LLVector3 start, end;
 					if (transform)
@@ -3820,14 +3820,14 @@ void renderRaycast(LLDrawable* drawablep)
 		{
 			// draw intersection point
 			gGL.pushMatrix();
-			glLoadMatrixd(gGLModelView);
+			gGL.loadMatrix(gGLModelView);
 			LLVector3 translate = gDebugRaycastIntersection;
 			gGL.translatef(translate.mV[0], translate.mV[1], translate.mV[2]);
 			LLCoordFrame orient;
 			orient.lookDir(gDebugRaycastNormal, gDebugRaycastBinormal);
 			LLMatrix4 rotation;
 			orient.getRotMatrixToParent(rotation);
-			glMultMatrixf((float*)rotation.mMatrix);
+			gGL.multMatrix((float*)rotation.mMatrix);
 			
 			gGL.color4f(1,0,0,0.5f);
 			drawBox(LLVector3(0, 0, 0), LLVector3(0.1f, 0.022f, 0.022f));
@@ -3912,7 +3912,7 @@ public:
 				gGL.flush();
 				gGL.pushMatrix();
 				gGLLastMatrix = NULL;
-				glLoadMatrixd(gGLModelView);
+				gGL.loadMatrix(gGLModelView);
 				renderVisibility(group, mCamera);
 				stop_glerror();
 				gGLLastMatrix = NULL;

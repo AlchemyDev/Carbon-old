@@ -706,9 +706,9 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 				glh_set_current_projection(proj);
 				glh_set_current_modelview(mod);
 				gGL.matrixMode(GL_PROJECTION);
-				glLoadMatrixf(proj.m);
+				gGL.loadMatrix(proj.m);
 				gGL.matrixMode(GL_MODELVIEW);
-				glLoadMatrixf(mod.m);
+				gGL.loadMatrix(mod.m);
 				gViewerWindow->setup3DViewport();
 
 				LLGLState::checkStates();
@@ -1171,11 +1171,11 @@ BOOL setup_hud_matrices(const LLRect& screen_region)
 	
 	// set up transform to keep HUD objects in front of camera
 	gGL.matrixMode(GL_PROJECTION);
-	glLoadMatrixf(proj.m);
+	gGL.loadMatrix(proj.m);
 	glh_set_current_projection(proj);
 	
 	gGL.matrixMode(GL_MODELVIEW);
-	glLoadMatrixf(model.m);
+	gGL.loadMatrix(model.m);
 	glh_set_current_modelview(model);
 	return TRUE;
 }
@@ -1192,7 +1192,7 @@ void render_ui(F32 zoom_factor, int subfield)
 	if (!gSnapshot)
 	{
 		gGL.pushMatrix();
-		glLoadMatrixd(gGLLastModelView);
+		gGL.loadMatrix(gGLLastModelView);
 		glh_set_current_modelview(glh_copy_matrix(gGLLastModelView));
 	}
 	
@@ -1346,14 +1346,14 @@ void render_ui_3d()
 
 	// Debugging stuff goes before the UI.
 
+	stop_glerror();
+	
 	// Coordinate axes
 	if (gSavedSettings.getBOOL("ShowAxes"))
 	{
 		draw_axes();
 	}
 
-	stop_glerror();
-		
 	gViewerWindow->renderSelections(FALSE, FALSE, TRUE); // Non HUD call in render_hud_elements
 	stop_glerror();
 }
