@@ -489,6 +489,7 @@ public:
 			{
 				F32 cost = 0.f;
 				S32 count = 0;
+				S32 vcount = 0;
 				S32 object_count = 0;
 				S32 total_bytes = 0;
 				S32 visible_bytes = 0;
@@ -510,6 +511,7 @@ public:
 								S32 bytes = 0;	
 								S32 visible = 0;
 								cost += object->getStreamingCost(&bytes, &visible);
+								S32 vt = 0;
 								count += object->getTriangleCount();
 								total_bytes += bytes;
 								visible_bytes += visible;
@@ -737,37 +739,6 @@ public:
 			}
 		}				
 
-		//temporary hack to give feedback on mesh upload progress
-		if (!gMeshRepo.mUploads.empty())
-		{
-			for (std::vector<LLMeshUploadThread*>::iterator iter = gMeshRepo.mUploads.begin(); 
-				iter != gMeshRepo.mUploads.end(); ++iter)
-			{
-				LLMeshUploadThread* thread = *iter;
-
-				addText(xpos, ypos, llformat("Mesh Uploads: %d", 
-								thread->mPendingUploads));
-				ypos += y_inc;
-			}
-		}
-
-		if (!gMeshRepo.mPendingRequests.empty() ||
-			!gMeshRepo.mThread->mHeaderReqQ.empty() ||
-			!gMeshRepo.mThread->mLODReqQ.empty())
-		{
-			LLMutexLock lock(gMeshRepo.mThread->mMutex);
-			S32 pending = (S32) gMeshRepo.mPendingRequests.size();
-			S32 header = (S32) gMeshRepo.mThread->mHeaderReqQ.size();
-			S32 lod = (S32) gMeshRepo.mThread->mLODReqQ.size();
-
-			addText(xpos, ypos, llformat ("Mesh Queue - %d pending (%d:%d header | %d:%d LOD)", 
-												pending,
-												LLMeshRepoThread::sActiveHeaderRequests, header,
-												LLMeshRepoThread::sActiveLODRequests, lod));
-
-			ypos += y_inc;
-		}
-		
 		if (gSavedSettings.getBOOL("DebugShowTextureInfo"))
 		{
 			LLViewerObject* objectp = NULL ;
@@ -4025,6 +3996,7 @@ BOOL LLViewerWindow::saveImageNumbered(LLImageFormatted *image)
 {
 	if (!image)
 	{
+		llwarns << "No image to save" << llendl;
 		return FALSE;
 	}
 
@@ -4044,7 +4016,7 @@ BOOL LLViewerWindow::saveImageNumbered(LLImageFormatted *image)
 		pick_type = LLFilePicker::FFSAVE_ALL; // ???
 	
 	// Get a base file location if needed.
-	if ( ! isSnapshotLocSet())		
+	if (!isSnapshotLocSet())
 	{
 		std::string proposed_name( sSnapshotBaseName );
 
@@ -4084,6 +4056,7 @@ BOOL LLViewerWindow::saveImageNumbered(LLImageFormatted *image)
 	}
 	while( -1 != err );  // search until the file is not found (i.e., stat() gives an error).
 
+	llinfos << "Saving snapshot to " << filepath << llendl;
 	return image->save(filepath);
 }
 
@@ -4099,7 +4072,7 @@ static S32 BORDERWIDTH = 0;
 void LLViewerWindow::movieSize(S32 new_width, S32 new_height)
 {
 	LLCoordScreen size;
-	gViewerWindow->mWindow->getSize(&size);
+	gViewerWindow->getWindow()->getSize(&size);
 	if (  (size.mX != new_width + BORDERWIDTH)
 		||(size.mY != new_height + BORDERHEIGHT))
 	{
@@ -4110,7 +4083,7 @@ void LLViewerWindow::movieSize(S32 new_width, S32 new_height)
 		BORDERHEIGHT = size.mY- y;
 		LLCoordScreen new_size(new_width + BORDERWIDTH, 
 							   new_height + BORDERHEIGHT);
-		gViewerWindow->mWindow->setSize(new_size);
+		gViewerWindow->getWindow()->setSize(new_size);
 	}
 }
 

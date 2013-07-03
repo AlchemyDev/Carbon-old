@@ -1031,6 +1031,8 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen &size, BO
 		mhInstance,
 		NULL);
 
+	LL_INFOS("Window") << "window is created." << llendl ;
+
 	//-----------------------------------------------------------------------
 	// Create GL drawing context
 	//-----------------------------------------------------------------------
@@ -1120,8 +1122,10 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen &size, BO
 		return FALSE;
 	}
 
-	gGLManager.initWGL();
+	LL_INFOS("Window") << "Drawing context is created." << llendl ;
 
+	gGLManager.initWGL();
+	
 	if (wglChoosePixelFormatARB)
 	{
 		// OK, at this point, use the ARB wglChoosePixelFormatsARB function to see if we
@@ -1256,7 +1260,7 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen &size, BO
 			LL_INFOS("Window") << "Choosing pixel formats: " << num_formats << " pixel formats returned" << LL_ENDL;
 		}
 
-		
+		LL_INFOS("Window") << "pixel formats done." << llendl ;
 
 		S32 swap_method = 0;
 		S32 cur_format = num_formats-1;
@@ -1305,6 +1309,8 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen &size, BO
 			NULL,
 			mhInstance,
 			NULL);
+
+		LL_INFOS("Window") << "recreate window done." << llendl ;
 
 		if (!(mhDC = GetDC(mWindowHandle)))
 		{
@@ -1398,7 +1404,7 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen &size, BO
 		OSMessageBox(mCallbacks->translateString("MBVideoDrvErr"), mCallbacks->translateString("MBError"), OSMB_OK);
 		return FALSE;
 	}
-
+	
 	// Disable vertical sync for swap
 	if (disable_vsync && wglSwapIntervalEXT)
 	{

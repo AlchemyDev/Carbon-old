@@ -114,8 +114,8 @@ void render_disconnected_background();
 void display_startup()
 {
 	if (   !gViewerWindow->getActive()
-		|| !gViewerWindow->mWindow->getVisible() 
-		|| gViewerWindow->mWindow->getMinimized() )
+		|| !gViewerWindow->getWindow()->getVisible() 
+		|| gViewerWindow->getWindow()->getMinimized() )
 	{
 		return; 
 	}
@@ -157,7 +157,7 @@ void display_startup()
 	LLGLState::checkStates();
 	LLGLState::checkTextureChannels();
 
-	gViewerWindow->mWindow->swapBuffers();
+	gViewerWindow->getWindow()->swapBuffers();
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
@@ -212,6 +212,10 @@ static LLFastTimer::DeclareTimer FTM_RENDER("Render", true);
 static LLFastTimer::DeclareTimer FTM_UPDATE_SKY("Update Sky");
 static LLFastTimer::DeclareTimer FTM_UPDATE_TEXTURES("Update Textures");
 static LLFastTimer::DeclareTimer FTM_IMAGE_UPDATE("Update Images");
+static LLFastTimer::DeclareTimer FTM_IMAGE_UPDATE_CLASS("Class");
+static LLFastTimer::DeclareTimer FTM_IMAGE_UPDATE_BUMP("Bump");
+static LLFastTimer::DeclareTimer FTM_IMAGE_UPDATE_LIST("List");
+static LLFastTimer::DeclareTimer FTM_IMAGE_UPDATE_DELETE("Delete");
 
 // Paint the display!
 void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
@@ -223,7 +227,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	{ //skip render on frames where window has been resized
 		gGL.flush();
 		glClear(GL_COLOR_BUFFER_BIT);
-		gViewerWindow->mWindow->swapBuffers();
+		gViewerWindow->getWindow()->swapBuffers();
 		gPipeline.resizeScreenTexture();
 		gResizeScreenTexture = FALSE;
 		gWindowResized = FALSE;
@@ -260,8 +264,8 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	// In fact, must explicitly check the minimized state before drawing.
 	// Attempting to draw into a minimized window causes a GL error. JC
 	if (   !gViewerWindow->getActive()
-		|| !gViewerWindow->mWindow->getVisible() 
-		|| gViewerWindow->mWindow->getMinimized() )
+		|| !gViewerWindow->getWindow()->getVisible() 
+		|| gViewerWindow->getWindow()->getMinimized() )
 	{
 		// Clean up memory the pools may have allocated
 		if (rebuild)
@@ -526,7 +530,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 	F32 one[4] =	{1.f, 1.f, 1.f, 1.f};
 	glLightModelfv (GL_LIGHT_MODEL_AMBIENT,one);
 	stop_glerror();
-		
+			
 	/////////////////////////////////////
 	//
 	// Render
@@ -742,18 +746,31 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 			LLMemType mt_iu(LLMemType::MTYPE_DISPLAY_IMAGE_UPDATE);
 			LLFastTimer t(FTM_IMAGE_UPDATE);
 			
-			LLViewerTexture::updateClass(LLViewerCamera::getInstance()->getVelocityStat()->getMean(),
-										LLViewerCamera::getInstance()->getAngularVelocityStat()->getMean());
+			{
+				LLFastTimer t(FTM_IMAGE_UPDATE_CLASS);
+				LLViewerTexture::updateClass(LLViewerCamera::getInstance()->getVelocityStat()->getMean(),
+											LLViewerCamera::getInstance()->getAngularVelocityStat()->getMean());
+			}
 
-			gBumpImageList.updateImages();  // must be called before gTextureList version so that it's textures are thrown out first.
+			
+			{
+				LLFastTimer t(FTM_IMAGE_UPDATE_BUMP);
+				gBumpImageList.updateImages();  // must be called before gTextureList version so that it's textures are thrown out first.
+			}
 
-			F32 max_image_decode_time = 0.050f*gFrameIntervalSeconds; // 50 ms/second decode time
-			max_image_decode_time = llclamp(max_image_decode_time, 0.002f, 0.005f ); // min 2ms/frame, max 5ms/frame)
-			gTextureList.updateImages(max_image_decode_time);
+			{
+				LLFastTimer t(FTM_IMAGE_UPDATE_LIST);
+				F32 max_image_decode_time = 0.050f*gFrameIntervalSeconds; // 50 ms/second decode time
+				max_image_decode_time = llclamp(max_image_decode_time, 0.002f, 0.005f ); // min 2ms/frame, max 5ms/frame)
+				gTextureList.updateImages(max_image_decode_time);
+			}
 
-			//remove dead textures from GL
-			LLImageGL::deleteDeadTextures();
-			stop_glerror();
+			{
+				LLFastTimer t(FTM_IMAGE_UPDATE_DELETE);
+				//remove dead textures from GL
+				LLImageGL::deleteDeadTextures();
+				stop_glerror();
+			}
 		}
 
 		LLGLState::checkStates();
@@ -1237,7 +1254,7 @@ void render_ui(F32 zoom_factor, int subfield)
 	if (gDisplaySwapBuffers)
 	{
 		LLFastTimer t(FTM_SWAP);
-		gViewerWindow->mWindow->swapBuffers();
+		gViewerWindow->getWindow()->swapBuffers();
 	}
 	gDisplaySwapBuffers = TRUE;
 }
