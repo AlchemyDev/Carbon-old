@@ -399,7 +399,7 @@ private:
 	U32  mMaxPrivatePoolSize;
 
 	static LLPrivateMemoryPoolManager* sInstance ;
-	BOOL mPrivatePoolEnabled;
+	static BOOL sPrivatePoolEnabled;
 	static std::vector<LLPrivateMemoryPool*> sDanglingPoolList ;
 public:
 	//debug and statistics info.

@@ -103,8 +103,10 @@ void LLDockControl::repositionDockable()
 
 	// recalculate dockable position if dock position changed, dock visibility changed,
 	// root view rect changed or recalculation is forced
-	if (mPrevDockRect != dockRect  || mDockWidgetVisible != isDockVisible()
-			|| mRootRect != rootRect || mRecalculateDocablePosition)
+	if (mPrevDockRect != dockRect
+		|| mDockWidgetVisible != isDockVisible()
+		|| mRootRect != rootRect
+		|| mRecalculateDockablePosition)
 	{
 		// undock dockable and off() if dock not visible
 		if (!isDockVisible())
@@ -135,7 +137,7 @@ void LLDockControl::repositionDockable()
 
 		mPrevDockRect = dockRect;
 		mRootRect = rootRect;
-		mRecalculateDocablePosition = false;
+		mRecalculateDockablePosition = false;
 		mDockWidgetVisible = isDockVisible();
 	}
 }
@@ -329,7 +331,7 @@ void LLDockControl::on()
 	 if (isDockVisible())
 	{
 		mEnabled = true;
-		mRecalculateDocablePosition = true;
+		mRecalculateDockablePosition = true;
 	}
 }
 
@@ -340,7 +342,7 @@ void LLDockControl::off()
 
 void LLDockControl::forceRecalculatePosition()
 {
-	mRecalculateDocablePosition = true;
+	mRecalculateDockablePosition = true;
 }
 
 void LLDockControl::drawToungue()

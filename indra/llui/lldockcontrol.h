@@ -79,7 +79,7 @@ private:
 private:
 	get_allowed_rect_callback_t mGetAllowedRectCallback;
 	bool mEnabled;
-	bool mRecalculateDocablePosition;
+	bool mRecalculateDockablePosition;
 	bool mDockWidgetVisible;
 	DocAt mDockAt;
 	LLView* mDockWidget;
