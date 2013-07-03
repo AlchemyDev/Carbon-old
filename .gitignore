@@ -1,13 +1,18 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+/build-*
+/indra/newview/res-sdl/ll_icon.BMP
+/indra/newview/res/ll_icon.BMP
+/indra/newview/res/ll_icon.ico
+/indra/tools/vstool/obj/
+/edited-files.txt
+/qtcreator-*
+/.pc
+*.aps
+*.suo
+*.vshost.exe
+*.pyc
+*.orig
+*.rej
+*.bak
+*~
+*.DS_Store
+*.tmp
