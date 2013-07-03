@@ -314,7 +314,7 @@ boost::signals2::connection LLButton::setHeldDownCallback( const commit_signal_t
 }
 
 
-// *TODO: Deprecate (for backwards compatability only)
+// *TODO: Deprecate (for backwards compatibility only)
 boost::signals2::connection LLButton::setClickedCallback( button_callback_t cb, void* data )
 {
 	return setClickedCallback(boost::bind(cb, data));
