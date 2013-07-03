@@ -113,7 +113,7 @@ void hud_render_text(const LLWString &wstr, const LLVector3 &pos_agent,
 		
 	//fonts all render orthographically, set up projection``
 	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+	gGL.pushMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	gGL.pushMatrix();
 	LLUI::pushMatrix();
@@ -134,6 +134,6 @@ void hud_render_text(const LLWString &wstr, const LLVector3 &pos_agent,
 	gGL.popMatrix();
 
 	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+	gGL.popMatrix();
 	glMatrixMode(GL_MODELVIEW);
 }

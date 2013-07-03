@@ -432,8 +432,8 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 	/*if (gSavedSettings.getBOOL("CameraOffset"))
 	{
 		glMatrixMode(GL_PROJECTION);
-		glTranslatef(0,0,-50);
-		glRotatef(20.0,1,0,0);
+		gGL.translatef(0,0,-50);
+		gGL.rotatef(20.0,1,0,0);
 		glMatrixMode(GL_MODELVIEW);
 	}*/
 }

@@ -2577,9 +2577,9 @@ void renderOctree(LLSpatialGroup* group)
 				LLDrawable* drawable = *i;
 				if (!group->mSpatialPartition->isBridge())
 				{
-					glPushMatrix();
+					gGL.pushMatrix();
 					LLVector3 trans = drawable->getRegion()->getOriginAgent();
-					glTranslatef(trans.mV[0], trans.mV[1], trans.mV[2]);
+					gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
 				}
 				
 				for (S32 j = 0; j < drawable->getNumFaces(); j++)
@@ -2609,7 +2609,7 @@ void renderOctree(LLSpatialGroup* group)
 
 				if (!group->mSpatialPartition->isBridge())
 				{
-					glPopMatrix();
+					gGL.popMatrix();
 				}
 			}
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -3449,7 +3449,7 @@ void renderPhysicsShapes(LLSpatialGroup* group)
 			{
 				gGL.pushMatrix();
 				LLVector3 trans = drawable->getRegion()->getOriginAgent();
-				glTranslatef(trans.mV[0], trans.mV[1], trans.mV[2]);
+				gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);
 				renderPhysicsShape(drawable, volume);
 				gGL.popMatrix();
 			}
@@ -3765,7 +3765,7 @@ void renderRaycast(LLDrawable* drawablep)
 					}
 
 					gGL.pushMatrix();
-					glTranslatef(trans.mV[0], trans.mV[1], trans.mV[2]);					
+					gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);					
 					glMultMatrixf((F32*) vobj->getRelativeXform().mMatrix);
 
 					LLVector3 start, end;
@@ -3819,10 +3819,10 @@ void renderRaycast(LLDrawable* drawablep)
 		if (drawablep->getVObj() == gDebugRaycastObject)
 		{
 			// draw intersection point
-			glPushMatrix();
+			gGL.pushMatrix();
 			glLoadMatrixd(gGLModelView);
 			LLVector3 translate = gDebugRaycastIntersection;
-			glTranslatef(translate.mV[0], translate.mV[1], translate.mV[2]);
+			gGL.translatef(translate.mV[0], translate.mV[1], translate.mV[2]);
 			LLCoordFrame orient;
 			orient.lookDir(gDebugRaycastNormal, gDebugRaycastBinormal);
 			LLMatrix4 rotation;
@@ -3835,7 +3835,7 @@ void renderRaycast(LLDrawable* drawablep)
 			drawBox(LLVector3(0, 0, 0), LLVector3(0.021f, 0.1f, 0.021f));
 			gGL.color4f(0,0,1,0.5f);
 			drawBox(LLVector3(0, 0, 0), LLVector3(0.02f, 0.02f, 0.1f));
-			glPopMatrix();
+			gGL.popMatrix();
 
 			// draw bounding box of prim
 			const LLVector4a* ext = drawablep->getSpatialExtents();
@@ -3910,13 +3910,13 @@ public:
 				group->rebuildMesh();
 
 				gGL.flush();
-				glPushMatrix();
+				gGL.pushMatrix();
 				gGLLastMatrix = NULL;
 				glLoadMatrixd(gGLModelView);
 				renderVisibility(group, mCamera);
 				stop_glerror();
 				gGLLastMatrix = NULL;
-				glPopMatrix();
+				gGL.popMatrix();
 				gGL.color4f(1,1,1,1);
 			}
 		}

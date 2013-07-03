@@ -501,7 +501,7 @@ void LLHUDEffectLookAt::render()
 		glMatrixMode(GL_MODELVIEW);
 		gGL.pushMatrix();
 		gGL.translatef(target.mV[VX], target.mV[VY], target.mV[VZ]);
-		glScalef(0.3f, 0.3f, 0.3f);
+		gGL.scalef(0.3f, 0.3f, 0.3f);
 		gGL.begin(LLRender::LINES);
 		{
 			LLColor3 color = (*mAttentions)[mTargetType].mColor;

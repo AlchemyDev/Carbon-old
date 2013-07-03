@@ -2010,10 +2010,10 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 	}
 
 	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+	gGL.pushMatrix();
 	glLoadMatrixd(gGLLastProjection);
 	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
+	gGL.pushMatrix();
 	gGLLastMatrix = NULL;
 	glLoadMatrixd(gGLLastModelView);
 
@@ -2121,9 +2121,9 @@ void LLPipeline::updateCull(LLCamera& camera, LLCullResult& result, S32 water_cl
 	
 	
 	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+	gGL.popMatrix();
 	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
+	gGL.popMatrix();
 
 	if (sUseOcclusion > 1)
 	{
@@ -4161,10 +4161,10 @@ void LLPipeline::renderPhysicsDisplay()
 		LLSpatialBridge* bridge = *i;
 		if (!bridge->isDead() && hasRenderType(bridge->mDrawableType))
 		{
-			glPushMatrix();
+			gGL.pushMatrix();
 			glMultMatrixf((F32*)bridge->mDrawable->getRenderMatrix().mMatrix);
 			bridge->renderPhysicsShapes();
-			glPopMatrix();
+			gGL.popMatrix();
 		}
 	}
 
@@ -4243,10 +4243,10 @@ void LLPipeline::renderDebug()
 		LLSpatialBridge* bridge = *i;
 		if (!bridge->isDead() && hasRenderType(bridge->mDrawableType))
 		{
-			glPushMatrix();
+			gGL.pushMatrix();
 			glMultMatrixf((F32*)bridge->mDrawable->getRenderMatrix().mMatrix);
 			bridge->renderDebug();
-			glPopMatrix();
+			gGL.popMatrix();
 		}
 	}
 
@@ -6080,25 +6080,25 @@ void apply_cube_face_rotation(U32 face)
 	switch (face)
 	{
 		case 0: 
-			glRotatef(90.f, 0, 1, 0);
-			glRotatef(180.f, 1, 0, 0);
+			gGL.rotatef(90.f, 0, 1, 0);
+			gGL.rotatef(180.f, 1, 0, 0);
 		break;
 		case 2: 
-			glRotatef(-90.f, 1, 0, 0);
+			gGL.rotatef(-90.f, 1, 0, 0);
 		break;
 		case 4:
-			glRotatef(180.f, 0, 1, 0);
-			glRotatef(180.f, 0, 0, 1);
+			gGL.rotatef(180.f, 0, 1, 0);
+			gGL.rotatef(180.f, 0, 0, 1);
 		break;
 		case 1: 
-			glRotatef(-90.f, 0, 1, 0);
-			glRotatef(180.f, 1, 0, 0);
+			gGL.rotatef(-90.f, 0, 1, 0);
+			gGL.rotatef(180.f, 1, 0, 0);
 		break;
 		case 3:
-			glRotatef(90, 1, 0, 0);
+			gGL.rotatef(90, 1, 0, 0);
 		break;
 		case 5: 
-			glRotatef(180, 0, 0, 1);
+			gGL.rotatef(180, 0, 0, 1);
 		break;
 	}
 }
@@ -6178,10 +6178,10 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 	enableLightsFullbright(LLColor4(1,1,1,1));
 
 	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+	gGL.pushMatrix();
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
+	gGL.pushMatrix();
 	glLoadIdentity();
 
 	LLGLDisable test(GL_ALPHA_TEST);
@@ -6590,9 +6590,9 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 	}
 
 	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+	gGL.popMatrix();
 	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
+	gGL.popMatrix();
 
 	LLVertexBuffer::unbind();
 
@@ -7040,10 +7040,10 @@ void LLPipeline::renderDeferredLighting()
 			glTexCoord4f(tc.v[0], tc.v[1], tc.v[2], 0);
 		}
 
-		glPushMatrix();
+		gGL.pushMatrix();
 		glLoadIdentity();
 		glMatrixMode(GL_PROJECTION);
-		glPushMatrix();
+		gGL.pushMatrix();
 		glLoadIdentity();
 
 		if (gSavedSettings.getBOOL("RenderDeferredSSAO") || gSavedSettings.getS32("RenderShadowDetail") > 0)
@@ -7259,11 +7259,11 @@ void LLPipeline::renderDeferredLighting()
 		}
 
 		stop_glerror();
-		glPopMatrix();
+		gGL.popMatrix();
 		stop_glerror();
 		glMatrixMode(GL_MODELVIEW);
 		stop_glerror();
-		glPopMatrix();
+		gGL.popMatrix();
 		stop_glerror();
 
 		//copy depth and stencil from deferred screen
@@ -7295,19 +7295,19 @@ void LLPipeline::renderDeferredLighting()
 				LLGLDisable test(GL_ALPHA_TEST);
 
 				//full screen blit
-				glPushMatrix();
+				gGL.pushMatrix();
 				glLoadIdentity();
 				glMatrixMode(GL_PROJECTION);
-				glPushMatrix();
+				gGL.pushMatrix();
 				glLoadIdentity();
 
 				glVertexPointer(2, GL_FLOAT, 0, vert);
 				
 				glDrawArrays(GL_TRIANGLE_STRIP, 0, 3);
 				
-				glPopMatrix();
+				gGL.popMatrix();
 				glMatrixMode(GL_MODELVIEW);
-				glPopMatrix();
+				gGL.popMatrix();
 			}
 
 			unbindDeferredShader(gDeferredSoftenProgram);
@@ -7522,10 +7522,10 @@ void LLPipeline::renderDeferredLighting()
 				LLGLDepthTest depth(GL_FALSE);
 
 				//full screen blit
-				glPushMatrix();
+				gGL.pushMatrix();
 				glLoadIdentity();
 				glMatrixMode(GL_PROJECTION);
-				glPushMatrix();
+				gGL.pushMatrix();
 				glLoadIdentity();
 
 				U32 count = 0;
@@ -7596,9 +7596,9 @@ void LLPipeline::renderDeferredLighting()
 				gDeferredMultiSpotLightProgram.disableTexture(LLViewerShaderMgr::DEFERRED_PROJECTION);
 				unbindDeferredShader(gDeferredMultiSpotLightProgram);
 
-				glPopMatrix();
+				gGL.popMatrix();
 				glMatrixMode(GL_MODELVIEW);
-				glPopMatrix();
+				gGL.popMatrix();
 			}
 		}
 
@@ -7629,17 +7629,17 @@ void LLPipeline::renderDeferredLighting()
 				glVertexPointer(2, GL_FLOAT, 0, vert);
 				glColor3f(1,1,1);
 
-				glPushMatrix();
+				gGL.pushMatrix();
 				glLoadIdentity();
 				glMatrixMode(GL_PROJECTION);
-				glPushMatrix();
+				gGL.pushMatrix();
 				glLoadIdentity();
 
 				glDrawArrays(GL_TRIANGLES, 0, 3);
 
-				glPopMatrix();
+				gGL.popMatrix();
 				glMatrixMode(GL_MODELVIEW);
-				glPopMatrix();
+				gGL.popMatrix();
 
 				unbindDeferredShader(gDeferredPostProgram);
 			}
@@ -7977,7 +7977,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 
 			stop_glerror();
 
-			glPushMatrix();
+			gGL.pushMatrix();
 
 			mat.set_scale(glh::vec3f(1,1,-1));
 			mat.set_translate(glh::vec3f(0,0,height*2.f));
@@ -8065,7 +8065,7 @@ void LLPipeline::generateWaterReflection(LLCamera& camera_in)
 				gPipeline.popRenderTypeMask();
 			}	
 			glCullFace(GL_BACK);
-			glPopMatrix();
+			gGL.popMatrix();
 			mWaterRef.flush();
 			glh_set_current_modelview(current);
 			LLPipeline::sUseOcclusion = occlusion;
@@ -8247,10 +8247,10 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 	
 	//generate shadow map
 	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+	gGL.pushMatrix();
 	glLoadMatrixf(proj.m);
 	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
+	gGL.pushMatrix();
 	glLoadMatrixd(gGLModelView);
 
 	stop_glerror();
@@ -8325,9 +8325,9 @@ void LLPipeline::renderShadow(glh::matrix4f& view, glh::matrix4f& proj, LLCamera
 	gGL.setColorMask(true, true);
 			
 	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+	gGL.popMatrix();
 	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
+	gGL.popMatrix();
 	gGLLastMatrix = NULL;
 
 	LLPipeline::sUseOcclusion = occlude;
@@ -8655,10 +8655,10 @@ void LLPipeline::generateGI(LLCamera& camera, LLVector3& lightDir, std::vector<L
 
 	//generate GI map
 	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+	gGL.pushMatrix();
 	glLoadMatrixf(proj.m);
 	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
+	gGL.pushMatrix();
 	glLoadMatrixf(view.m);
 
 	stop_glerror();
@@ -8674,9 +8674,9 @@ void LLPipeline::generateGI(LLCamera& camera, LLVector3& lightDir, std::vector<L
 	mGIMap.flush();
 	
 	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+	gGL.popMatrix();
 	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
+	gGL.popMatrix();
 	gGLLastMatrix = NULL;
 
 	LLPipeline::sUseOcclusion = occlude;
@@ -9597,7 +9597,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 	tdim.mV[1] = fabsf(half_height.dot3(up).getF32());
 
 	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+	gGL.pushMatrix();
 	
 	F32 distance = (pos-camera.getOrigin()).length();
 	F32 fov = atanf(tdim.mV[1]/distance)*2.f*RAD_TO_DEG;
@@ -9607,7 +9607,7 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 	glLoadMatrixf(persp.m);
 
 	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
+	gGL.pushMatrix();
 	glh::matrix4f mat;
 	camera.getOpenGLTransform(mat.m);
 
@@ -9681,10 +9681,10 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 
 		gGL.flush();
 
-		glPushMatrix();
+		gGL.pushMatrix();
 		glLoadIdentity();
 		glMatrixMode(GL_PROJECTION);
-		glPushMatrix();
+		gGL.pushMatrix();
 		glLoadIdentity();
 
 		static const F32 clip_plane = 0.99999f;
@@ -9698,9 +9698,9 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		gGL.end();
 		gGL.flush();
 
-		glPopMatrix();
+		gGL.popMatrix();
 		glMatrixMode(GL_MODELVIEW);
-		glPopMatrix();
+		gGL.popMatrix();
 	}
 
 	avatar->mImpostor.flush();
@@ -9715,9 +9715,9 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 	popRenderTypeMask();
 
 	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+	gGL.popMatrix();
 	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix();
+	gGL.popMatrix();
 
 	avatar->mNeedsImpostorUpdate = FALSE;
 	avatar->cacheImpostorValues();

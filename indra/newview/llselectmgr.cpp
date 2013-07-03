@@ -5145,8 +5145,8 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		gGL.loadUIIdentity();
 		glLoadIdentity();
 		glLoadMatrixf(OGL_TO_CFR_ROTATION);		// Load Cory's favorite reference frame
-		glTranslatef(-hud_bbox.getCenterLocal().mV[VX] + (depth *0.5f), 0.f, 0.f);
-		glScalef(cur_zoom, cur_zoom, cur_zoom);
+		gGL.translatef(-hud_bbox.getCenterLocal().mV[VX] + (depth *0.5f), 0.f, 0.f);
+		gGL.scalef(cur_zoom, cur_zoom, cur_zoom);
 	}
 	if (mSelectedObjects->getNumNodes())
 	{
@@ -5619,7 +5619,7 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		glLoadIdentity();
 		glMultMatrixd(gGLModelView);
 		LLVector3 trans = objectp->getRegion()->getOriginAgent();		
-		glTranslatef(trans.mV[0], trans.mV[1], trans.mV[2]);		
+		gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);		
 	}
 	
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

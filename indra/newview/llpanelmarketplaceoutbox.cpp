@@ -90,15 +90,19 @@ void LLPanelMarketplaceOutbox::handleLoginComplete()
 void LLPanelMarketplaceOutbox::onFocusReceived()
 {
 	LLSidepanelInventory * sidepanel_inventory = LLSideTray::getInstance()->getPanel<LLSidepanelInventory>("sidepanel_inventory");
-
-	sidepanel_inventory->clearSelections(true, true, false);
+	if (sidepanel_inventory)
+	{
+		sidepanel_inventory->clearSelections(true, true, false);
+	}
 }
 
 void LLPanelMarketplaceOutbox::onSelectionChange()
 {
 	LLSidepanelInventory* sidepanel_inventory = dynamic_cast<LLSidepanelInventory*>(LLSideTray::getInstance()->getPanel("sidepanel_inventory"));
-	
-	sidepanel_inventory->updateVerbs();
+	if (sidepanel_inventory)
+	{
+		sidepanel_inventory->updateVerbs();
+	}
 }
 
 LLInventoryPanel * LLPanelMarketplaceOutbox::setupInventoryPanel()

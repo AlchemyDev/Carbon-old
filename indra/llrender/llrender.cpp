@@ -1019,6 +1019,12 @@ void LLRender::scalef(const GLfloat& x, const GLfloat& y, const GLfloat& z)
 	glScalef(x,y,z);
 }
 
+void LLRender::rotatef(const GLfloat& a, const GLfloat& x, const GLfloat& y, const GLfloat& z)
+{
+	flush();
+	glRotatef(a,x,y,z);
+}
+
 void LLRender::pushMatrix()
 {
 	flush();

@@ -319,8 +319,12 @@ public:
 
 	void translatef(const GLfloat& x, const GLfloat& y, const GLfloat& z);
 	void scalef(const GLfloat& x, const GLfloat& y, const GLfloat& z);
+	void rotatef(const GLfloat& a, const GLfloat& x, const GLfloat& y, const GLfloat& z);
+	void ortho(F32 left, F32 right, F32 bottom, F32 top, F32 zNear, F32 zFar);
+
 	void pushMatrix();
 	void popMatrix();
+	void loadIdentity();
 
 	void translateUI(F32 x, F32 y, F32 z);
 	void scaleUI(F32 x, F32 y, F32 z);
@@ -389,9 +393,11 @@ public:
 public:
 	static U32 sUICalls;
 	static U32 sUIVerts;
+	static bool sGLCoreProfile;
 	
 private:
-	bool				mDirty;
+	
+	bool			mDirty;
 	U32				mCount;
 	U32				mMode;
 	U32				mCurrTextureUnitIndex;

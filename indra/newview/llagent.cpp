@@ -3937,7 +3937,7 @@ void LLAgent::renderAutoPilotTarget()
 
 		height_meters = 1.f;
 
-		glScalef(height_meters, height_meters, height_meters);
+		gGL.scalef(height_meters, height_meters, height_meters);
 
 		gSphere.render(1500.f);
 

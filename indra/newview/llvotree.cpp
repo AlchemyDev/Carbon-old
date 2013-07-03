@@ -882,7 +882,7 @@ void LLVOTree::updateMesh()
 	
 	// Translate to tree base  HACK - adjustment in Z plants tree underground
 	const LLVector3 &pos_agent = getPositionAgent();
-	//glTranslatef(pos_agent.mV[VX], pos_agent.mV[VY], pos_agent.mV[VZ] - 0.1f);
+	//gGL.translatef(pos_agent.mV[VX], pos_agent.mV[VY], pos_agent.mV[VZ] - 0.1f);
 	LLMatrix4 trans_mat;
 	trans_mat.setTranslation(pos_agent.mV[VX], pos_agent.mV[VY], pos_agent.mV[VZ] - 0.1f);
 	trans_mat *= matrix;
@@ -1230,7 +1230,7 @@ U32 LLVOTree::drawBranchPipeline(LLMatrix4& matrix, U16* indicesp, S32 trunk_LOD
 		scale_mat *= matrix;
 	
 		glMatrixMode(GL_TEXTURE);
-		glTranslatef(0.0, -0.5, 0.0);
+		gGL.translatef(0.0, -0.5, 0.0);
 		glMatrixMode(GL_MODELVIEW);
 					
 		glLoadMatrixf((F32*) scale_mat.mMatrix);

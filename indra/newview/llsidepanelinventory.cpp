@@ -112,21 +112,13 @@ public:
 			switch (added_category_type)
 			{
 				case LLFolderType::FT_INBOX:
+					mSidepanelInventory->enableInbox(true);
 					mSidepanelInventory->observeInboxModifications(added_category->getUUID());
 					break;
 				case LLFolderType::FT_OUTBOX:
+					mSidepanelInventory->enableOutbox(true);
 					mSidepanelInventory->observeOutboxModifications(added_category->getUUID());
 					break;
-				case LLFolderType::FT_NONE:
-					// HACK until sim update to properly create folder with system type
-					if (added_category->getName() == "Received Items")
-					{
-						mSidepanelInventory->observeInboxModifications(added_category->getUUID());
-					}
-					else if (added_category->getName() == "Merchant Outbox")
-					{
-						mSidepanelInventory->observeOutboxModifications(added_category->getUUID());
-					}
 				default:
 					break;
 			}
@@ -173,15 +165,19 @@ LLSidepanelInventory::~LLSidepanelInventory()
 void handleInventoryDisplayInboxChanged()
 {
 	LLSidepanelInventory* sidepanel_inventory = dynamic_cast<LLSidepanelInventory*>(LLSideTray::getInstance()->getPanel("sidepanel_inventory"));
-
-	sidepanel_inventory->enableInbox(gSavedSettings.getBOOL("InventoryDisplayInbox"));
+	if (sidepanel_inventory)
+	{
+		sidepanel_inventory->enableInbox(gSavedSettings.getBOOL("InventoryDisplayInbox"));
+	}
 }
 
 void handleInventoryDisplayOutboxChanged()
 {
 	LLSidepanelInventory* sidepanel_inventory = dynamic_cast<LLSidepanelInventory*>(LLSideTray::getInstance()->getPanel("sidepanel_inventory"));
-
-	sidepanel_inventory->enableOutbox(gSavedSettings.getBOOL("InventoryDisplayOutbox"));
+	if (sidepanel_inventory)
+	{
+		sidepanel_inventory->enableOutbox(gSavedSettings.getBOOL("InventoryDisplayOutbox"));
+	}
 }
 
 BOOL LLSidepanelInventory::postBuild()
@@ -283,6 +279,9 @@ BOOL LLSidepanelInventory::postBuild()
 	gSavedSettings.getControl("InventoryDisplayInbox")->getCommitSignal()->connect(boost::bind(&handleInventoryDisplayInboxChanged));
 	gSavedSettings.getControl("InventoryDisplayOutbox")->getCommitSignal()->connect(boost::bind(&handleInventoryDisplayOutboxChanged));
 
+	// Update the verbs buttons state.
+	updateVerbs();
+
 	return TRUE;
 }
 
@@ -307,20 +306,20 @@ void LLSidepanelInventory::handleLoginComplete()
 	// Set up observer for inbox changes, if we have an inbox already
 	if (!inbox_id.isNull())
 	{
-		observeInboxModifications(inbox_id);
-
 		// Enable the display of the inbox if it exists
 		enableInbox(true);
+
+		observeInboxModifications(inbox_id);
 	}
 	
 #if ENABLE_MERCHANT_OUTBOX_PANEL
 	// Set up observer for outbox changes, if we have an outbox already
 	if (!outbox_id.isNull())
 	{
-		observeOutboxModifications(outbox_id);
-
 		// Enable the display of the outbox if it exists
 		enableOutbox(true);
+
+		observeOutboxModifications(outbox_id);
 	}
 #endif
 }
@@ -447,6 +446,24 @@ void LLSidepanelInventory::enableOutbox(bool enabled)
 		}
 		
 		updateOutboxUserStatus();
+	}
+}
+
+void LLSidepanelInventory::openInbox()
+{
+	if (mInboxEnabled)
+	{
+		getChild<LLButton>(INBOX_BUTTON_NAME)->setToggleState(true);
+		onToggleInboxBtn();
+	}
+}
+
+void LLSidepanelInventory::openOutbox()
+{
+	if (mOutboxEnabled)
+	{
+		getChild<LLButton>(OUTBOX_BUTTON_NAME)->setToggleState(true);
+		onToggleOutboxBtn();
 	}
 }
 

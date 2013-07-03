@@ -345,7 +345,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	/// ALPHA TEXTURE COORDS 1:
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
-	glTranslatef(-2.f, 0.f, 0.f);
+	gGL.translatef(-2.f, 0.f, 0.f);
 	glMatrixMode(GL_MODELVIEW);
 
 	//
@@ -358,7 +358,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	gGL.getTexUnit(3)->activate();
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
-	glTranslatef(-1.f, 0.f, 0.f);
+	gGL.translatef(-1.f, 0.f, 0.f);
 	glMatrixMode(GL_MODELVIEW);
 
 	//
@@ -536,7 +536,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 	// Set the texture matrix
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
-	glTranslatef(-2.f, 0.f, 0.f);
+	gGL.translatef(-2.f, 0.f, 0.f);
 
 	// Care about alpha only
 	gGL.getTexUnit(1)->setTextureColorBlend(LLTexUnit::TBO_REPLACE, LLTexUnit::TBS_PREV_COLOR);
@@ -568,7 +568,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 	// Set the texture matrix
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
-	glTranslatef(-1.f, 0.f, 0.f);
+	gGL.translatef(-1.f, 0.f, 0.f);
   
 	// Set alpha texture and do lighting modulation
 	gGL.getTexUnit(3)->setTextureColorBlend(LLTexUnit::TBO_MULT, LLTexUnit::TBS_PREV_COLOR, LLTexUnit::TBS_VERT_COLOR);
@@ -716,7 +716,7 @@ void LLDrawPoolTerrain::renderFull2TU()
 	// Set the texture matrix
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
-	glTranslatef(-1.f, 0.f, 0.f);
+	gGL.translatef(-1.f, 0.f, 0.f);
 
 	// Care about alpha only
 	gGL.getTexUnit(0)->setTextureColorBlend(LLTexUnit::TBO_REPLACE, LLTexUnit::TBS_PREV_COLOR);
@@ -755,7 +755,7 @@ void LLDrawPoolTerrain::renderFull2TU()
 	// Set the texture matrix
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
-	glTranslatef(-2.f, 0.f, 0.f);
+	gGL.translatef(-2.f, 0.f, 0.f);
 
 	// Care about alpha only
 	gGL.getTexUnit(0)->setTextureColorBlend(LLTexUnit::TBO_REPLACE, LLTexUnit::TBS_PREV_COLOR);
@@ -883,10 +883,10 @@ void LLDrawPoolTerrain::renderOwnership()
 	// ownership map not line up with the selection. We address this with
 	// a texture matrix multiply.
 	glMatrixMode(GL_TEXTURE);
-	glPushMatrix();
+	gGL.pushMatrix();
 
 	const F32 TEXTURE_FUDGE = 257.f / 256.f;
-	glScalef( TEXTURE_FUDGE, TEXTURE_FUDGE, 1.f );
+	gGL.scalef( TEXTURE_FUDGE, TEXTURE_FUDGE, 1.f );
 	for (std::vector<LLFace*>::iterator iter = mDrawFace.begin();
 		 iter != mDrawFace.end(); iter++)
 	{
@@ -896,7 +896,7 @@ void LLDrawPoolTerrain::renderOwnership()
 	}
 
 	glMatrixMode(GL_TEXTURE);
-	glPopMatrix();
+	gGL.popMatrix();
 	glMatrixMode(GL_MODELVIEW);
 }
 

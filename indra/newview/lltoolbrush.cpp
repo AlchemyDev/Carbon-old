@@ -510,9 +510,9 @@ void LLToolBrushLand::renderOverlay(LLSurface& land, const LLVector3& pos_region
 	glMatrixMode(GL_MODELVIEW);
 	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 	LLGLDepthTest mDepthTest(GL_TRUE);
-	glPushMatrix();
+	gGL.pushMatrix();
 	gGL.color4fv(OVERLAY_COLOR.mV);
-	glTranslatef(0.0f, 0.0f, 1.0f);
+	gGL.translatef(0.0f, 0.0f, 1.0f);
 	
 	S32 i = (S32) pos_region.mV[VX];
 	S32 j = (S32) pos_region.mV[VY];
@@ -566,7 +566,7 @@ void LLToolBrushLand::renderOverlay(LLSurface& land, const LLVector3& pos_region
 	}
 	gGL.end();
 
-	glPopMatrix();
+	gGL.popMatrix();
 }
 
 void LLToolBrushLand::determineAffectedRegions(region_list_t& regions,

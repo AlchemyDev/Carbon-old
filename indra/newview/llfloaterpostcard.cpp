@@ -160,9 +160,9 @@ void LLFloaterPostcard::draw()
 		{
 
 		glMatrixMode(GL_TEXTURE);
-		glPushMatrix();
+		gGL.pushMatrix();
 		{
-			glScalef(mImageScale.mV[VX], mImageScale.mV[VY], 1.f);
+			gGL.scalef(mImageScale.mV[VX], mImageScale.mV[VY], 1.f);
 			glMatrixMode(GL_MODELVIEW);
 			gl_draw_scaled_image(rect.mLeft,
 								 rect.mBottom,
@@ -172,7 +172,7 @@ void LLFloaterPostcard::draw()
 								 LLColor4::white % alpha);
 		}
 		glMatrixMode(GL_TEXTURE);
-		glPopMatrix();
+		gGL.popMatrix();
 		glMatrixMode(GL_MODELVIEW);
 		}
 	}

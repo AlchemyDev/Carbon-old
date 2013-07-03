@@ -126,7 +126,7 @@ void LLViewerJoint::setValid( BOOL valid, BOOL recursive )
 // 	//----------------------------------------------------------------
 // 	// push matrix stack
 // 	//----------------------------------------------------------------
-// 	glPushMatrix();
+// 	gGL.pushMatrix();
 
 // 	//----------------------------------------------------------------
 // 	// render the bone to my parent
@@ -233,7 +233,7 @@ void LLViewerJoint::setValid( BOOL valid, BOOL recursive )
 // 	//----------------------------------------------------------------
 // 	// pop matrix stack
 // 	//----------------------------------------------------------------
-// 	glPopMatrix();
+// 	gGL.popMatrix();
 // }
 
 
@@ -346,7 +346,7 @@ U32 LLViewerJoint::render( F32 pixelArea, BOOL first_pass, BOOL is_dummy )
 // 	F32 boneSize = 0.02f;
 
 // 	// rotate to point to child (bone direction)
-// 	glPushMatrix();
+// 	gGL.pushMatrix();
 
 // 	LLVector3 boneX = getPosition();
 // 	F32 length = boneX.normVec();
@@ -388,7 +388,7 @@ U32 LLViewerJoint::render( F32 pixelArea, BOOL first_pass, BOOL is_dummy )
 // 	gGL.end();
 
 // 	// restore matrix
-// 	glPopMatrix();
+// 	gGL.popMatrix();
 // }
 
 //--------------------------------------------------------------------
