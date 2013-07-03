@@ -56,11 +56,32 @@ void parse_string();
 
 #define ECHO do { } while (0)
 
-#if defined(__cplusplus)
-extern "C" { int yylex( void ); }
-extern "C" { int yyparse( void ); }
-extern "C" { int yyerror(const char *fmt, ...); }
-#endif
+#define yyparse indra_parse
+#define yyerror indra_error
+#define yylval indra_lval
+#define yy_create_buffer indra__create_buffer
+#define yy_delete_buffer indra__delete_buffer
+#define yy_flex_debug indra__flex_debug
+#define yy_init_buffer indra__init_buffer
+#define yy_flush_buffer indra__flush_buffer
+#define yy_load_buffer_state indra__load_buffer_state
+#define yy_switch_to_buffer indra__switch_to_buffer
+#define yyin indra_in
+#define yyleng indra_leng
+#define yylex indra_lex
+#define yylineno indra_lineno
+#define yyout indra_out
+#define yyrestart indra_restart
+#define yytext indra_text
+#define yywrap indra_wrap
+#define yyalloc indra_alloc
+#define yyrealloc indra_realloc
+#define yyfree indra_free
+
+
+int yylex( void );
+int yyparse( void );
+int yyerror(const char *fmt, ...);
 
 %}
 
@@ -212,7 +233,8 @@ extern "C" { int yyerror(const char *fmt, ...); }
 "PERMISSION_CHANGE_JOINTS"		{ count(); yylval.ival = LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_CHANGE_JOINTS]; return(INTEGER_CONSTANT); }
 "PERMISSION_CHANGE_PERMISSIONS"	{ count(); yylval.ival = LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_CHANGE_PERMISSIONS]; return(INTEGER_CONSTANT); }
 "PERMISSION_TRACK_CAMERA"		{ count(); yylval.ival = LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TRACK_CAMERA]; return(INTEGER_CONSTANT); }
-"PERMISSION_CONTROL_CAMERA"			{ count(); yylval.ival = LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_CONTROL_CAMERA]; return(INTEGER_CONSTANT); }
+"PERMISSION_CONTROL_CAMERA"		{ count(); yylval.ival = LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_CONTROL_CAMERA]; return(INTEGER_CONSTANT); }
+"PERMISSION_TELEPORT"			{ count(); yylval.ival = LSCRIPTRunTimePermissionBits[SCRIPT_PERMISSION_TELEPORT]; return(INTEGER_CONSTANT); }
 
 "INVENTORY_TEXTURE"					{ count(); yylval.ival = LLAssetType::AT_TEXTURE; return(INTEGER_CONSTANT); }
 "INVENTORY_SOUND"					{ count(); yylval.ival = LLAssetType::AT_SOUND; return(INTEGER_CONSTANT); }
