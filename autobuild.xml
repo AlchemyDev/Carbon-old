@@ -450,9 +450,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>61ead113e6479452e6b690c84b4e9d30</string>
+              <string>faf4713fc640c66ed33e0114719b0c05</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/3p-fmod-private/rev/221852/arch/Darwin/installer/fmod-3.75-darwin-20110222.tar.bz2</string>
+              <string>https://dl.dropboxusercontent.com/u/8162280/Alchemy/Prebuilts/3p-fmod/darwin/fmod-3.75-darwin-20120101.tar.bz2</string>
             </map>
             <key>name</key>
             <string>darwin</string>
@@ -462,9 +462,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>0c61d643db54d2e5999be8254569d8b3</string>
+              <string>117b7a79e3bb954bf73a1eaaf1965f07</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/3p-fmod-private/rev/221852/arch/Linux/installer/fmod-3.75-linux-20110223.tar.bz2</string>
+              <string>https://dl.dropboxusercontent.com/u/8162280/Alchemy/Prebuilts/3p-fmod/linux/fmod-3.75-linux-20120212.tar.bz2</string>
             </map>
             <key>name</key>
             <string>linux</string>
@@ -474,9 +474,9 @@
             <key>archive</key>
             <map>
               <key>hash</key>
-              <string>d9a9a6ad86895353bcd63374a4c1a91d</string>
+              <string>5613b7c84bf5516f7327db2e79390ec9</string>
               <key>url</key>
-              <string>http://s3-proxy.lindenlab.com/private-builds-secondlife-com/hg/repo/3p-fmod-private/rev/221852/arch/CYGWIN/installer/fmod-3.75-windows-20110222.tar.bz2</string>
+              <string>https://dl.dropboxusercontent.com/u/8162280/Alchemy/Prebuilts/3p-fmod/windows/fmod-3.75-windows-20111222.tar.bz2</string>
             </map>
             <key>name</key>
             <string>windows</string>
