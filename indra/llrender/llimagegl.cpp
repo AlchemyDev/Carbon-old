@@ -37,6 +37,7 @@
 #include "llmath.h"
 #include "llgl.h"
 #include "llrender.h"
+
 //----------------------------------------------------------------------------
 const F32 MIN_TEXTURE_LIFETIME = 10.f;
 
@@ -901,29 +902,29 @@ BOOL LLImageGL::preAddToAtlas(S32 discard_level, const LLImageRaw* raw_image)
 	{
 		switch (mComponents)
 		{
-		  case 1:
+			case 1:
 			// Use luminance alpha (for fonts)
 			mFormatInternal = GL_LUMINANCE8;
 			mFormatPrimary = GL_LUMINANCE;
 			mFormatType = GL_UNSIGNED_BYTE;
 			break;
-		  case 2:
+			case 2:
 			// Use luminance alpha (for fonts)
 			mFormatInternal = GL_LUMINANCE8_ALPHA8;
 			mFormatPrimary = GL_LUMINANCE_ALPHA;
 			mFormatType = GL_UNSIGNED_BYTE;
 			break;
-		  case 3:
+			case 3:
 			mFormatInternal = GL_RGB8;
 			mFormatPrimary = GL_RGB;
 			mFormatType = GL_UNSIGNED_BYTE;
 			break;
-		  case 4:
+			case 4:
 			mFormatInternal = GL_RGBA8;
 			mFormatPrimary = GL_RGBA;
 			mFormatType = GL_UNSIGNED_BYTE;
 			break;
-		  default:
+			default:
 			llerrs << "Bad number of components for texture: " << (U32)getComponents() << llendl;
 		}
 	}
@@ -1167,29 +1168,29 @@ BOOL LLImageGL::createGLTexture(S32 discard_level, const LLImageRaw* imageraw, S
 	{
 		switch (mComponents)
 		{
-		  case 1:
+			case 1:
 			// Use luminance alpha (for fonts)
 			mFormatInternal = GL_LUMINANCE8;
 			mFormatPrimary = GL_LUMINANCE;
 			mFormatType = GL_UNSIGNED_BYTE;
 			break;
-		  case 2:
+			case 2:
 			// Use luminance alpha (for fonts)
 			mFormatInternal = GL_LUMINANCE8_ALPHA8;
 			mFormatPrimary = GL_LUMINANCE_ALPHA;
 			mFormatType = GL_UNSIGNED_BYTE;
 			break;
-		  case 3:
+			case 3:
 			mFormatInternal = GL_RGB8;
 			mFormatPrimary = GL_RGB;
 			mFormatType = GL_UNSIGNED_BYTE;
 			break;
-		  case 4:
+			case 4:
 			mFormatInternal = GL_RGBA8;
 			mFormatPrimary = GL_RGBA;
 			mFormatType = GL_UNSIGNED_BYTE;
 			break;
-		  default:
+			default:
 			llerrs << "Bad number of components for texture: " << (U32)getComponents() << llendl;
 		}
 

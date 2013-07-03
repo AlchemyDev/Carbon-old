@@ -705,9 +705,9 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 
 				glh_set_current_projection(proj);
 				glh_set_current_modelview(mod);
-				glMatrixMode(GL_PROJECTION);
+				gGL.matrixMode(GL_PROJECTION);
 				glLoadMatrixf(proj.m);
-				glMatrixMode(GL_MODELVIEW);
+				gGL.matrixMode(GL_MODELVIEW);
 				glLoadMatrixf(mod.m);
 				gViewerWindow->setup3DViewport();
 
@@ -829,7 +829,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		//// assumes frontmost floater with focus is opaque
 		//if (frontmost_floaterp && gFocusMgr.childHasKeyboardFocus(frontmost_floaterp))
 		//{
-		//	glMatrixMode(GL_MODELVIEW);
+		//	gGL.matrixMode(GL_MODELVIEW);
 		//	gGL.pushMatrix();
 		//	{
 		//		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
@@ -995,9 +995,9 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 void render_hud_attachments()
 {
 	LLMemType mt_ra(LLMemType::MTYPE_DISPLAY_RENDER_ATTACHMENTS);
-	glMatrixMode(GL_PROJECTION);
+	gGL.matrixMode(GL_PROJECTION);
 	gGL.pushMatrix();
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.pushMatrix();
 		
 	glh::matrix4f current_proj = glh_get_current_projection();
@@ -1084,9 +1084,9 @@ void render_hud_attachments()
 		}
 		LLPipeline::sUseOcclusion = use_occlusion;
 	}
-	glMatrixMode(GL_PROJECTION);
+	gGL.matrixMode(GL_PROJECTION);
 	gGL.popMatrix();
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.popMatrix();
 	
 	glh_set_current_projection(current_proj);
@@ -1170,11 +1170,11 @@ BOOL setup_hud_matrices(const LLRect& screen_region)
 	if (!result) return result;
 	
 	// set up transform to keep HUD objects in front of camera
-	glMatrixMode(GL_PROJECTION);
+	gGL.matrixMode(GL_PROJECTION);
 	glLoadMatrixf(proj.m);
 	glh_set_current_projection(proj);
 	
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	glLoadMatrixf(model.m);
 	glh_set_current_modelview(model);
 	return TRUE;

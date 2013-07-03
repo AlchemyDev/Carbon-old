@@ -498,7 +498,7 @@ void LLHUDEffectLookAt::render()
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 
 		LLVector3 target = mTargetPos + ((LLVOAvatar*)(LLViewerObject*)mSourceObject)->mHeadp->getWorldPosition();
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 		gGL.pushMatrix();
 		gGL.translatef(target.mV[VX], target.mV[VY], target.mV[VZ]);
 		gGL.scalef(0.3f, 0.3f, 0.3f);

@@ -1369,12 +1369,12 @@ void LLDrawPoolBump::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL 
 			if (mShiny)
 			{
 				gGL.getTexUnit(0)->activate();
-				glMatrixMode(GL_TEXTURE);
+				gGL.matrixMode(GL_TEXTURE);
 			}
 			else
 			{
 				gGL.getTexUnit(1)->activate();
-				glMatrixMode(GL_TEXTURE);
+				gGL.matrixMode(GL_TEXTURE);
 				glLoadMatrixf((GLfloat*) params.mTextureMatrix->mMatrix);
 				gPipeline.mTextureMatrixOps++;
 				gGL.getTexUnit(0)->activate();
@@ -1420,7 +1420,7 @@ void LLDrawPoolBump::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL 
 			gGL.getTexUnit(0)->activate();
 		}
 		gGL.loadIdentity();
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 	}
 }
 

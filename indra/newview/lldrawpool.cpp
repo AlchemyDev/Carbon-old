@@ -494,7 +494,7 @@ void LLRenderPass::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL ba
 				{
 					tex_setup = true;
 					gGL.getTexUnit(0)->activate();
-					glMatrixMode(GL_TEXTURE);
+					gGL.matrixMode(GL_TEXTURE);
 					glLoadMatrixf((GLfloat*) params.mTextureMatrix->mMatrix);
 					gPipeline.mTextureMatrixOps++;
 				}
@@ -520,7 +520,7 @@ void LLRenderPass::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL ba
 	if (tex_setup)
 	{
 		gGL.loadIdentity();
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 	}
 }
 

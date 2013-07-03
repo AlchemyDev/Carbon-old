@@ -1544,11 +1544,11 @@ void LLDrawPoolAvatar::renderRigged(LLVOAvatar* avatar, U32 type, bool glow)
 
 			if (face->mTextureMatrix)
 			{
-				glMatrixMode(GL_TEXTURE);
+				gGL.matrixMode(GL_TEXTURE);
 				glLoadMatrixf((F32*) face->mTextureMatrix->mMatrix);
 				buff->drawRange(LLRender::TRIANGLES, start, end, count, offset);
 				gGL.loadIdentity();
-				glMatrixMode(GL_MODELVIEW);
+				gGL.matrixMode(GL_MODELVIEW);
 			}
 			else
 			{

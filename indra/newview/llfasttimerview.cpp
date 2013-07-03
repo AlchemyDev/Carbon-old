@@ -1126,9 +1126,9 @@ void LLFastTimerView::exportCharts(const std::string& base, const std::string& t
 
 	gGL.pushMatrix();
 	gGL.loadIdentity();
-	glMatrixMode(GL_PROJECTION);
+	gGL.matrixMode(GL_PROJECTION);
 	gGL.loadIdentity();
-	gGL.ortho(-0.05, 1.05, -0.05, 1.05, -1.0, 1.0);
+	gGL.ortho(-0.05f, 1.05f, -0.05f, 1.05f, -1.0f, 1.0f);
 
 	//render charts
 	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
@@ -1367,7 +1367,7 @@ void LLFastTimerView::exportCharts(const std::string& base, const std::string& t
 	buffer.flush();
 
 	gGL.popMatrix();
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.popMatrix();
 }
 

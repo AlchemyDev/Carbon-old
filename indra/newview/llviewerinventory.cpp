@@ -1208,7 +1208,10 @@ void move_inventory_item(
 	gAgent.sendReliableMessage();
 }
 
-void copy_inventory_from_notecard(const LLUUID& object_id, const LLUUID& notecard_inv_id, const LLInventoryItem *src, U32 callback_id)
+void copy_inventory_from_notecard(const LLUUID& object_id,
+								  const LLUUID& notecard_inv_id,
+								  const LLInventoryItem *src,
+								  U32 callback_id)
 {
 	if (NULL == src)
 	{

@@ -505,7 +505,7 @@ void LLTracker::renderBeacon(LLVector3d pos_global,
 	LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
 	
 	
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.pushMatrix();
 		gGL.translatef(pos_agent.mV[0], pos_agent.mV[1], pos_agent.mV[2]);
 		

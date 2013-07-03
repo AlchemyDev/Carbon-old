@@ -325,7 +325,7 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 	aspect = getAspect();
 
 	// Load camera view matrix
-	glMatrixMode( GL_PROJECTION );
+	gGL.matrixMode( GL_PROJECTION );
 	gGL.loadIdentity();
 
 	glh::matrix4f proj_mat;
@@ -392,7 +392,7 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 		gGLProjection[i] = proj_mat.m[i];
 	}
 
-	glMatrixMode( GL_MODELVIEW );
+	gGL.matrixMode( GL_MODELVIEW );
 
 	glh::matrix4f modelview((GLfloat*) OGL_TO_CFR_ROTATION);
 
@@ -431,10 +431,10 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 
 	/*if (gSavedSettings.getBOOL("CameraOffset"))
 	{
-		glMatrixMode(GL_PROJECTION);
+		gGL.matrixMode(GL_PROJECTION);
 		gGL.translatef(0,0,-50);
 		gGL.rotatef(20.0,1,0,0);
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 	}*/
 }
 

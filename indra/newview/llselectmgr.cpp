@@ -5133,13 +5133,13 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		F32 cur_zoom = gAgentCamera.mHUDCurZoom;
 
 		// set up transform to encompass bounding box of HUD
-		glMatrixMode(GL_PROJECTION);
+		gGL.matrixMode(GL_PROJECTION);
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 		F32 depth = llmax(1.f, hud_bbox.getExtentLocal().mV[VX] * 1.1f);
 		gGL.ortho(-0.5f * LLViewerCamera::getInstance()->getAspect(), 0.5f * LLViewerCamera::getInstance()->getAspect(), -0.5f, 0.5f, 0.f, depth);
 
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 		gGL.pushMatrix();
 		gGL.pushUIMatrix();
 		gGL.loadUIIdentity();
@@ -5239,10 +5239,10 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 
 	if (isAgentAvatarValid() && for_hud)
 	{
-		glMatrixMode(GL_PROJECTION);
+		gGL.matrixMode(GL_PROJECTION);
 		gGL.popMatrix();
 
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 		gGL.popMatrix();
 		gGL.popUIMatrix();
 		stop_glerror();
@@ -5604,7 +5604,7 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 		return;
 	}
 
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.pushMatrix();
 	
 	BOOL is_hud_object = objectp->isHUDAttachment();
@@ -5692,7 +5692,7 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 		return;
 	}
 
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.pushMatrix();
 	gGL.pushUIMatrix();
 	gGL.loadUIIdentity();

@@ -325,6 +325,7 @@ public:
 	void pushMatrix();
 	void popMatrix();
 	void loadIdentity();
+	void matrixMode(U32 mode);	
 
 	void translateUI(F32 x, F32 y, F32 z);
 	void scaleUI(F32 x, F32 y, F32 z);

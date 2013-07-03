@@ -3922,7 +3922,7 @@ void LLAgent::renderAutoPilotTarget()
 		F32 height_meters;
 		LLVector3d target_global;
 
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 		gGL.pushMatrix();
 
 		// not textured

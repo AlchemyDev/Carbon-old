@@ -4905,12 +4905,12 @@ BOOL LLModelPreview::render()
 
 	{
 		//clear background to blue
-		glMatrixMode(GL_PROJECTION);
+		gGL.matrixMode(GL_PROJECTION);
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 		gGL.ortho(0.0f, width, 0.0f, height, -1.0f, 1.0f);
 
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 		gGL.pushMatrix();
 		gGL.loadIdentity();
 
@@ -4918,10 +4918,10 @@ BOOL LLModelPreview::render()
 
 		gl_rect_2d_simple( width, height );
 
-		glMatrixMode(GL_PROJECTION);
+		gGL.matrixMode(GL_PROJECTION);
 		gGL.popMatrix();
 
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 		gGL.popMatrix();
 	}
 

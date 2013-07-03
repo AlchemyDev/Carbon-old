@@ -2248,7 +2248,7 @@ void LLViewerWindow::draw()
 
 	LLUI::setLineWidth(1.f);
 	// Reset any left-over transforms
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	
 	gGL.loadIdentity();
 
@@ -2333,7 +2333,7 @@ void LLViewerWindow::draw()
 			S32 screen_x, screen_y;
 			top_ctrl->localPointToScreen(0, 0, &screen_x, &screen_y);
 
-			glMatrixMode(GL_MODELVIEW);
+			gGL.matrixMode(GL_MODELVIEW);
 			LLUI::pushMatrix();
 			LLUI::translate( (F32) screen_x, (F32) screen_y, 0.f);
 			top_ctrl->draw();	
@@ -3397,13 +3397,13 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 			LLBBox hud_bbox = gAgentAvatarp->getHUDBBox();
 
 			// set up transform to encompass bounding box of HUD
-			glMatrixMode(GL_PROJECTION);
+			gGL.matrixMode(GL_PROJECTION);
 			gGL.pushMatrix();
 			gGL.loadIdentity();
 			F32 depth = llmax(1.f, hud_bbox.getExtentLocal().mV[VX] * 1.1f);
 			gGL.ortho(-0.5f * LLViewerCamera::getInstance()->getAspect(), 0.5f * LLViewerCamera::getInstance()->getAspect(), -0.5f, 0.5f, 0.f, depth);
 			
-			glMatrixMode(GL_MODELVIEW);
+			gGL.matrixMode(GL_MODELVIEW);
 			gGL.pushMatrix();
 			gGL.loadIdentity();
 			glLoadMatrixf(OGL_TO_CFR_ROTATION);		// Load Cory's favorite reference frame
@@ -3417,7 +3417,7 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 			LLGLEnable gls_blend(GL_BLEND);
 			LLGLEnable gls_cull(GL_CULL_FACE);
 			LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
-			glMatrixMode(GL_MODELVIEW);
+			gGL.matrixMode(GL_MODELVIEW);
 			gGL.pushMatrix();
 			if (selection->getSelectType() == SELECT_TYPE_HUD)
 			{
@@ -3522,10 +3522,10 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 			}
 			if (selection->getSelectType() == SELECT_TYPE_HUD && selection->getObjectCount())
 			{
-				glMatrixMode(GL_PROJECTION);
+				gGL.matrixMode(GL_PROJECTION);
 				gGL.popMatrix();
 
-				glMatrixMode(GL_MODELVIEW);
+				gGL.matrixMode(GL_MODELVIEW);
 				gGL.popMatrix();
 				stop_glerror();
 			}

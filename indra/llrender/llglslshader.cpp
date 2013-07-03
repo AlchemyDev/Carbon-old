@@ -75,6 +75,7 @@ hasAlphaMask(false)
 LLGLSLShader::LLGLSLShader()
 	: mProgramObject(0), mActiveTextureChannels(0), mShaderLevel(0), mShaderGroup(SG_DEFAULT), mUniformsDirty(FALSE)
 {
+
 }
 
 void LLGLSLShader::unload()

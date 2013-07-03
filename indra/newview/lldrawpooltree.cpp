@@ -195,7 +195,7 @@ void LLDrawPoolTree::renderTree(BOOL selecting)
 		
 	U32 indices_drawn = 0;
 
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	
 	for (std::vector<LLFace*>::iterator iter = mDrawFace.begin();
 		 iter != mDrawFace.end(); iter++)

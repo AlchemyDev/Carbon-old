@@ -67,6 +67,36 @@ static const std::string HEADLESS_VERSION_STRING("1.0");
 
 std::ofstream gFailLog;
 
+#if GL_ARB_debug_output
+
+#ifndef APIENTRY
+#define APIENTRY
+#endif
+
+void APIENTRY gl_debug_callback(GLenum source,
+                                GLenum type,
+                                GLuint id,
+                                GLenum severity,
+                                GLsizei length,
+                                const GLchar* message,
+                                GLvoid* userParam)
+{
+	if (severity == GL_DEBUG_SEVERITY_HIGH_ARB)
+	{
+		llwarns << "----- GL ERROR --------" << llendl;
+	}
+	else
+	{
+		llwarns << "----- GL WARNING -------" << llendl;
+	}
+	llwarns << "Type: " << std::hex << type << llendl;
+	llwarns << "ID: " << std::hex << id << llendl;
+	llwarns << "Severity: " << std::hex << severity << llendl;
+	llwarns << "Message: " << message << llendl;
+	llwarns << "-----------------------" << llendl;
+}
+#endif
+
 void ll_init_fail_log(std::string filename)
 {
 	gFailLog.open(filename.c_str());
@@ -110,6 +140,11 @@ std::list<LLGLUpdate*> LLGLUpdate::sGLQ;
 
 #if (LL_WINDOWS || LL_LINUX || LL_SOLARIS)  && !LL_MESA_HEADLESS
 // ATI prototypes
+
+#if LL_WINDOWS
+PFNGLGETSTRINGIPROC glGetStringi = NULL;
+#endif
+
 // vertex blending prototypes
 PFNGLWEIGHTPOINTERARBPROC			glWeightPointerARB = NULL;
 PFNGLVERTEXBLENDARBPROC				glVertexBlendARB = NULL;
@@ -127,6 +162,12 @@ PFNGLMAPBUFFERARBPROC				glMapBufferARB = NULL;
 PFNGLUNMAPBUFFERARBPROC				glUnmapBufferARB = NULL;
 PFNGLGETBUFFERPARAMETERIVARBPROC	glGetBufferParameterivARB = NULL;
 PFNGLGETBUFFERPOINTERVARBPROC		glGetBufferPointervARB = NULL;
+
+//GL_ARB_vertex_array_object
+PFNGLBINDVERTEXARRAYPROC glBindVertexArray = NULL;
+PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays = NULL;
+PFNGLGENVERTEXARRAYSPROC glGenVertexArrays = NULL;
+PFNGLISVERTEXARRAYPROC glIsVertexArray = NULL;
 
 // GL_ARB_map_buffer_range
 PFNGLMAPBUFFERRANGEPROC			glMapBufferRange = NULL;
@@ -197,10 +238,16 @@ PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC glRenderbufferStorageMultisample = NULL;
 PFNGLFRAMEBUFFERTEXTURELAYERPROC glFramebufferTextureLayer = NULL;
 
 //GL_ARB_texture_multisample
-PFNGLTEXIMAGE2DMULTISAMPLEPROC glTexImage2DMultisample;
-PFNGLTEXIMAGE3DMULTISAMPLEPROC glTexImage3DMultisample;
-PFNGLGETMULTISAMPLEFVPROC glGetMultisamplefv;
-PFNGLSAMPLEMASKIPROC glSampleMaski;
+PFNGLTEXIMAGE2DMULTISAMPLEPROC glTexImage2DMultisample = NULL;
+PFNGLTEXIMAGE3DMULTISAMPLEPROC glTexImage3DMultisample = NULL;
+PFNGLGETMULTISAMPLEFVPROC glGetMultisamplefv = NULL;
+PFNGLSAMPLEMASKIPROC glSampleMaski = NULL;
+
+//GL_ARB_debug_output
+PFNGLDEBUGMESSAGECONTROLARBPROC glDebugMessageControlARB = NULL;
+PFNGLDEBUGMESSAGEINSERTARBPROC glDebugMessageInsertARB = NULL;
+PFNGLDEBUGMESSAGECALLBACKARBPROC glDebugMessageCallbackARB = NULL;
+PFNGLGETDEBUGMESSAGELOGARBPROC glGetDebugMessageLogARB = NULL;
 
 // GL_EXT_blend_func_separate
 PFNGLBLENDFUNCSEPARATEEXTPROC glBlendFuncSeparateEXT = NULL;
@@ -248,6 +295,10 @@ PFNGLGETACTIVEUNIFORMARBPROC glGetActiveUniformARB = NULL;
 PFNGLGETUNIFORMFVARBPROC glGetUniformfvARB = NULL;
 PFNGLGETUNIFORMIVARBPROC glGetUniformivARB = NULL;
 PFNGLGETSHADERSOURCEARBPROC glGetShaderSourceARB = NULL;
+
+#if LL_WINDOWS
+PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
+#endif
 
 // vertex shader prototypes
 #if LL_LINUX || LL_SOLARIS
@@ -349,6 +400,7 @@ LLGLManager::LLGLManager() :
 	mHasBlendFuncSeparate(FALSE),
 	mHasSync(FALSE),
 	mHasVertexBufferObject(FALSE),
+	mHasVertexArrayObject(FALSE),
 	mHasMapBufferRange(FALSE),
 	mHasFlushBufferRange(FALSE),
 	mHasPBuffer(FALSE),
@@ -370,6 +422,7 @@ LLGLManager::LLGLManager() :
 	mHasAnisotropic(FALSE),
 	mHasARBEnvCombine(FALSE),
 	mHasCubeMap(FALSE),
+	mHasDebugOutput(FALSE),
 
 	mIsATI(FALSE),
 	mIsNVIDIA(FALSE),
@@ -774,7 +827,7 @@ void LLGLManager::initExtensions()
 	mHasVertexShader = FALSE;
 	mHasFragmentShader = FALSE;
 	mHasTextureRectangle = FALSE;
-#else // LL_MESA_HEADLESS
+#else // LL_MESA_HEADLESS //important, gGLHExts.mSysExts is uninitialized until after glh_init_extensions is called
 	mHasMultitexture = glh_init_extensions("GL_ARB_multitexture");
 	mHasATIMemInfo = ExtensionExists("GL_ATI_meminfo", gGLHExts.mSysExts);
 	mHasNVXMemInfo = ExtensionExists("GL_NVX_gpu_memory_info", gGLHExts.mSysExts);
@@ -788,6 +841,7 @@ void LLGLManager::initExtensions()
 	mHasOcclusionQuery = ExtensionExists("GL_ARB_occlusion_query", gGLHExts.mSysExts);
 	mHasOcclusionQuery2 = ExtensionExists("GL_ARB_occlusion_query2", gGLHExts.mSysExts);
 	mHasVertexBufferObject = ExtensionExists("GL_ARB_vertex_buffer_object", gGLHExts.mSysExts);
+	mHasVertexArrayObject = ExtensionExists("GL_ARB_vertex_array_object", gGLHExts.mSysExts);
 	mHasSync = ExtensionExists("GL_ARB_sync", gGLHExts.mSysExts);
 	mHasMapBufferRange = ExtensionExists("GL_ARB_map_buffer_range", gGLHExts.mSysExts);
 	mHasFlushBufferRange = ExtensionExists("GL_APPLE_flush_buffer_range", gGLHExts.mSysExts);
@@ -806,6 +860,7 @@ void LLGLManager::initExtensions()
 	mHasBlendFuncSeparate = ExtensionExists("GL_EXT_blend_func_separate", gGLHExts.mSysExts);
 	mHasTextureRectangle = ExtensionExists("GL_ARB_texture_rectangle", gGLHExts.mSysExts);
 	mHasTextureMultisample = ExtensionExists("GL_ARB_texture_multisample", gGLHExts.mSysExts);
+	mHasDebugOutput = ExtensionExists("GL_ARB_debug_output", gGLHExts.mSysExts);
 #if !LL_DARWIN
 	mHasPointParameters = !mIsATI && ExtensionExists("GL_ARB_point_parameters", gGLHExts.mSysExts);
 #endif
@@ -985,6 +1040,13 @@ void LLGLManager::initExtensions()
 			mHasVertexBufferObject = FALSE;
 		}
 	}
+	if (mHasVertexArrayObject)
+	{
+		glBindVertexArray = (PFNGLBINDVERTEXARRAYPROC) GLH_EXT_GET_PROC_ADDRESS("glBindVertexArray");
+		glDeleteVertexArrays = (PFNGLDELETEVERTEXARRAYSPROC) GLH_EXT_GET_PROC_ADDRESS("glDeleteVertexArrays");
+		glGenVertexArrays = (PFNGLGENVERTEXARRAYSPROC) GLH_EXT_GET_PROC_ADDRESS("glGenVertexArrays");
+		glIsVertexArray = (PFNGLISVERTEXARRAYPROC) GLH_EXT_GET_PROC_ADDRESS("glIsVertexArray");
+	}
 	if (mHasSync)
 	{
 		glFenceSync = (PFNGLFENCESYNCPROC) GLH_EXT_GET_PROC_ADDRESS("glFenceSync");
@@ -1039,6 +1101,13 @@ void LLGLManager::initExtensions()
 		glGetMultisamplefv = (PFNGLGETMULTISAMPLEFVPROC) GLH_EXT_GET_PROC_ADDRESS("glGetMultisamplefv");
 		glSampleMaski = (PFNGLSAMPLEMASKIPROC) GLH_EXT_GET_PROC_ADDRESS("glSampleMaski");
 	}	
+	if (mHasDebugOutput)
+	{
+		glDebugMessageControlARB = (PFNGLDEBUGMESSAGECONTROLARBPROC) GLH_EXT_GET_PROC_ADDRESS("glDebugMessageControlARB");
+		glDebugMessageInsertARB = (PFNGLDEBUGMESSAGEINSERTARBPROC) GLH_EXT_GET_PROC_ADDRESS("glDebugMessageInsertARB");
+		glDebugMessageCallbackARB = (PFNGLDEBUGMESSAGECALLBACKARBPROC) GLH_EXT_GET_PROC_ADDRESS("glDebugMessageCallbackARB");
+		glGetDebugMessageLogARB = (PFNGLGETDEBUGMESSAGELOGARBPROC) GLH_EXT_GET_PROC_ADDRESS("glGetDebugMessageLogARB");
+	}
 #if (!LL_LINUX && !LL_SOLARIS) || LL_LINUX_NV_GL_HEADERS
 	// This is expected to be a static symbol on Linux GL implementations, except if we use the nvidia headers - bah
 	glDrawRangeElements = (PFNGLDRAWRANGEELEMENTSPROC)GLH_EXT_GET_PROC_ADDRESS("glDrawRangeElements");
@@ -1193,7 +1262,7 @@ void rotate_quat(LLQuaternion& rotation)
 {
 	F32 angle_radians, x, y, z;
 	rotation.getAngleAxis(&angle_radians, &x, &y, &z);
-	glRotatef(angle_radians * RAD_TO_DEG, x, y, z);
+	gGL.rotatef(angle_radians * RAD_TO_DEG, x, y, z);
 }
 
 void flush_glerror()
@@ -2060,20 +2129,20 @@ void LLGLUserClipPlane::setPlane(F32 a, F32 b, F32 c, F32 d)
     glh::matrix4f suffix;
     suffix.set_row(2, cplane);
     glh::matrix4f newP = suffix * P;
-    glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+    gGL.matrixMode(GL_PROJECTION);
+	gGL.pushMatrix();
     glLoadMatrixf(newP.m);
 	gGLObliqueProjectionInverse = LLMatrix4(newP.inverse().transpose().m);
-    glMatrixMode(GL_MODELVIEW);
+    gGL.matrixMode(GL_MODELVIEW);
 }
 
 LLGLUserClipPlane::~LLGLUserClipPlane()
 {
 	if (mApply)
 	{
-		glMatrixMode(GL_PROJECTION);
-		glPopMatrix();
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_PROJECTION);
+		gGL.popMatrix();
+		gGL.matrixMode(GL_MODELVIEW);
 	}
 }
 
@@ -2263,16 +2332,16 @@ LLGLSquashToFarClip::LLGLSquashToFarClip(glh::matrix4f P, U32 layer)
 		P.element(2, i) = P.element(3, i) * depth;
 	}
 
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+	gGL.matrixMode(GL_PROJECTION);
+	gGL.pushMatrix();
 	glLoadMatrixf(P.m);
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 }
 
 LLGLSquashToFarClip::~LLGLSquashToFarClip()
 {
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_PROJECTION);
+	gGL.popMatrix();
+	gGL.matrixMode(GL_MODELVIEW);
 }
 

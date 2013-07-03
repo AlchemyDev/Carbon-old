@@ -1229,9 +1229,9 @@ U32 LLVOTree::drawBranchPipeline(LLMatrix4& matrix, U16* indicesp, S32 trunk_LOD
 
 		scale_mat *= matrix;
 	
-		glMatrixMode(GL_TEXTURE);
+		gGL.matrixMode(GL_TEXTURE);
 		gGL.translatef(0.0, -0.5, 0.0);
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 					
 		glLoadMatrixf((F32*) scale_mat.mMatrix);
 		glDrawElements(GL_TRIANGLES, LEAF_INDICES, GL_UNSIGNED_SHORT, indicesp);
@@ -1239,9 +1239,9 @@ U32 LLVOTree::drawBranchPipeline(LLMatrix4& matrix, U16* indicesp, S32 trunk_LOD
 		stop_glerror();
 		ret += LEAF_INDICES;
 
-		glMatrixMode(GL_TEXTURE);
+		gGL.matrixMode(GL_TEXTURE);
 		gGL.loadIdentity();
-		glMatrixMode(GL_MODELVIEW);
+		gGL.matrixMode(GL_MODELVIEW);
 	}
 
 	return ret;

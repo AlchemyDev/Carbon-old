@@ -557,17 +557,17 @@ void LLFace::renderSelectedUV()
 
 	// add green dither pattern on top of red/blue gradient
 	gGL.blendFunc(LLRender::BF_ONE, LLRender::BF_ONE);
-	glMatrixMode(GL_TEXTURE);
+	gGL.matrixMode(GL_TEXTURE);
 	gGL.pushMatrix();
 	// make green pattern repeat once per texel in red/blue texture
 	gGL.scalef(256.f, 256.f, 1.f);
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 
 	renderSelected(green_imagep, LLColor4::white);
 
-	glMatrixMode(GL_TEXTURE);
+	gGL.matrixMode(GL_TEXTURE);
 	gGL.popMatrix();
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.blendFunc(LLRender::BF_SOURCE_ALPHA, LLRender::BF_ONE_MINUS_SOURCE_ALPHA);
 }
 */

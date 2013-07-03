@@ -179,10 +179,13 @@ void LLTexUnit::enable(eTextureType type)
 
 	if ( (mCurrTexType != type || gGL.mDirty) && (type != TT_NONE) )
 	{
+		stop_glerror();
 		activate();
+		stop_glerror();
 		if (mCurrTexType != TT_NONE && !gGL.mDirty)
 		{
 			disable(); // Force a disable of a previous texture type if it's enabled.
+			stop_glerror();
 		}
 		mCurrTexType = type;
 
@@ -191,7 +194,9 @@ void LLTexUnit::enable(eTextureType type)
 			type != LLTexUnit::TT_MULTISAMPLE_TEXTURE &&
 			mIndex < gGLManager.mNumTextureUnits)
 		{
+			stop_glerror();
 			glEnable(sGLTextureType[type]);
+			stop_glerror();
 		}
 	}
 }
@@ -287,25 +292,34 @@ bool LLTexUnit::bind(LLImageGL* texture, bool for_rendering, bool forceBind)
 		{
 			return bind(LLImageGL::sDefaultGLTexture) ;
 		}
+		stop_glerror();
 		return false ;
 	}
 
 	if ((mCurrTexture != texture->getTexName()) || forceBind)
 	{
 		gGL.flush();
+		stop_glerror();
 		activate();
+		stop_glerror();
 		enable(texture->getTarget());
+		stop_glerror();
 		mCurrTexture = texture->getTexName();
 		glBindTexture(sGLTextureType[texture->getTarget()], mCurrTexture);
+		stop_glerror();
 		texture->updateBindStats(texture->mTextureMemory);		
 		mHasMipMaps = texture->mHasMipMaps;
 		if (texture->mTexOptionsDirty)
 		{
+			stop_glerror();
 			texture->mTexOptionsDirty = false;
 			setTextureAddressMode(texture->mAddressMode);
 			setTextureFilteringOption(texture->mFilterOption);
+			stop_glerror();
 		}
 	}
+
+	stop_glerror();
 
 	return true;
 }
@@ -962,12 +976,13 @@ LLRender::~LLRender()
 void LLRender::init()
 {
 	llassert_always(mBuffer.isNull()) ;
-
+	stop_glerror();
 	mBuffer = new LLVertexBuffer(immediate_mask, 0);
 	mBuffer->allocateBuffer(4096, 0, TRUE);
 	mBuffer->getVertexStrider(mVerticesp);
 	mBuffer->getTexCoord0Strider(mTexcoordsp);
 	mBuffer->getColorStrider(mColorsp);
+	stop_glerror();
 }
 
 void LLRender::shutdown()
@@ -1045,10 +1060,16 @@ void LLRender::popMatrix()
 	glPopMatrix();
 }
 
+void LLRender::matrixMode(U32 mode)
+{
+	flush();
+	glMatrixMode(mode);
+}
+
 void LLRender::loadIdentity()
 {
 	flush();
-	glLoadIdentity()
+	glLoadIdentity();
 }
 
 void LLRender::translateUI(F32 x, F32 y, F32 z)

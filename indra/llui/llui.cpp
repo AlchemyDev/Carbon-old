@@ -150,10 +150,10 @@ void gl_state_for_2d(S32 width, S32 height)
 	F32 window_width = (F32) width;//gViewerWindow->getWindowWidth();
 	F32 window_height = (F32) height;//gViewerWindow->getWindowHeight();
 
-	glMatrixMode(GL_PROJECTION);
+	gGL.matrixMode(GL_PROJECTION);
 	gGL.loadIdentity();
 	gGL.ortho(0.0f, llmax(window_width, 1.f), 0.0f, llmax(window_height,1.f), -1.0f, 1.0f);
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.loadIdentity();
 	stop_glerror();
 }

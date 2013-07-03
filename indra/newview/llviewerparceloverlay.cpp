@@ -884,7 +884,7 @@ S32 LLViewerParcelOverlay::renderPropertyLines	()
 	// Always fudge a little vertically.
 	pull_toward_camera.mV[VZ] += 0.01f;
 
-	glMatrixMode( GL_MODELVIEW );
+	gGL.matrixMode( GL_MODELVIEW );
 	gGL.pushMatrix();
 
 	// Move to appropriate region coords

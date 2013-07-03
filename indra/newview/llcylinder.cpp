@@ -153,7 +153,7 @@ void LLCylinder::renderface(F32 pixel_area, S32 face)
 		return;
 	}
 
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.pushMatrix();
 
 	S32 level_of_detail;
@@ -202,7 +202,7 @@ void LLCylinder::renderface(F32 pixel_area, S32 face)
 		break;
 	}
 
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.popMatrix();
 }
 
@@ -244,7 +244,7 @@ void LLCone::render(S32 level_of_detail)
 		return;
 	}
 
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.pushMatrix();
 
 	// center object at 0
@@ -253,7 +253,7 @@ void LLCone::render(S32 level_of_detail)
 	drawSide(level_of_detail);
 	drawBottom(level_of_detail);
 
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.popMatrix();
 }
 
@@ -272,7 +272,7 @@ void LLCone::renderface(S32 level_of_detail, S32 face)
 		return;
 	}
 
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.pushMatrix();
 
 	LLVertexBuffer::unbind();
@@ -292,6 +292,6 @@ void LLCone::renderface(S32 level_of_detail, S32 face)
 		break;
 	}
 
-	glMatrixMode(GL_MODELVIEW);
+	gGL.matrixMode(GL_MODELVIEW);
 	gGL.popMatrix();
 }
