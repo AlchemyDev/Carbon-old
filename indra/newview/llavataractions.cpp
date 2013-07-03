@@ -697,8 +697,10 @@ std::set<LLUUID> LLAvatarActions::getInventorySelectedUUIDs()
 	if (inventory_selected_uuids.empty())
 	{
 		LLSidepanelInventory * sidepanel_inventory = LLSideTray::getInstance()->getPanel<LLSidepanelInventory>("sidepanel_inventory");
-
-		inventory_selected_uuids = sidepanel_inventory->getInboxOrOutboxSelectionList();
+		if (sidepanel_inventory)
+		{
+			inventory_selected_uuids = sidepanel_inventory->getInboxOrOutboxSelectionList();
+		}
 	}
 
 	return inventory_selected_uuids;

@@ -114,8 +114,10 @@ LLInventoryPanel * LLPanelMarketplaceInbox::setupInventoryPanel()
 void LLPanelMarketplaceInbox::onFocusReceived()
 {
 	LLSidepanelInventory * sidepanel_inventory = LLSideTray::getInstance()->getPanel<LLSidepanelInventory>("sidepanel_inventory");
-
-	sidepanel_inventory->clearSelections(true, false, true);
+	if (sidepanel_inventory)
+	{
+		sidepanel_inventory->clearSelections(true, false, true);
+	}
 
 	gSavedPerAccountSettings.setU32("LastInventoryInboxActivity", time_corrected());
 }

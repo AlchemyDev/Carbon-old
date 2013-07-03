@@ -357,7 +357,7 @@ void LLKeywords::findSegments(std::vector<LLTextSegmentPtr>* seg_list, const LLW
 			}
 
 			// cur is now at the first non-whitespace character of a new line	
-		
+
 			// Line start tokens
 			{
 				BOOL line_done = FALSE;
