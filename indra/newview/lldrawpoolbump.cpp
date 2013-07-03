@@ -1416,10 +1416,10 @@ void LLDrawPoolBump::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL 
 		else
 		{
 			gGL.getTexUnit(1)->activate();
-			glLoadIdentity();
+			gGL.loadIdentity();
 			gGL.getTexUnit(0)->activate();
 		}
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glMatrixMode(GL_MODELVIEW);
 	}
 }

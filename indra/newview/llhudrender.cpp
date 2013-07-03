@@ -124,7 +124,7 @@ void hud_render_text(const LLWString &wstr, const LLVector3 &pos_agent,
 	winX -= world_view_rect.mLeft;
 	winY -= world_view_rect.mBottom;
 	LLUI::loadIdentity();
-	glLoadIdentity();
+	gGL.loadIdentity();
 	LLUI::translate((F32) winX*1.0f/LLFontGL::sScaleX, (F32) winY*1.0f/(LLFontGL::sScaleY), -(((F32) winZ*2.f)-1.f));
 	F32 right_x;
 	

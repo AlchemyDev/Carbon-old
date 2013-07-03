@@ -835,7 +835,7 @@ void display(BOOL rebuild, F32 zoom_factor, int subfield, BOOL for_snapshot)
 		//		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 
 		//		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE);
-		//		glLoadIdentity();
+		//		gGL.loadIdentity();
 
 		//		LLRect floater_rect = frontmost_floaterp->calcScreenRect();
 		//		// deflate by one pixel so rounding errors don't occlude outside of floater extents

@@ -1240,7 +1240,7 @@ U32 LLVOTree::drawBranchPipeline(LLMatrix4& matrix, U16* indicesp, S32 trunk_LOD
 		ret += LEAF_INDICES;
 
 		glMatrixMode(GL_TEXTURE);
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glMatrixMode(GL_MODELVIEW);
 	}
 

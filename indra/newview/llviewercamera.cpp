@@ -326,7 +326,7 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 
 	// Load camera view matrix
 	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
+	gGL.loadIdentity();
 
 	glh::matrix4f proj_mat;
 

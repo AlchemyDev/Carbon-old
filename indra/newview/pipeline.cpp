@@ -3441,10 +3441,10 @@ void LLPipeline::renderHighlights()
 		//gGL.setSceneBlendType(LLRender::BT_ADD_WITH_ALPHA);
 
 		gGL.pushMatrix();
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glMatrixMode(GL_PROJECTION);
 		gGL.pushMatrix();
-		glLoadIdentity();
+		gGL.loadIdentity();
 
 		gGL.getTexUnit(0)->bind(&mHighlight);
 
@@ -3621,7 +3621,7 @@ void LLPipeline::renderGeom(LLCamera& camera, BOOL forceVBOUpdate)
 	
 	// Initialize lots of GL state to "safe" values
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	LLGLSPipeline gls_pipeline;
@@ -6179,10 +6179,10 @@ void LLPipeline::renderBloom(BOOL for_snapshot, F32 zoom_factor, int subfield)
 
 	glMatrixMode(GL_PROJECTION);
 	gGL.pushMatrix();
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	gGL.pushMatrix();
-	glLoadIdentity();
+	gGL.loadIdentity();
 
 	LLGLDisable test(GL_ALPHA_TEST);
 
@@ -7041,10 +7041,10 @@ void LLPipeline::renderDeferredLighting()
 		}
 
 		gGL.pushMatrix();
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glMatrixMode(GL_PROJECTION);
 		gGL.pushMatrix();
-		glLoadIdentity();
+		gGL.loadIdentity();
 
 		if (gSavedSettings.getBOOL("RenderDeferredSSAO") || gSavedSettings.getS32("RenderShadowDetail") > 0)
 		{
@@ -7296,10 +7296,10 @@ void LLPipeline::renderDeferredLighting()
 
 				//full screen blit
 				gGL.pushMatrix();
-				glLoadIdentity();
+				gGL.loadIdentity();
 				glMatrixMode(GL_PROJECTION);
 				gGL.pushMatrix();
-				glLoadIdentity();
+				gGL.loadIdentity();
 
 				glVertexPointer(2, GL_FLOAT, 0, vert);
 				
@@ -7523,10 +7523,10 @@ void LLPipeline::renderDeferredLighting()
 
 				//full screen blit
 				gGL.pushMatrix();
-				glLoadIdentity();
+				gGL.loadIdentity();
 				glMatrixMode(GL_PROJECTION);
 				gGL.pushMatrix();
-				glLoadIdentity();
+				gGL.loadIdentity();
 
 				U32 count = 0;
 
@@ -7630,10 +7630,10 @@ void LLPipeline::renderDeferredLighting()
 				glColor3f(1,1,1);
 
 				gGL.pushMatrix();
-				glLoadIdentity();
+				gGL.loadIdentity();
 				glMatrixMode(GL_PROJECTION);
 				gGL.pushMatrix();
-				glLoadIdentity();
+				gGL.loadIdentity();
 
 				glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -9682,10 +9682,10 @@ void LLPipeline::generateImpostor(LLVOAvatar* avatar)
 		gGL.flush();
 
 		gGL.pushMatrix();
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glMatrixMode(GL_PROJECTION);
 		gGL.pushMatrix();
-		glLoadIdentity();
+		gGL.loadIdentity();
 
 		static const F32 clip_plane = 0.99999f;
 

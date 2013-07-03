@@ -510,7 +510,7 @@ void LLDrawPoolAlpha::renderAlpha(U32 mask)
 				if (tex_setup)
 				{
 					gGL.getTexUnit(0)->activate();
-					glLoadIdentity();
+					gGL.loadIdentity();
 					glMatrixMode(GL_MODELVIEW);
 				}
 			}

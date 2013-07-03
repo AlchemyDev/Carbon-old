@@ -519,7 +519,7 @@ void LLRenderPass::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL ba
 
 	if (tex_setup)
 	{
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glMatrixMode(GL_MODELVIEW);
 	}
 }

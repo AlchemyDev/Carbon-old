@@ -276,7 +276,7 @@ void LLDrawPoolWater::render(S32 pass)
 		gSky.mVOSkyp->getCubeMap()->bind();
 
 		glMatrixMode(GL_TEXTURE);
-		glLoadIdentity();
+		gGL.loadIdentity();
 		LLMatrix4 camera_mat = LLViewerCamera::getInstance()->getModelview();
 		LLMatrix4 camera_rot(camera_mat.getMat3());
 		camera_rot.invert();
@@ -311,7 +311,7 @@ void LLDrawPoolWater::render(S32 pass)
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 		gGL.getTexUnit(0)->enable(LLTexUnit::TT_TEXTURE);
 		glMatrixMode(GL_TEXTURE);
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glMatrixMode(GL_MODELVIEW);
 		
 	}

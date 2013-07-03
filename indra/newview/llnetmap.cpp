@@ -172,7 +172,7 @@ void LLNetMap::draw()
 	LLVector3 offset = gGL.getUITranslation();
 	LLVector3 scale = gGL.getUIScale();
 
-	glLoadIdentity();
+	gGL.loadIdentity();
 	gGL.loadUIIdentity();
 
 	gGL.scalef(scale.mV[0], scale.mV[1], scale.mV[2]);

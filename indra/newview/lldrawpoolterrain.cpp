@@ -320,7 +320,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, tp0.mV);
 	glTexGenfv(GL_T, GL_OBJECT_PLANE, tp1.mV);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	//
@@ -332,7 +332,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	/// ALPHA TEXTURE COORDS 0:
 	gGL.getTexUnit(1)->activate();
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	
 	// detail texture 2
@@ -344,7 +344,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	
 	/// ALPHA TEXTURE COORDS 1:
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	gGL.translatef(-2.f, 0.f, 0.f);
 	glMatrixMode(GL_MODELVIEW);
 
@@ -357,7 +357,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	/// ALPHA TEXTURE COORDS 2:
 	gGL.getTexUnit(3)->activate();
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	gGL.translatef(-1.f, 0.f, 0.f);
 	glMatrixMode(GL_MODELVIEW);
 
@@ -383,7 +383,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	gGL.getTexUnit(detail3)->unbind(LLTexUnit::TT_TEXTURE);
@@ -392,7 +392,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	gGL.getTexUnit(detail2)->unbind(LLTexUnit::TT_TEXTURE);
@@ -401,7 +401,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	gGL.getTexUnit(detail1)->unbind(LLTexUnit::TT_TEXTURE);
@@ -410,7 +410,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	
 	//----------------------------------------------------------------------------
@@ -422,7 +422,7 @@ void LLDrawPoolTerrain::renderFullShader()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -535,7 +535,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 
 	// Set the texture matrix
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	gGL.translatef(-2.f, 0.f, 0.f);
 
 	// Care about alpha only
@@ -567,7 +567,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 
 	// Set the texture matrix
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	gGL.translatef(-1.f, 0.f, 0.f);
   
 	// Set alpha texture and do lighting modulation
@@ -587,7 +587,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 	gGL.getTexUnit(3)->activate();
 	
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	gGL.getTexUnit(2)->unbind(LLTexUnit::TT_TEXTURE);
@@ -597,7 +597,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	gGL.getTexUnit(1)->unbind(LLTexUnit::TT_TEXTURE);	
@@ -605,7 +605,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 	gGL.getTexUnit(1)->activate();
  	
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	// Restore blend state
@@ -621,7 +621,7 @@ void LLDrawPoolTerrain::renderFull4TU()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	gGL.getTexUnit(0)->setTextureBlendType(LLTexUnit::TB_MULT);
@@ -715,7 +715,7 @@ void LLDrawPoolTerrain::renderFull2TU()
 
 	// Set the texture matrix
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	gGL.translatef(-1.f, 0.f, 0.f);
 
 	// Care about alpha only
@@ -754,7 +754,7 @@ void LLDrawPoolTerrain::renderFull2TU()
 	gGL.getTexUnit(0)->bind(m2DAlphaRampImagep);
 	// Set the texture matrix
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	gGL.translatef(-2.f, 0.f, 0.f);
 
 	// Care about alpha only
@@ -794,7 +794,7 @@ void LLDrawPoolTerrain::renderFull2TU()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
 	//----------------------------------------------------------------------------
@@ -806,7 +806,7 @@ void LLDrawPoolTerrain::renderFull2TU()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	gGL.getTexUnit(0)->setTextureBlendType(LLTexUnit::TB_MULT);
 }
@@ -850,7 +850,7 @@ void LLDrawPoolTerrain::renderSimple()
 	glDisable(GL_TEXTURE_GEN_S);
 	glDisable(GL_TEXTURE_GEN_T);
 	glMatrixMode(GL_TEXTURE);
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	gGL.getTexUnit(0)->setTextureBlendType(LLTexUnit::TB_MULT);
 }

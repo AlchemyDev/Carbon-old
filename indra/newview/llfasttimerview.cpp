@@ -1125,10 +1125,10 @@ void LLFastTimerView::exportCharts(const std::string& base, const std::string& t
 	LLPointer<LLImageRaw> scratch = new LLImageRaw(1024, 512, 3);
 
 	gGL.pushMatrix();
-	glLoadIdentity();
+	gGL.loadIdentity();
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-0.05, 1.05, -0.05, 1.05, -1.0, 1.0);
+	gGL.loadIdentity();
+	gGL.ortho(-0.05, 1.05, -0.05, 1.05, -1.0, 1.0);
 
 	//render charts
 	gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);

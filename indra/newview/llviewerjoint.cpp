@@ -140,7 +140,7 @@ void LLViewerJoint::setValid( BOOL valid, BOOL recursive )
 // 	// offset to joint position and 
 // 	// rotate to our orientation
 // 	//----------------------------------------------------------------
-// 	glLoadIdentity();
+// 	gGL.loadIdentity();
 // 	glMultMatrixf( &getWorldMatrix().mMatrix[0][0] );
 
 // 	//----------------------------------------------------------------

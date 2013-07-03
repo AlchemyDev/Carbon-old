@@ -5135,15 +5135,15 @@ void LLSelectMgr::renderSilhouettes(BOOL for_hud)
 		// set up transform to encompass bounding box of HUD
 		glMatrixMode(GL_PROJECTION);
 		gGL.pushMatrix();
-		glLoadIdentity();
+		gGL.loadIdentity();
 		F32 depth = llmax(1.f, hud_bbox.getExtentLocal().mV[VX] * 1.1f);
-		glOrtho(-0.5f * LLViewerCamera::getInstance()->getAspect(), 0.5f * LLViewerCamera::getInstance()->getAspect(), -0.5f, 0.5f, 0.f, depth);
+		gGL.ortho(-0.5f * LLViewerCamera::getInstance()->getAspect(), 0.5f * LLViewerCamera::getInstance()->getAspect(), -0.5f, 0.5f, 0.f, depth);
 
 		glMatrixMode(GL_MODELVIEW);
 		gGL.pushMatrix();
 		gGL.pushUIMatrix();
 		gGL.loadUIIdentity();
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glLoadMatrixf(OGL_TO_CFR_ROTATION);		// Load Cory's favorite reference frame
 		gGL.translatef(-hud_bbox.getCenterLocal().mV[VX] + (depth *0.5f), 0.f, 0.f);
 		gGL.scalef(cur_zoom, cur_zoom, cur_zoom);
@@ -5616,7 +5616,7 @@ void LLSelectNode::renderOneWireframe(const LLColor4& color)
 	}
 	else if (!is_hud_object)
 	{
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glMultMatrixd(gGLModelView);
 		LLVector3 trans = objectp->getRegion()->getOriginAgent();		
 		gGL.translatef(trans.mV[0], trans.mV[1], trans.mV[2]);		
@@ -5699,7 +5699,7 @@ void LLSelectNode::renderOneSilhouette(const LLColor4 &color)
 
 	if (!is_hud_object)
 	{
-		glLoadIdentity();
+		gGL.loadIdentity();
 		glMultMatrixd(gGLModelView);
 	}
 	

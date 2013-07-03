@@ -47,6 +47,7 @@ S32	gGLViewport[4];
 U32 LLRender::sUICalls = 0;
 U32 LLRender::sUIVerts = 0;
 U32 LLTexUnit::sWhiteTexture = 0;
+bool LLRender::sGLCoreProfile = false;
 
 static const U32 LL_NUM_TEXTURE_LAYERS = 32; 
 static const U32 LL_NUM_LIGHT_UNITS = 8;
@@ -1019,6 +1020,13 @@ void LLRender::scalef(const GLfloat& x, const GLfloat& y, const GLfloat& z)
 	glScalef(x,y,z);
 }
 
+void LLRender::ortho(F32 left, F32 right, F32 bottom, F32 top, F32 zNear, F32 zFar)
+{
+	flush();
+
+	glOrtho(left,right,bottom,top,zNear,zFar);
+}
+
 void LLRender::rotatef(const GLfloat& a, const GLfloat& x, const GLfloat& y, const GLfloat& z)
 {
 	flush();
@@ -1035,6 +1043,12 @@ void LLRender::popMatrix()
 {
 	flush();
 	glPopMatrix();
+}
+
+void LLRender::loadIdentity()
+{
+	flush();
+	glLoadIdentity()
 }
 
 void LLRender::translateUI(F32 x, F32 y, F32 z)

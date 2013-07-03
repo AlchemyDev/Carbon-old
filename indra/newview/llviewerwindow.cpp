@@ -2250,7 +2250,7 @@ void LLViewerWindow::draw()
 	// Reset any left-over transforms
 	glMatrixMode(GL_MODELVIEW);
 	
-	glLoadIdentity();
+	gGL.loadIdentity();
 
 	//S32 screen_x, screen_y;
 
@@ -2265,7 +2265,7 @@ void LLViewerWindow::draw()
 		// draw timecode block
 		std::string text;
 
-		glLoadIdentity();
+		gGL.loadIdentity();
 
 		microsecondsToTimecodeString(gFrameTime,text);
 		const LLFontGL* font = LLFontGL::getFontSansSerif();
@@ -3399,13 +3399,13 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 			// set up transform to encompass bounding box of HUD
 			glMatrixMode(GL_PROJECTION);
 			gGL.pushMatrix();
-			glLoadIdentity();
+			gGL.loadIdentity();
 			F32 depth = llmax(1.f, hud_bbox.getExtentLocal().mV[VX] * 1.1f);
-			glOrtho(-0.5f * LLViewerCamera::getInstance()->getAspect(), 0.5f * LLViewerCamera::getInstance()->getAspect(), -0.5f, 0.5f, 0.f, depth);
+			gGL.ortho(-0.5f * LLViewerCamera::getInstance()->getAspect(), 0.5f * LLViewerCamera::getInstance()->getAspect(), -0.5f, 0.5f, 0.f, depth);
 			
 			glMatrixMode(GL_MODELVIEW);
 			gGL.pushMatrix();
-			glLoadIdentity();
+			gGL.loadIdentity();
 			glLoadMatrixf(OGL_TO_CFR_ROTATION);		// Load Cory's favorite reference frame
 			gGL.translatef(-hud_bbox.getCenterLocal().mV[VX] + (depth *0.5f), 0.f, 0.f);
 		}

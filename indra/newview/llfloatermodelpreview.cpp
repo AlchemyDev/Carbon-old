@@ -4907,12 +4907,12 @@ BOOL LLModelPreview::render()
 		//clear background to blue
 		glMatrixMode(GL_PROJECTION);
 		gGL.pushMatrix();
-		glLoadIdentity();
-		glOrtho(0.0f, width, 0.0f, height, -1.0f, 1.0f);
+		gGL.loadIdentity();
+		gGL.ortho(0.0f, width, 0.0f, height, -1.0f, 1.0f);
 
 		glMatrixMode(GL_MODELVIEW);
 		gGL.pushMatrix();
-		glLoadIdentity();
+		gGL.loadIdentity();
 
 		gGL.color4f(0.169f, 0.169f, 0.169f, 1.f);
 
@@ -5035,7 +5035,7 @@ BOOL LLModelPreview::render()
 		refresh();
 	}
 
-	glLoadIdentity();
+	gGL.loadIdentity();
 	gPipeline.enableLightsPreview();
 
 	LLQuaternion camera_rot = LLQuaternion(mCameraPitch, LLVector3::y_axis) *
