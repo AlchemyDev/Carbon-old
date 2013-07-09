@@ -87,7 +87,7 @@ std::list<std::string> gUntranslated;
 /*static*/ LLUI::remove_popup_t	LLUI::sRemovePopupFunc;
 /*static*/ LLUI::clear_popups_t	LLUI::sClearPopupsFunc;
 
-// register filtereditor here
+// register filter editor here
 static LLDefaultChildRegistry::Register<LLFilterEditor> register_filter_editor("filter_editor");
 static LLDefaultChildRegistry::Register<LLFlyoutButton> register_flyout_button("flyout_button");
 static LLDefaultChildRegistry::Register<LLSearchEditor> register_search_editor("search_editor");
@@ -103,7 +103,7 @@ void make_ui_sound(const char* namep)
 	std::string name = ll_safe_string(namep);
 	if (!LLUI::sSettingGroups["config"]->controlExists(name))
 	{
-		llwarns << "tried to make ui sound for unknown sound name: " << name << llendl;	
+		llwarns << "tried to make UI sound for unknown sound name: " << name << llendl;	
 	}
 	else
 	{
@@ -114,12 +114,12 @@ void make_ui_sound(const char* namep)
 			{
 				if (LLUI::sSettingGroups["config"]->getBOOL("UISndDebugSpamToggle"))
 				{
-					llinfos << "ui sound name: " << name << " triggered but silent (null uuid)" << llendl;	
+					llinfos << "UI sound name: " << name << " triggered but silent (null uuid)" << llendl;	
 				}				
 			}
 			else
 			{
-				llwarns << "ui sound named: " << name << " does not translate to a valid uuid" << llendl;	
+				llwarns << "UI sound named: " << name << " does not translate to a valid uuid" << llendl;	
 			}
 
 		}
@@ -127,7 +127,7 @@ void make_ui_sound(const char* namep)
 		{
 			if (LLUI::sSettingGroups["config"]->getBOOL("UISndDebugSpamToggle"))
 			{
-				llinfos << "ui sound name: " << name << llendl;	
+				llinfos << "UI sound name: " << name << llendl;	
 			}
 			LLUI::sAudioCallback(uuid);
 		}
@@ -471,7 +471,7 @@ void gl_draw_scaled_image_with_border(S32 x, S32 y, S32 width, S32 height, LLTex
 		return;
 	}
 
-	// add in offset of current image to current ui translation
+	// add in offset of current image to current UI translation
 	const LLVector3 ui_scale = gGL.getUIScale();
 	const LLVector3 ui_translation = (gGL.getUITranslation() + LLVector3(x, y, 0.f)).scaledVec(ui_scale);
 
@@ -2026,12 +2026,12 @@ void LLUI::positionViewNearMouse(LLView* view, S32 spawn_x, S32 spawn_y)
 								CURSOR_HEIGHT + MOUSE_CURSOR_PADDING * 2);
 
 	S32 local_x, local_y;
-	// convert screen coordinates to tooltipview-local coordinates
+	// convert screen coordinates to tooltip view-local coordinates
 	parent->screenPointToLocal(spawn_x, spawn_y, &local_x, &local_y);
 
 	// Start at spawn position (using left/top)
 	view->setOrigin( local_x, local_y - view->getRect().getHeight());
-	// Make sure we're onscreen and not overlapping the mouse
+	// Make sure we're on-screen and not overlapping the mouse
 	view->translateIntoRectWithExclusion( virtual_window_rect, mouse_rect, FALSE );
 }
 

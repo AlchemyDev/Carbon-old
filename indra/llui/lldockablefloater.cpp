@@ -82,7 +82,7 @@ BOOL LLDockableFloater::postBuild()
 		mForceDocking = true;
 	}
 
-	mDockTongue = LLUI::getUIImage("windows/Flyout_Pointer.png");
+	mDockTongue = LLUI::getUIImage("Flyout_Pointer");
 	LLFloater::setDocked(true);
 	return LLView::postBuild();
 }
