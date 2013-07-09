@@ -585,7 +585,6 @@ set(viewer_SOURCE_FILES
     llvopartgroup.cpp
     llvosky.cpp
     llvosurfacepatch.cpp
-    llvotextbubble.cpp
     llvotree.cpp
     llvovolume.cpp
     llvowater.cpp
@@ -1129,7 +1128,6 @@ set(viewer_HEADER_FILES
     llvopartgroup.h
     llvosky.h
     llvosurfacepatch.h
-    llvotextbubble.h
     llvotree.h
     llvotreenew.h
     llvovolume.h
