@@ -332,7 +332,7 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 	aspect = getAspect();
 
 	// Load camera view matrix
-	gGL.matrixMode( GL_PROJECTION );
+	gGL.matrixMode(LLRender::MM_PROJECTION);
 	gGL.loadIdentity();
 
 	glh::matrix4f proj_mat;
@@ -399,7 +399,7 @@ void LLViewerCamera::setPerspective(BOOL for_selection,
 		gGLProjection[i] = proj_mat.m[i];
 	}
 
-	gGL.matrixMode( GL_MODELVIEW );
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
 
 	glh::matrix4f modelview((GLfloat*) OGL_TO_CFR_ROTATION);
 

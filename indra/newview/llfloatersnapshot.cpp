@@ -2226,7 +2226,7 @@ void LLFloaterSnapshot::draw()
 			S32 offset_x = (getRect().getWidth() - previewp->getThumbnailWidth()) / 2 ;
 			S32 offset_y = thumbnail_rect.mBottom + (thumbnail_rect.getHeight() - previewp->getThumbnailHeight()) / 2 ;
 
-			gGL.matrixMode(GL_MODELVIEW);
+			gGL.matrixMode(LLRender::MM_MODELVIEW);
 			// Apply floater transparency to the texture unless the floater is focused.
 			F32 alpha = getTransparencyType() == TT_ACTIVE ? 1.0f : getCurrentTransparency();
 			gl_draw_scaled_image(offset_x, offset_y, 

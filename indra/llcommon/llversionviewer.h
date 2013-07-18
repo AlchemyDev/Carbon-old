@@ -32,7 +32,7 @@ const S32 LL_VERSION_MINOR = 2;
 const S32 LL_VERSION_PATCH = 4;
 const S32 LL_VERSION_BUILD = 0;
 
-const char * const LL_CHANNEL = "Second Life Developer";
+const char * const LL_CHANNEL = "Carbon Development";
 
 #if LL_DARWIN
 const char * const LL_VERSION_BUNDLE_ID = "com.secondlife.indra.viewer";

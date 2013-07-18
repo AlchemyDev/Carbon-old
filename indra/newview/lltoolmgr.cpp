@@ -291,7 +291,7 @@ void LLToolMgr::toggleBuildMode()
 			}
 		}
 
-		
+
 		setCurrentToolset(gBasicToolset);
 		getCurrentToolset()->selectTool( LLToolCompCreate::getInstance() );
 

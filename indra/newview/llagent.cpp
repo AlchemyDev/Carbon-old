@@ -183,6 +183,7 @@ LLAgent::LLAgent() :
 	mbTeleportKeepsLookAt(false),
 
 	mAgentAccess(new LLAgentAccess(gSavedSettings)),
+	mCanEditParcel(false),
 	mTeleportSourceSLURL(new LLSLURL),
 	mTeleportState( TELEPORT_NONE ),
 	mRegionp(NULL),
@@ -231,6 +232,8 @@ LLAgent::LLAgent() :
 	mCurrentFidget(0),
 	mFirstLogin(FALSE),
 	mGenderChosen(FALSE),
+	
+	mVoiceConnected(false),
 
 	mAppearanceSerialNum(0),
 
@@ -1032,19 +1035,10 @@ F32 LLAgent::clampPitchToLimits(F32 angle)
 
 	LLVector3 skyward = getReferenceUpVector();
 
-	F32			look_down_limit;
-	F32			look_up_limit = 10.f * DEG_TO_RAD;
+	const F32 look_down_limit = 179.f * DEG_TO_RAD;;
+	const F32 look_up_limit   =   1.f * DEG_TO_RAD;
 
 	F32 angle_from_skyward = acos( mFrameAgent.getAtAxis() * skyward );
-
-	if (isAgentAvatarValid() && gAgentAvatarp->isSitting())
-	{
-		look_down_limit = 130.f * DEG_TO_RAD;
-	}
-	else
-	{
-		look_down_limit = 170.f * DEG_TO_RAD;
-	}
 
 	// clamp pitch to limits
 	if ((angle >= 0.f) && (angle_from_skyward + angle > look_down_limit))
@@ -3922,14 +3916,14 @@ void LLAgent::renderAutoPilotTarget()
 		F32 height_meters;
 		LLVector3d target_global;
 
-		gGL.matrixMode(GL_MODELVIEW);
+		gGL.matrixMode(LLRender::MM_MODELVIEW);
 		gGL.pushMatrix();
 
 		// not textured
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 
 		// lovely green
-		glColor4f(0.f, 1.f, 1.f, 1.f);
+		gGL.color4f(0.f, 1.f, 1.f, 1.f);
 
 		target_global = mAutoPilotTargetGlobal;
 
@@ -3939,7 +3933,7 @@ void LLAgent::renderAutoPilotTarget()
 
 		gGL.scalef(height_meters, height_meters, height_meters);
 
-		gSphere.render(1500.f);
+		gSphere.render();
 
 		gGL.popMatrix();
 	}

@@ -505,8 +505,9 @@ void LLTracker::renderBeacon(LLVector3d pos_global,
 	LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
 	
 	
-	gGL.matrixMode(GL_MODELVIEW);
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	gGL.pushMatrix();
+	{
 		gGL.translatef(pos_agent.mV[0], pos_agent.mV[1], pos_agent.mV[2]);
 		
 		draw_shockwave(1024.f, gRenderStartTime.getElapsedTimeF32(), 32, fogged_color);
@@ -559,8 +560,7 @@ void LLTracker::renderBeacon(LLVector3d pos_global,
 			
 			gGL.end();
 		}
-							
-		//gCylinder.render(1000);
+	}
 	gGL.popMatrix();
 
 	std::string text;

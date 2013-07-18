@@ -1063,12 +1063,12 @@ BOOL	LLPreviewAnimation::render()
 	mNeedsUpdate = FALSE;
 	LLVOAvatar* avatarp = mDummyAvatar;
 	
-	gGL.matrixMode(GL_PROJECTION);
+	gGL.matrixMode(LLRender::MM_PROJECTION);
 	gGL.pushMatrix();
 	gGL.loadIdentity();
 	gGL.ortho(0.0f, mFullWidth, 0.0f, mFullHeight, -1.0f, 1.0f);
 
-	gGL.matrixMode(GL_MODELVIEW);
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	gGL.pushMatrix();
 	gGL.loadIdentity();
 
@@ -1078,10 +1078,10 @@ BOOL	LLPreviewAnimation::render()
 
 	gl_rect_2d_simple( mFullWidth, mFullHeight );
 
-	gGL.matrixMode(GL_PROJECTION);
+	gGL.matrixMode(LLRender::MM_PROJECTION);
 	gGL.popMatrix();
 
-	gGL.matrixMode(GL_MODELVIEW);
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	gGL.popMatrix();
 
 	gGL.flush();

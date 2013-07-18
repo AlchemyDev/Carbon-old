@@ -41,6 +41,7 @@
 #include "llgl.h"
 #include "llstring.h"
 #include "lldir.h"
+#include "llglslshader.h"
 
 // System includes
 #include <commdlg.h>
@@ -1384,7 +1385,53 @@ BOOL LLWindowWin32::switchContext(BOOL fullscreen, const LLCoordScreen &size, BO
 		return FALSE;
 	}
 
-	if (!(mhRC = wglCreateContext(mhDC)))
+	mhRC = 0;
+	if (wglCreateContextAttribsARB)
+	{ //attempt to create a specific versioned context
+		S32 attribs[] = 
+		{ //start at 4.2
+			WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
+			WGL_CONTEXT_MINOR_VERSION_ARB, 2,
+			WGL_CONTEXT_PROFILE_MASK_ARB,  LLRender::sGLCoreProfile ? WGL_CONTEXT_CORE_PROFILE_BIT_ARB : WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB,
+			WGL_CONTEXT_FLAGS_ARB, gDebugGL ? WGL_CONTEXT_DEBUG_BIT_ARB : 0,
+			0
+		};
+
+		bool done = false;
+		while (!done)
+		{
+			mhRC = wglCreateContextAttribsARB(mhDC, mhRC, attribs);
+
+			if (!mhRC)
+			{
+				if (attribs[3] > 0)
+				{ //decrement minor version
+					attribs[3]--;
+				}
+				else if (attribs[1] > 3)
+				{ //decrement major version and start minor version over at 3
+					attribs[1]--;
+					attribs[3] = 3;
+				}
+				else
+				{ //we reached 3.0 and still failed, bail out
+					done = true;
+				}
+			}
+			else
+			{
+				llinfos << "Created OpenGL " << llformat("%d.%d", attribs[1], attribs[3]) << " context." << llendl;
+				done = true;
+
+				if (LLRender::sGLCoreProfile)
+				{
+					LLGLSLShader::sNoFixedFunction = true;
+				}
+			}
+		}
+	}
+
+	if (!mhRC && !(mhRC = wglCreateContext(mhDC)))
 	{
 		close();
 		OSMessageBox(mCallbacks->translateString("MBGLContextErr"), mCallbacks->translateString("MBError"), OSMB_OK);
@@ -2360,6 +2407,14 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
 				return 0;
 			}
 
+		case WM_GETMINMAXINFO:
+			{
+				LPMINMAXINFO min_max = (LPMINMAXINFO)l_param;
+				min_max->ptMinTrackSize.x = 1024;
+				min_max->ptMinTrackSize.y = 768;
+				return 0;
+			}
+
 		case WM_SIZE:
 			{
 				window_imp->mCallbacks->handlePingWatchdog(window_imp, "Main:WM_SIZE");
@@ -2902,7 +2957,6 @@ BOOL LLWindowWin32::resetDisplayResolution()
 
 void LLWindowWin32::swapBuffers()
 {
-	glFinish();
 	SwapBuffers(mhDC);
 }
 

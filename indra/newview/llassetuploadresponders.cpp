@@ -78,6 +78,8 @@ void on_new_single_inventory_upload_complete(
 	const LLSD& server_response,
 	S32 upload_price)
 {
+	bool success = false;
+
 	if ( upload_price > 0 )
 	{
 		// this upload costed us L$, update our balance
@@ -152,6 +154,7 @@ void on_new_single_inventory_upload_complete(
 
 		gInventory.updateItem(item);
 		gInventory.notifyObservers();
+		success = true;
 
 		// Show the preview panel for textures and sounds to let
 		// user know that the image (or snapshot) arrived intact.

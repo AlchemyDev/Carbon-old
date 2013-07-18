@@ -1,6 +1,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; secondlife setup.nsi
-;; Copyright 2004-2010, Linden Research, Inc.
+;; Copyright 2004-2011, Linden Research, Inc.
+;;
+;; This library is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU Lesser General Public
+;; License as published by the Free Software Foundation;
+;; version 2.1 of the License only.
+;;
+;; This library is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; Lesser General Public License for more details.
+;;
+;; You should have received a copy of the GNU Lesser General Public
+;; License along with this library; if not, write to the Free Software
+;; Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+;;
+;; Linden Research, Inc., 945 Battery Street, San Francisco, CA  94111  USA
 ;;
 ;; NSIS Unicode 2.38.1 or higher required
 ;; http://www.scratchpaper.com/
@@ -293,6 +309,7 @@ Function CheckNetworkConnection
     Return
 FunctionEnd
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Delete files in Documents and Settings\<user>\SecondLife\cache
 ; Delete files in Documents and Settings\All Users\SecondLife\cache
@@ -440,7 +457,7 @@ Push $0
   RMDir /r "$0\SecondLife"
 Pop $0
 
-; Delete filse in C:\Windows\Application Data\SecondLife
+; Delete files in C:\Windows\Application Data\SecondLife
 ; If the user is running on a pre-NT system, Application Data lives here instead of
 ; in Documents and Settings.
 RMDir /r "$WINDIR\Application Data\SecondLife"

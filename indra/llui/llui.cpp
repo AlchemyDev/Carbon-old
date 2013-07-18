@@ -150,10 +150,10 @@ void gl_state_for_2d(S32 width, S32 height)
 	F32 window_width = (F32) width;//gViewerWindow->getWindowWidth();
 	F32 window_height = (F32) height;//gViewerWindow->getWindowHeight();
 
-	gGL.matrixMode(GL_PROJECTION);
+	gGL.matrixMode(LLRender::MM_PROJECTION);
 	gGL.loadIdentity();
 	gGL.ortho(0.0f, llmax(window_width, 1.f), 0.0f, llmax(window_height,1.f), -1.0f, 1.0f);
-	gGL.matrixMode(GL_MODELVIEW);
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	gGL.loadIdentity();
 	stop_glerror();
 }
@@ -534,7 +534,7 @@ void gl_draw_scaled_image_with_border(S32 x, S32 y, S32 width, S32 height, LLTex
 		}
 	}
 
-	gGL.getTexUnit(0)->bind(image);
+	gGL.getTexUnit(0)->bind(image, true);
 
 	gGL.color4fv(color.mV);
 	
@@ -732,7 +732,7 @@ void gl_draw_scaled_rotated_image(S32 x, S32 y, S32 width, S32 height, F32 degre
 	LLGLSUIDefault gls_ui;
 
 
-	gGL.getTexUnit(0)->bind(image);
+	gGL.getTexUnit(0)->bind(image, true);
 
 	gGL.color4fv(color.mV);
 
@@ -785,7 +785,7 @@ void gl_draw_scaled_rotated_image(S32 x, S32 y, S32 width, S32 height, F32 degre
 
 		LLMatrix3 quat(0.f, 0.f, degrees*DEG_TO_RAD);
 		
-		gGL.getTexUnit(0)->bind(image);
+		gGL.getTexUnit(0)->bind(image, true);
 
 		gGL.color4fv(color.mV);
 		
@@ -952,10 +952,12 @@ void gl_ring( F32 radius, F32 width, const LLColor4& center_color, const LLColor
 		if( render_center )
 		{
 			gGL.color4fv(center_color.mV);
+			gGL.diffuseColor4fv(center_color.mV);
 			gl_deep_circle( radius, width, steps );
 		}
 		else
 		{
+			gGL.diffuseColor4fv(side_color.mV);
 			gl_washer_2d(radius, radius - width, steps, side_color, side_color);
 			gGL.translateUI(0.f, 0.f, width);
 			gl_washer_2d(radius - width, radius, steps, side_color, side_color);
@@ -992,10 +994,18 @@ void gl_rect_2d_checkerboard(const LLRect& rect, GLfloat alpha)
 	// ...gray squares
 	gGL.color4f( .7f, .7f, .7f, alpha );
 	gGL.flush();
-	glPolygonStipple( checkerboard );
 
-	LLGLEnable polygon_stipple(GL_POLYGON_STIPPLE);
-	gl_rect_2d(rect);
+	if (!LLGLSLShader::sNoFixedFunction)
+	{ //polygon stipple is deprecated
+		glPolygonStipple( checkerboard );
+
+		LLGLEnable polygon_stipple(GL_POLYGON_STIPPLE);
+		gl_rect_2d(rect);
+	}
+	else
+	{
+		gl_rect_2d(rect);
+	}
 	gGL.flush();
 }
 

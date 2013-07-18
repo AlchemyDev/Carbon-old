@@ -1066,7 +1066,7 @@ BOOL LLManipTranslate::handleMouseUp(S32 x, S32 y, MASK mask)
 
 void LLManipTranslate::render()
 {
-	gGL.matrixMode(GL_MODELVIEW);
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	gGL.pushMatrix();
 	if (mObjectSelection->getSelectType() == SELECT_TYPE_HUD)
 	{
@@ -1519,7 +1519,8 @@ void LLManipTranslate::renderSnapGuides()
 		
 		F32 sz = mGridSizeMeters;
 		F32 tiles = sz;
-		gGL.matrixMode(GL_TEXTURE);
+
+		gGL.matrixMode(LLRender::MM_TEXTURE);
 		gGL.pushMatrix();
 		usc = 1.0f/usc;
 		vsc = 1.0f/vsc;
@@ -1566,7 +1567,7 @@ void LLManipTranslate::renderSnapGuides()
 					renderGrid(u,v,tiles,1,1,1,a);
 
 					gGL.popMatrix();
-					gGL.matrixMode(GL_MODELVIEW);
+					gGL.matrixMode(LLRender::MM_MODELVIEW);
 					gGL.popMatrix();
 				}
 
@@ -1665,7 +1666,7 @@ void LLManipTranslate::highlightIntersection(LLVector3 normal,
 		glStencilFunc(GL_ALWAYS, 0, stencil_mask);
 		gGL.setColorMask(false, false);
 		gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
-		glColor4f(1,1,1,1);
+		gGL.diffuseColor4f(1,1,1,1);
 
 		//setup clip plane
 		normal = normal * grid_rotation;
@@ -1852,7 +1853,7 @@ void LLManipTranslate::renderTranslationHandles()
 	mGridSizeMeters = gSavedSettings.getF32("GridDrawSize");
 	mConeSize = mArrowLengthMeters / 4.f;
 
-	gGL.matrixMode(GL_MODELVIEW);
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	gGL.pushMatrix();
 	{
 		gGL.translatef(selection_center.mV[VX], selection_center.mV[VY], selection_center.mV[VZ]);
@@ -2239,11 +2240,11 @@ void LLManipTranslate::renderArrow(S32 which_arrow, S32 selected_arrow, F32 box_
 			break;
 		}
 
-		glColor4fv(color.mV);
+		gGL.diffuseColor4fv(color.mV);
 		gGL.rotatef(rot, axis.mV[0], axis.mV[1], axis.mV[2]);
 		gGL.scalef(mArrowScales.mV[index], mArrowScales.mV[index], mArrowScales.mV[index] * 1.5f);
 
-		gCone.render(CONE_LOD_HIGHEST);
+		gCone.render();
 
 		gGL.popMatrix();
 	}

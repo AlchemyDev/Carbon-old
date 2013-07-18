@@ -383,7 +383,7 @@ bool LLCrashLogger::init()
 	LLCurl::initClass(false);
 
 	// We assume that all the logs we're looking for reside on the current drive
-	gDirUtilp->initAppDirs("SecondLife");
+	gDirUtilp->initAppDirs("Carbon");
 
 	LLError::initForApplication(gDirUtilp->getExpandedFilename(LL_PATH_APP_SETTINGS, ""));
 

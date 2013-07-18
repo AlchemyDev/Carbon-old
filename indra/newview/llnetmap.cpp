@@ -183,7 +183,7 @@ void LLNetMap::draw()
 		{
 			gGL.getTexUnit(0)->unbind(LLTexUnit::TT_TEXTURE);
 
-			gGL.matrixMode(GL_MODELVIEW);
+			gGL.matrixMode(LLRender::MM_MODELVIEW);
 
 			// Draw background rectangle
 			LLColor4 background_color = mBackgroundColor.get();

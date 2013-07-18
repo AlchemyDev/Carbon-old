@@ -763,7 +763,7 @@ void LLDrawPoolBump::renderBump(U32 pass)
 	LLGLDisable fog(GL_FOG);
 	LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE, GL_LEQUAL);
 	LLGLEnable blend(GL_BLEND);
-	glColor4f(1,1,1,1);
+	gGL.diffuseColor4f(1,1,1,1);
 	/// Get rid of z-fighting with non-bump pass.
 	LLGLEnable polyOffset(GL_POLYGON_OFFSET_FILL);
 	glPolygonOffset(-1.0f, -1.0f);
@@ -786,7 +786,7 @@ void LLDrawPoolBump::endBump(U32 pass)
 	{
 		// Disable texture blending on unit 1
 		gGL.getTexUnit(1)->activate();
-		//gGL.getTexUnit(1)->disable();
+		gGL.getTexUnit(1)->disable();
 		gGL.getTexUnit(1)->setTextureBlendType(LLTexUnit::TB_MULT);
 
 		// Disable texture blending on unit 0
@@ -1352,12 +1352,92 @@ void LLBumpImageList::onSourceLoaded( BOOL success, LLViewerTexture *src_vi, LLI
 				bump->setExplicitFormat(GL_ALPHA8, GL_ALPHA);
 				bump->createGLTexture(0, dst_image);
 			}
-			else
-			{
-				LLPointer<LLImageRaw> nrm_image = new LLImageRaw(dst_image->getWidth(), dst_image->getHeight(), 4);
-				generateNormalMapFromAlpha(dst_image, nrm_image);
-				bump->setExplicitFormat(GL_RGBA, GL_RGBA);
-				bump->createGLTexture(0, nrm_image);
+			else 
+			{ //convert to normal map
+				{
+					LLFastTimer t(FTM_BUMP_SOURCE_CREATE);
+					bump->setExplicitFormat(GL_RGBA8, GL_ALPHA);
+					bump->createGLTexture(0, dst_image);
+				}
+
+				{
+					LLFastTimer t(FTM_BUMP_SOURCE_GEN_NORMAL);
+					gPipeline.mScreen.bindTarget();
+					
+					LLGLDepthTest depth(GL_FALSE);
+					LLGLDisable cull(GL_CULL_FACE);
+					LLGLDisable blend(GL_BLEND);
+					gGL.setColorMask(TRUE, TRUE);
+					gNormalMapGenProgram.bind();
+					gNormalMapGenProgram.uniform1f("norm_scale", gSavedSettings.getF32("RenderNormalMapScale"));
+					gNormalMapGenProgram.uniform1f("stepX", 1.f/bump->getWidth());
+					gNormalMapGenProgram.uniform1f("stepY", 1.f/bump->getHeight());
+
+					LLVector2 v((F32) bump->getWidth()/gPipeline.mScreen.getWidth(),
+								(F32) bump->getHeight()/gPipeline.mScreen.getHeight());
+
+					gGL.getTexUnit(0)->bind(bump);
+					
+					S32 width = bump->getWidth();
+					S32 height = bump->getHeight();
+
+					S32 screen_width = gPipeline.mScreen.getWidth();
+					S32 screen_height = gPipeline.mScreen.getHeight();
+
+					glViewport(0, 0, screen_width, screen_height);
+
+					for (S32 left = 0; left < width; left += screen_width)
+					{
+						S32 right = left + screen_width;
+						right = llmin(right, width);
+						
+						F32 left_tc = (F32) left/ width;
+						F32 right_tc = (F32) right/width;
+
+						for (S32 bottom = 0; bottom < height; bottom += screen_height)
+						{
+							S32 top = bottom+screen_height;
+							top = llmin(top, height);
+
+							F32 bottom_tc = (F32) bottom/height;
+							F32 top_tc = (F32)(bottom+screen_height)/height;
+							top_tc = llmin(top_tc, 1.f);
+
+							F32 screen_right = (F32) (right-left)/screen_width;
+							F32 screen_top = (F32) (top-bottom)/screen_height;
+
+							gGL.begin(LLRender::TRIANGLE_STRIP);
+							gGL.texCoord2f(left_tc, bottom_tc);
+							gGL.vertex2f(0, 0);
+
+							gGL.texCoord2f(left_tc, top_tc);
+							gGL.vertex2f(0, screen_top);
+
+							gGL.texCoord2f(right_tc, bottom_tc);
+							gGL.vertex2f(screen_right, 0);
+
+							gGL.texCoord2f(right_tc, top_tc);
+							gGL.vertex2f(screen_right, screen_top);
+
+							gGL.end();
+
+							gGL.flush();
+
+							S32 w = right-left;
+							S32 h = top-bottom;
+
+							glCopyTexSubImage2D(GL_TEXTURE_2D, 0, left, bottom, 0, 0, w, h);
+						}
+					}
+
+					glGenerateMipmap(GL_TEXTURE_2D);
+
+					gPipeline.mScreen.flush();
+
+					gNormalMapGenProgram.unbind();
+										
+					//generateNormalMapFromAlpha(dst_image, nrm_image);
+				}
 			}
 		
 			iter->second = bump; // derefs (and deletes) old image
@@ -1405,15 +1485,21 @@ void LLDrawPoolBump::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL 
 			if (mShiny)
 			{
 				gGL.getTexUnit(0)->activate();
-				gGL.matrixMode(GL_TEXTURE);
+				gGL.matrixMode(LLRender::MM_TEXTURE);
 			}
 			else
 			{
-				gGL.getTexUnit(1)->activate();
-				gGL.matrixMode(GL_TEXTURE);
+				if (!LLGLSLShader::sNoFixedFunction)
+				{
+					gGL.getTexUnit(1)->activate();
+					gGL.matrixMode(LLRender::MM_TEXTURE);
+					gGL.loadMatrix((GLfloat*) params.mTextureMatrix->mMatrix);
+				}
+
+				gGL.getTexUnit(0)->activate();
+				gGL.matrixMode(LLRender::MM_TEXTURE);
 				gGL.loadMatrix((GLfloat*) params.mTextureMatrix->mMatrix);
 				gPipeline.mTextureMatrixOps++;
-				gGL.getTexUnit(0)->activate();
 			}
 
 			gGL.loadMatrix((GLfloat*) params.mTextureMatrix->mMatrix);
@@ -1426,7 +1512,7 @@ void LLDrawPoolBump::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL 
 		{
 			if (params.mTexture.notNull())
 			{
-				gGL.getTexUnit(diffuse_channel)->bind(params.mTexture) ;
+				gGL.getTexUnit(diffuse_channel)->bind(params.mTexture);
 				params.mTexture->addTextureStats(params.mVSize);		
 			}
 			else
@@ -1451,12 +1537,17 @@ void LLDrawPoolBump::pushBatch(LLDrawInfo& params, U32 mask, BOOL texture, BOOL 
 		}
 		else
 		{
-			gGL.getTexUnit(1)->activate();
-			gGL.loadIdentity();
+			if (!LLGLSLShader::sNoFixedFunction)
+			{
+				gGL.getTexUnit(1)->activate();
+				gGL.matrixMode(LLRender::MM_TEXTURE);
+				gGL.loadIdentity();
+			}
 			gGL.getTexUnit(0)->activate();
+			gGL.matrixMode(LLRender::MM_TEXTURE);
 		}
 		gGL.loadIdentity();
-		gGL.matrixMode(GL_MODELVIEW);
+		gGL.matrixMode(LLRender::MM_MODELVIEW);
 	}
 }
 
@@ -1501,6 +1592,7 @@ void LLDrawPoolInvisible::endDeferredPass( S32 pass )
 
 void LLDrawPoolInvisible::renderDeferred( S32 pass )
 { //render invisiprims; this doesn't work becaue it also blocks all the post-deferred stuff
+#if 0 
 	LLFastTimer t(FTM_RENDER_INVISIBLE);
   
 	U32 invisi_mask = LLVertexBuffer::MAP_VERTEX;
@@ -1518,4 +1610,5 @@ void LLDrawPoolInvisible::renderDeferred( S32 pass )
 		renderShiny(true);
 		endShiny(true);
 	}
+#endif
 }

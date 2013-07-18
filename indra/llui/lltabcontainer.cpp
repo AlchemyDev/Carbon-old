@@ -555,16 +555,16 @@ BOOL LLTabContainer::handleMouseDown( S32 x, S32 y, MASK mask )
 		if (mIsVertical)
 		{
 			tab_rect = LLRect(firsttuple->mButton->getRect().mLeft,
-							  has_scroll_arrows ? mPrevArrowBtn->getRect().mBottom - tabcntrv_pad : mPrevArrowBtn->getRect().mTop,
-							  firsttuple->mButton->getRect().mRight,
-							  has_scroll_arrows ? mNextArrowBtn->getRect().mTop + tabcntrv_pad : mNextArrowBtn->getRect().mBottom );
+								has_scroll_arrows ? mPrevArrowBtn->getRect().mBottom - tabcntrv_pad : mPrevArrowBtn->getRect().mTop,
+								firsttuple->mButton->getRect().mRight,
+								has_scroll_arrows ? mNextArrowBtn->getRect().mTop + tabcntrv_pad : mNextArrowBtn->getRect().mBottom );
 		}
 		else
 		{
 			tab_rect = LLRect(has_scroll_arrows ? mPrevArrowBtn->getRect().mRight : mJumpPrevArrowBtn->getRect().mLeft,
-							  firsttuple->mButton->getRect().mTop,
-							  has_scroll_arrows ? mNextArrowBtn->getRect().mLeft : mJumpNextArrowBtn->getRect().mRight,
-							  firsttuple->mButton->getRect().mBottom );
+								firsttuple->mButton->getRect().mTop,
+								has_scroll_arrows ? mNextArrowBtn->getRect().mLeft : mJumpNextArrowBtn->getRect().mRight,
+								firsttuple->mButton->getRect().mBottom );
 		}
 		if( tab_rect.pointInRect( x, y ) )
 		{

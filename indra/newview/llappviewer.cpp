@@ -522,6 +522,8 @@ static void settings_to_globals()
 
 	LLSurface::setTextureSize(gSavedSettings.getU32("RegionTextureSize"));
 	
+	LLRender::sGLCoreProfile = gSavedSettings.getBOOL("RenderGLCoreProfile");
+
 	LLImageGL::sGlobalUseAnisotropic	= gSavedSettings.getBOOL("RenderAnisotropic");
 	LLVOVolume::sLODFactor				= gSavedSettings.getF32("RenderVolumeLODFactor");
 	LLVOVolume::sDistanceFactor			= 1.f-LLVOVolume::sLODFactor * 0.1f;
@@ -669,7 +671,7 @@ bool LLAppViewer::init()
 
 	// Need to do this initialization before we do anything else, since anything
 	// that touches files should really go through the lldir API
-	gDirUtilp->initAppDirs("SecondLife");
+	gDirUtilp->initAppDirs("Carbon");
 	// set skin search path to default, will be overridden later
 	// this allows simple skinned file lookups to work
 	gDirUtilp->setSkinFolder("default");
@@ -1101,8 +1103,8 @@ void LLAppViewer::checkMemory()
 	}
 	mMemCheckTimer.reset() ;
 
-	//update the availability of memory
-	LLMemory::updateMemoryInfo() ;
+		//update the availability of memory
+		LLMemory::updateMemoryInfo() ;
 
 	bool is_low = LLMemory::isMemoryPoolLow() ;
 
@@ -2797,7 +2799,6 @@ void LLAppViewer::initUpdater()
 
 void LLAppViewer::checkForCrash(void)
 {
-    
 #if LL_SEND_CRASH_REPORTS
 	if (gLastExecEvent == LAST_EXEC_FROZE)
     {

@@ -59,7 +59,6 @@ void LLFloaterReg::add(const std::string& name, const std::string& filename, con
 //static
 LLFloater* LLFloaterReg::getLastFloaterInGroup(const std::string& name)
 {
-	LLRect rect;
 	const std::string& groupname = sGroupMap[name];
 	if (!groupname.empty())
 	{

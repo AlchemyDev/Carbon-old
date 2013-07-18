@@ -88,12 +88,12 @@ public:
 	{
 		LLVector3d global_pos;
 		landmark->getGlobalPos(global_pos);
-		LLViewerInventoryItem* agent_lanmark =
+		LLViewerInventoryItem* agent_landmark =
 				LLLandmarkActions::findLandmarkForGlobalPos(global_pos);
 
-		if (agent_lanmark)
+		if (agent_landmark)
 		{
-			showInfo(agent_lanmark->getUUID());
+			showInfo(agent_landmark->getUUID());
 		}
 		else
 		{
@@ -104,8 +104,12 @@ public:
 			}
 			else
 			{
+				LLInventoryItem* item = item_ptr.get();
 				LLPointer<LLEmbeddedLandmarkCopied> cb = new LLEmbeddedLandmarkCopied();
-				copy_inventory_from_notecard(object_id, notecard_inventory_id, item_ptr.get(), gInventoryCallbacks.registerCB(cb));
+				copy_inventory_from_notecard(object_id,
+											 notecard_inventory_id,
+											 item,
+											 gInventoryCallbacks.registerCB(cb));
 			}
 		}
 	}
@@ -1268,7 +1272,8 @@ void LLViewerTextEditor::copyInventory(const LLInventoryItem* item, U32 callback
 {
 	copy_inventory_from_notecard(mObjectID,
 								 mNotecardInventoryID,
-								 item, callback_id);
+								 item,
+								 callback_id);
 }
 
 bool LLViewerTextEditor::hasEmbeddedInventory()

@@ -537,7 +537,7 @@ public:
 			
 			}
 
-			addText(xpos, ypos, llformat("%d MB Vertex Data", LLVertexBuffer::sAllocatedBytes/(1024*1024)));
+			addText(xpos, ypos, llformat("%d MB Vertex Data (%d MB Pooled)", LLVertexBuffer::sAllocatedBytes/(1024*1024), LLVBOPool::sBytesPooled/(1024*1024)));
 			ypos += y_inc;
 
 			addText(xpos, ypos, llformat("%d Vertex Buffers", LLVertexBuffer::sGLCount));
@@ -1552,6 +1552,12 @@ LLViewerWindow::LLViewerWindow(
 		ignore_pixel_depth,
 		gSavedSettings.getBOOL("RenderDeferred") ? 0 : gSavedSettings.getU32("RenderFSAASamples")); //don't use window level anti-aliasing if FBOs are enabled
 
+	if (!LLViewerShaderMgr::sInitialized)
+	{ //immediately initialize shaders
+		LLViewerShaderMgr::sInitialized = TRUE;
+		LLViewerShaderMgr::instance()->setShaders();
+	}
+
 	if (NULL == mWindow)
 	{
 		LLSplashScreen::update(LLTrans::getString("StartupRequireDriverUpdate"));
@@ -1688,32 +1694,30 @@ LLViewerWindow::LLViewerWindow(
 void LLViewerWindow::initGLDefaults()
 {
 	gGL.setSceneBlendType(LLRender::BT_ALPHA);
-	glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
 
-	F32 ambient[4] = {0.f,0.f,0.f,0.f };
-	F32 diffuse[4] = {1.f,1.f,1.f,1.f };
-	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambient);
-	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diffuse);
-	
+	if (!LLGLSLShader::sNoFixedFunction)
+	{ //initialize fixed function state
+		glColorMaterial( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
+
+		glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,LLColor4::black.mV);
+		glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,LLColor4::white.mV);
+
+		// lights for objects
+		glShadeModel( GL_SMOOTH );
+
+		gGL.getTexUnit(0)->enable(LLTexUnit::TT_TEXTURE);
+		gGL.getTexUnit(0)->setTextureBlendType(LLTexUnit::TB_MULT);
+	}
+
 	glPixelStorei(GL_PACK_ALIGNMENT,1);
 	glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
-	gGL.getTexUnit(0)->enable(LLTexUnit::TT_TEXTURE);
-
-	// lights for objects
-	glShadeModel( GL_SMOOTH );
-
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
-	
-	gGL.getTexUnit(0)->setTextureBlendType(LLTexUnit::TB_MULT);
-
+	gGL.setAmbientLightColor(LLColor4::black);
+		
 	glCullFace(GL_BACK);
 
 	// RN: Need this for translation and stretch manip.
-	gCone.prerender();
 	gBox.prerender();
-	gSphere.prerender();
-	gCylinder.prerender();
 }
 
 struct MainPanel : public LLPanel
@@ -1962,7 +1966,7 @@ void LLViewerWindow::shutdownViews()
 	// *TODO: Make LLNavigationBar part of gViewerWindow
 	if (LLNavigationBar::instanceExists())
 	{
-	delete LLNavigationBar::getInstance();
+		delete LLNavigationBar::getInstance();
 	}
 
 	// destroy menus after instantiating navbar above, as it needs
@@ -2225,6 +2229,10 @@ void LLViewerWindow::drawDebugText()
 	gGL.color4f(1,1,1,1);
 	gGL.pushMatrix();
 	gGL.pushUIMatrix();
+	if (LLGLSLShader::sNoFixedFunction)
+	{
+		gUIProgram.bind();
+	}
 	{
 		// scale view by UI global scale factor and aspect ratio correction factor
 		gGL.scaleUI(mDisplayScale.mV[VX], mDisplayScale.mV[VY], 1.f);
@@ -2234,6 +2242,10 @@ void LLViewerWindow::drawDebugText()
 	gGL.popMatrix();
 
 	gGL.flush();
+	if (LLGLSLShader::sNoFixedFunction)
+	{
+		gUIProgram.unbind();
+	}
 }
 
 void LLViewerWindow::draw()
@@ -2248,7 +2260,7 @@ void LLViewerWindow::draw()
 
 	LLUI::setLineWidth(1.f);
 	// Reset any left-over transforms
-	gGL.matrixMode(GL_MODELVIEW);
+	gGL.matrixMode(LLRender::MM_MODELVIEW);
 	
 	gGL.loadIdentity();
 
@@ -2333,7 +2345,7 @@ void LLViewerWindow::draw()
 			S32 screen_x, screen_y;
 			top_ctrl->localPointToScreen(0, 0, &screen_x, &screen_y);
 
-			gGL.matrixMode(GL_MODELVIEW);
+			gGL.matrixMode(LLRender::MM_MODELVIEW);
 			LLUI::pushMatrix();
 			LLUI::translate( (F32) screen_x, (F32) screen_y, 0.f);
 			top_ctrl->draw();	
@@ -3397,13 +3409,13 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 			LLBBox hud_bbox = gAgentAvatarp->getHUDBBox();
 
 			// set up transform to encompass bounding box of HUD
-			gGL.matrixMode(GL_PROJECTION);
+			gGL.matrixMode(LLRender::MM_PROJECTION);
 			gGL.pushMatrix();
 			gGL.loadIdentity();
 			F32 depth = llmax(1.f, hud_bbox.getExtentLocal().mV[VX] * 1.1f);
 			gGL.ortho(-0.5f * LLViewerCamera::getInstance()->getAspect(), 0.5f * LLViewerCamera::getInstance()->getAspect(), -0.5f, 0.5f, 0.f, depth);
 			
-			gGL.matrixMode(GL_MODELVIEW);
+			gGL.matrixMode(LLRender::MM_MODELVIEW);
 			gGL.pushMatrix();
 			gGL.loadIdentity();
 			gGL.loadMatrix(OGL_TO_CFR_ROTATION);		// Load Cory's favorite reference frame
@@ -3417,7 +3429,7 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 			LLGLEnable gls_blend(GL_BLEND);
 			LLGLEnable gls_cull(GL_CULL_FACE);
 			LLGLDepthTest gls_depth(GL_TRUE, GL_FALSE);
-			gGL.matrixMode(GL_MODELVIEW);
+			gGL.matrixMode(LLRender::MM_MODELVIEW);
 			gGL.pushMatrix();
 			if (selection->getSelectType() == SELECT_TYPE_HUD)
 			{
@@ -3441,15 +3453,15 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 						gGL.scalef(scale, scale, scale);
 
 						LLColor4 color(vovolume->getLightColor(), .5f);
-						glColor4fv(color.mV);
+						gGL.color4fv(color.mV);
 					
-						F32 pixel_area = 100000.f;
+						//F32 pixel_area = 100000.f;
 						// Render Outside
-						gSphere.render(pixel_area);
+						gSphere.render();
 
 						// Render Inside
 						glCullFace(GL_FRONT);
-						gSphere.render(pixel_area);
+						gSphere.render();
 						glCullFace(GL_BACK);
 					
 						gGL.popMatrix();
@@ -3522,10 +3534,10 @@ void LLViewerWindow::renderSelections( BOOL for_gl_pick, BOOL pick_parcel_walls,
 			}
 			if (selection->getSelectType() == SELECT_TYPE_HUD && selection->getObjectCount())
 			{
-				gGL.matrixMode(GL_PROJECTION);
+				gGL.matrixMode(LLRender::MM_PROJECTION);
 				gGL.popMatrix();
 
-				gGL.matrixMode(GL_MODELVIEW);
+				gGL.matrixMode(LLRender::MM_MODELVIEW);
 				gGL.popMatrix();
 				stop_glerror();
 			}
@@ -4642,10 +4654,7 @@ void LLViewerWindow::stopGL(BOOL save_state)
 			gPipeline.destroyGL();
 		}
 		
-		gCone.cleanupGL();
 		gBox.cleanupGL();
-		gSphere.cleanupGL();
-		gCylinder.cleanupGL();
 		
 		if(gPostProcess)
 		{
