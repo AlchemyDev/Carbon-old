@@ -117,7 +117,7 @@
    name="keyboard_lbl"
    width="270"
    top_delta="2">
-   Keyboard:
+    Keyboard:
   </text>
   <check_box
    control_name="ArrowKeysAlwaysMove"
@@ -149,7 +149,7 @@
    name="mouse_lbl"
    width="270"
    top_pad="15">
-   Mouse:
+    Mouse:
   </text>
   <check_box
    control_name="FirstPersonAvatarVisible"
@@ -205,7 +205,7 @@
    name="single_click_action_lbl"
    width="150"
    top_pad="20">
-   Single click on land:
+    Single click on land:
   </text>
   <combo_box
    height="23"
@@ -235,7 +235,7 @@
    name="double_click_action_lbl"
    width="150"
    top_pad="12">
-   Double click on land:
+    Double click on land:
   </text>
   <combo_box
    height="23"

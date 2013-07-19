@@ -679,7 +679,7 @@ void LLFloaterPreference::onOpen(const LLSD& key)
 
 	// Display selected maturity icons.
 	onChangeMaturity();
-
+	
 	// Load (double-)click to walk/teleport settings.
 	updateClickActionControls();
 	

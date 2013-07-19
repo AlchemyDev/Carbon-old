@@ -46,7 +46,7 @@
 #include "lluictrlfactory.h"
 #include "llviewerwindow.h"
 #include "llviewercontrol.h"
-#include "llselectmgr.h" 
+#include "llselectmgr.h"
 #include "llviewerparcelmgr.h"
 #include "llviewerregion.h"
 #include "lltooltip.h"
@@ -97,7 +97,7 @@ BOOL LLFloaterMove::postBuild()
 	updateTransparency(TT_ACTIVE); // force using active floater transparency (STORM-730)
 	
 	LLDockableFloater::postBuild();
-	
+
 	// Code that implements floater buttons toggling when user moves via keyboard is located in LLAgent::propagate()
 
 	mForwardButton = getChild<LLJoystickAgentTurn>("forward btn"); 

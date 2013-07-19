@@ -441,17 +441,17 @@ BOOL LLFavoritesBarCtrl::handleDragAndDrop(S32 x, S32 y, MASK mask, BOOL drop,
 			{
 				setLandingTab(dest);
 			}
-			/*
-			 * the condition dest == NULL can be satisfied not only in the case
-			 * of dragging to the right from the last tab of the favbar. there is a
-			 * small gap between each tab. if the user drags something exactly there
-			 * then mLandingTab will be set to NULL and the dragged item will be pushed
-			 * to the end of the favorites bar. this is incorrect behavior. that's why
-			 * we need an additional check which excludes the case described previously
-			 * making sure that the mouse pointer is beyond the last tab.
-			 */
-			else if (mLastTab && x >= mLastTab->getRect().mRight)
+			else if (mLastTab && (x >= mLastTab->getRect().mRight))
 			{
+				/*
+				 * the condition dest == NULL can be satisfied not only in the case
+				 * of dragging to the right from the last tab of the favbar. there is a
+				 * small gap between each tab. if the user drags something exactly there
+				 * then mLandingTab will be set to NULL and the dragged item will be pushed
+				 * to the end of the favorites bar. this is incorrect behavior. that's why
+				 * we need an additional check which excludes the case described previously
+				 * making sure that the mouse pointer is beyond the last tab.
+				 */
 				setLandingTab(NULL);
 			}
 
@@ -808,9 +808,9 @@ LLButton* LLFavoritesBarCtrl::createButton(const LLPointer<LLViewerInventoryItem
 
 	/**
 	 * WORKAROUND:
-	 * there are some problem with displaying of fonts in buttons. 
+	 * There are some problem with displaying of fonts in buttons. 
 	 * Empty space (or ...) is displaying instead of last symbols, even though the width of the button is enough.
-	 * Problem will gone, if we  stretch out the button. For that reason I have to put additional  20 pixels.
+	 * The problem will gone, if we  stretch out the button. For that reason I have to put additional  20 pixels.
 	 */
 	int required_width = mFont->getWidth(item->getName()) + 20;
 	int width = required_width > def_button_width? def_button_width : required_width;
@@ -1225,7 +1225,7 @@ BOOL LLFavoritesBarCtrl::handleHover(S32 x, S32 y, MASK mask)
 
 LLUICtrl* LLFavoritesBarCtrl::findChildByLocalCoords(S32 x, S32 y)
 {
-	LLUICtrl* ctrl = 0;
+	LLUICtrl* ctrl = NULL;
 	S32 screenX, screenY;
 	const child_list_t* list = getChildList();
 
