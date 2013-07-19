@@ -1603,13 +1603,6 @@ LLView* LLView::findNextSibling(LLView* child)
 	return (next_it != mChildList.end()) ? *next_it : NULL;
 }
 
-void LLView::deleteViewByHandle(LLHandle<LLView> handle)
-{
-	LLView* viewp = handle.get();
-
-	delete viewp;
-}
-
 
 LLCoordGL getNeededTranslation(const LLRect& input, const LLRect& constraint, BOOL allow_partial_outside)
 {
