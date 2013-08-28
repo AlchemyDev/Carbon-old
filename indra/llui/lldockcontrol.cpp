@@ -97,16 +97,19 @@ void LLDockControl::getAllowedRect(LLRect& rect)
 
 void LLDockControl::repositionDockable()
 {
+	if (!mDockWidget) return;
 	LLRect dockRect = mDockWidget->calcScreenRect();
 	LLRect rootRect;
+	LLRect floater_rect = mDockableFloater->calcScreenRect();
 	mGetAllowedRectCallback(rootRect);
 
-	// recalculate dockable position if dock position changed, dock visibility changed,
-	// root view rect changed or recalculation is forced
-	if (mPrevDockRect != dockRect
-		|| mDockWidgetVisible != isDockVisible()
-		|| mRootRect != rootRect
-		|| mRecalculateDockablePosition)
+	// recalculate dockable position if:
+	if (mPrevDockRect != dockRect					//dock position   changed
+		|| mDockWidgetVisible != isDockVisible()	//dock visibility changed
+		|| mRootRect != rootRect					//root view rect  changed
+		|| mFloaterRect != floater_rect				//floater rect    changed
+		|| mRecalculateDockablePosition				//recalculation is forced
+	)
 	{
 		// undock dockable and off() if dock not visible
 		if (!isDockVisible())
@@ -137,6 +140,7 @@ void LLDockControl::repositionDockable()
 
 		mPrevDockRect = dockRect;
 		mRootRect = rootRect;
+		mFloaterRect = floater_rect;
 		mRecalculateDockablePosition = false;
 		mDockWidgetVisible = isDockVisible();
 	}
@@ -162,7 +166,7 @@ bool LLDockControl::isDockVisible()
 			case TOP:
 			{
 				// check is dock inside parent rect
-				// assume that parent for all dockable flaoters
+				// assume that parent for all dockable floaters
 				// is the root view
 				LLRect dockParentRect =
 						mDockWidget->getRootView()->calcScreenRect();
@@ -316,13 +320,12 @@ void LLDockControl::moveDockable()
 		dockableRect.setLeftTopAndSize(x, y, dockableRect.getWidth(),
 				dockableRect.getHeight());
 	}
-	LLRect localDocableParentRect;
-	mDockableFloater->getParent()->screenRectToLocal(dockableRect,
-			&localDocableParentRect);
-	mDockableFloater->setRect(localDocableParentRect);
 
-	mDockableFloater->screenPointToLocal(mDockTongueX, mDockTongueY,
-			&mDockTongueX, &mDockTongueY);
+	LLRect localDocableParentRect;
+
+	mDockableFloater->getParent()->screenRectToLocal(dockableRect, &localDocableParentRect);
+	mDockableFloater->setRect(localDocableParentRect);
+	mDockableFloater->screenPointToLocal(mDockTongueX, mDockTongueY, &mDockTongueX, &mDockTongueY);
 
 }
 

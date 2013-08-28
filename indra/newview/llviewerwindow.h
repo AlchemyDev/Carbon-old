@@ -395,11 +395,10 @@ private:
 	S32				getChatConsoleBottomPad(); // Vertical padding for child console rect, varied by bottom clutter
 	LLRect			getChatConsoleRect(); // Get optimal cosole rect.
 
-public:
+private:
 	LLWindow*		mWindow;						// graphical window object
-
-protected:
-	BOOL			mActive;
+	bool			mActive;
+	bool			mUIVisible;
 
 	LLRect			mWindowRectRaw;				// whole window, including UI
 	LLRect			mWindowRectScaled;			// whole window, scaled by UI size
@@ -460,13 +459,11 @@ protected:
 	boost::scoped_ptr<LLWindowListener> mWindowListener;
 	boost::scoped_ptr<LLViewerWindowListener> mViewerWindowListener;
 
-protected:
 	static std::string sSnapshotBaseName;
 	static std::string sSnapshotDir;
 
 	static std::string sMovieBaseName;
 	
-private:
 	// Object temporarily hovered over while dragging
 	LLPointer<LLViewerObject>	mDragHoveredObject;
 };

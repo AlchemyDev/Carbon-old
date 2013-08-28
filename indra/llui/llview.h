@@ -97,9 +97,6 @@ private:
 	static std::vector<LLViewDrawContext*> sDrawContextStack;
 };
 
-class LLViewWidgetRegistry : public LLChildRegistry<LLViewWidgetRegistry>
-{};
-
 class LLView : public LLMouseHandler, public LLMortician, public LLFocusableElement
 {
 public:
@@ -152,7 +149,8 @@ public:
 		Params();
 	};
 
-	typedef LLViewWidgetRegistry child_registry_t;
+	// most widgets are valid children of LLView
+	typedef LLDefaultChildRegistry child_registry_t;
 
 	void initFromParams(const LLView::Params&);
 

@@ -1313,7 +1313,7 @@ BOOL LLViewerWindow::handleActivate(LLWindow *window, BOOL activated)
 {
 	if (activated)
 	{
-		mActive = TRUE;
+		mActive = true;
 		send_agent_resume();
 		gAgent.clearAFK();
 		
@@ -1322,7 +1322,7 @@ BOOL LLViewerWindow::handleActivate(LLWindow *window, BOOL activated)
 	}
 	else
 	{
-		mActive = FALSE;
+		mActive = false;
 				
 		// if the user has chosen to go Away automatically after some time, then go Away when minimizing
 		if (gSavedSettings.getS32("AFKTimeout"))
@@ -1505,7 +1505,8 @@ LLViewerWindow::LLViewerWindow(
 	BOOL fullscreen, BOOL ignore_pixel_depth) // fullscreen is no longer used
 	:
 	mWindow(NULL),
-	mActive(TRUE),
+	mActive(true),
+	mUIVisible(true),
 	mWindowRectRaw(0, height, width, 0),
 	mWindowRectScaled(0, height, width, 0),
 	mWorldViewRectRaw(0, height, width, 0),
@@ -1926,13 +1927,12 @@ void LLViewerWindow::initWorldUI()
 	LLView* avatar_picker_destination_guide_container = gViewerWindow->getRootView()->getChild<LLView>("avatar_picker_and_destination_guide_container");
 	avatar_picker_destination_guide_container->getChild<LLButton>("close")->setCommitCallback(boost::bind(toggle_destination_and_avatar_picker, LLSD()));
 	LLMediaCtrl* destinations = avatar_picker_destination_guide_container->findChild<LLMediaCtrl>("destination_guide_contents");
-	LLMediaCtrl* avatar_picker = avatar_picker_destination_guide_container->findChild<LLMediaCtrl>("avatar_picker_contents");
 	if (destinations)
 	{
 		destinations->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
 		destinations->navigateTo(gSavedSettings.getString("DestinationGuideURL"), "text/html");
 	}
-
+	LLMediaCtrl* avatar_picker = avatar_picker_destination_guide_container->findChild<LLMediaCtrl>("avatar_picker_contents");
 	if (avatar_picker)
 	{
 		avatar_picker->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
