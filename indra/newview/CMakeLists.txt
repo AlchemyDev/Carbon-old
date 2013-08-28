@@ -168,6 +168,7 @@ set(viewer_SOURCE_FILES
     llfloaterabout.cpp
     llfloateranimpreview.cpp
     llfloaterauction.cpp
+    llfloateravatar.cpp
     llfloateravatarpicker.cpp
     llfloateravatartextures.cpp
     llfloaterbeacons.cpp
@@ -182,6 +183,7 @@ set(viewer_SOURCE_FILES
     llfloatercamera.cpp
     llfloatercolorpicker.cpp
     llfloaterdeleteenvpreset.cpp
+    llfloaterdestinations.cpp
     llfloaterdisplayname.cpp
     llfloatereditdaycycle.cpp
     llfloatereditsky.cpp
@@ -716,6 +718,7 @@ set(viewer_HEADER_FILES
     llfloaterabout.h
     llfloateranimpreview.h
     llfloaterauction.h
+    llfloateravatar.h
     llfloateravatarpicker.h
     llfloateravatartextures.h
     llfloaterbeacons.h
@@ -730,6 +733,7 @@ set(viewer_HEADER_FILES
     llfloatercamera.h
     llfloatercolorpicker.h
     llfloaterdeleteenvpreset.h
+    llfloaterdestinations.h
     llfloaterdisplayname.h
     llfloatereditdaycycle.h
     llfloatereditsky.h

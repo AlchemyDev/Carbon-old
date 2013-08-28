@@ -293,6 +293,7 @@ public:
 
 	void			updateTransparency(ETypeTransparency transparency_type);
 		
+	void			enableResizeCtrls(bool enable, bool width = true, bool height = true);
 protected:
 	virtual void    applySavedVariables();
 
@@ -342,7 +343,6 @@ private:
 	BOOL			offerClickToButton(S32 x, S32 y, MASK mask, EFloaterButton index);
 	void			addResizeCtrls();
 	void			layoutResizeCtrls();
-	void			enableResizeCtrls(bool enable);
 	void 			addDragHandle();
 	void			layoutDragHandle();		// repair layout
 

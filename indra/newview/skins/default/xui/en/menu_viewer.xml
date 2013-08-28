@@ -8,40 +8,23 @@
      label="Me"
      name="Me"
      tear_off="true">
-        <menu_item_call
-         label="Preferences"
-         name="Preferences"
-         shortcut="control|P">
-            <menu_item_call.on_click
-             function="Floater.Show"
-             parameter="preferences" />
-        </menu_item_call>
-         <menu_item_call
-             label="My Dashboard"
-             name="Manage My Account">
-                <menu_item_call.on_click
-                 function="PromptShowURL"
-                 name="ManageMyAccount_url"
-                 parameter="WebLaunchJoinNow,http://secondlife.com/account/" />
+      <menu_item_call
+           label="Dashboard..."
+           name="Manage My Account">
+        <menu_item_call.on_click
+         function="PromptShowURL"
+         name="ManageMyAccount_url"
+         parameter="WebLaunchJoinNow,http://secondlife.com/account/" />
       </menu_item_call>
-        <menu_item_call
-         label="Buy L$"
-         name="Buy and Sell L$">
-            <menu_item_call.on_click
-             function="BuyCurrency" />
-        </menu_item_call>
-
-        <menu_item_separator/>
-
-        <menu_item_call
-         label="My Profile"
+      <menu_item_call
+         label="Profile..."
          name="Profile">
             <menu_item_call.on_click
              function="ShowAgentProfile"
              parameter="agent" />
         </menu_item_call>
         <menu_item_call
-         label="My Appearance"
+         label="Appearance..."
          name="ChangeOutfit">
             <menu_item_call.on_click
              function="CustomizeAvatar" />
@@ -49,7 +32,7 @@
              function="Edit.EnableCustomizeAvatar" />
         </menu_item_call>
         <menu_item_check
-         label="My Inventory"
+         label="Inventory..."
          name="Inventory"
          shortcut="control|shift|I"
 		 visible="false">
@@ -61,7 +44,7 @@
              parameter="inventory" />
         </menu_item_check>
         <menu_item_check
-         label="My Inventory"
+         label="Inventory"
          name="ShowSidetrayInventory"
          shortcut="control|I"
 		 visible="true">
@@ -73,7 +56,7 @@
              parameter="sidepanel_inventory" />
         </menu_item_check>
         <menu_item_check
-         label="My Gestures"
+       label="Gestures..."
          name="Gestures"
          shortcut="control|G">
             <menu_item_check.on_check
@@ -139,7 +122,7 @@
 		</menu>
         <menu
          create_jump_keys="true"
-         label="My Status"
+         label="Status"
          name="Status"
          tear_off="true">
             <menu_item_call
@@ -170,9 +153,27 @@
 		 visible="false">
             <menu_item_call.on_click
              function="Advanced.LeaveAdminStatus" />
-        </menu_item_call>
+      </menu_item_call>
 
-        <menu_item_separator/>
+      <menu_item_separator/>
+
+      <menu_item_call
+         label="Buy L$"
+         name="Buy and Sell L$">
+        <menu_item_call.on_click
+         function="BuyCurrency" />
+      </menu_item_call>
+
+      <menu_item_separator/>
+
+      <menu_item_call
+         label="Preferences..."
+         name="Preferences"
+         shortcut="control|P">
+            <menu_item_call.on_click
+             function="Floater.Show"
+             parameter="preferences" />
+        </menu_item_call>
 
         <menu_item_call
          label="Exit [APP_NAME]"

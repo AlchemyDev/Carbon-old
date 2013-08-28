@@ -863,51 +863,6 @@ class LLAdvancedCheckFeature : public view_listener_t
 }
 };
 
-void toggle_destination_and_avatar_picker(const LLSD& show)
-{
-	S32 panel_idx = show.isDefined() ? show.asInteger() : -1;
-	LLView* container = gViewerWindow->getRootView()->findChildView("avatar_picker_and_destination_guide_container");
-	if (!container) return;
-
-	LLMediaCtrl* destinations = container->findChild<LLMediaCtrl>("destination_guide_contents");
-	LLMediaCtrl* avatar_picker = container->findChild<LLMediaCtrl>("avatar_picker_contents");
-	if (!destinations || !avatar_picker) return;
-
-	LLButton* avatar_btn = gViewerWindow->getRootView()->getChildView("bottom_tray")->getChild<LLButton>("avatar_btn");
-	LLButton* destination_btn = gViewerWindow->getRootView()->getChildView("bottom_tray")->getChild<LLButton>("destination_btn");
-
-	if (panel_idx == 0
-		&& !destinations->getVisible())
-	{	// opening destinations guide
-		container->setVisible(true);
-		destinations->setVisible(true);
-		avatar_picker->setVisible(false);
-		LLFirstUse::notUsingDestinationGuide(false);
-		avatar_btn->setToggleState(false);
-		destination_btn->setToggleState(true);
-		gSavedSettings.setS32("DestinationsAndAvatarsVisibility", 0);
-	}
-	else if (panel_idx == 1 
-		&& !avatar_picker->getVisible())
-	{	// opening avatar picker
-		container->setVisible(true);
-		destinations->setVisible(false);
-		avatar_picker->setVisible(true);
-		avatar_btn->setToggleState(true);
-		destination_btn->setToggleState(false);
-		gSavedSettings.setS32("DestinationsAndAvatarsVisibility", 1);
-	}
-	else
-	{	// toggling off dest guide or avatar picker
-		container->setVisible(false);
-		destinations->setVisible(false);
-		avatar_picker->setVisible(false);
-		avatar_btn->setToggleState(false);
-		destination_btn->setToggleState(false);
-		gSavedSettings.setS32("DestinationsAndAvatarsVisibility", -1);
-	}
-};
-
 
 //////////////////
 // INFO DISPLAY //
@@ -8343,7 +8298,4 @@ void initialize_menus()
 	view_listener_t::addMenu(new LLEditableSelected(), "EditableSelected");
 	view_listener_t::addMenu(new LLEditableSelectedMono(), "EditableSelectedMono");
 	view_listener_t::addMenu(new LLToggleUIHints(), "ToggleUIHints");
-
-	commit.add("Destination.show", boost::bind(&toggle_destination_and_avatar_picker, 0));
-	commit.add("Avatar.show", boost::bind(&toggle_destination_and_avatar_picker, 1));
 }
