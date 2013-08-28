@@ -640,7 +640,7 @@ void LLInspectObject::onClickMoreInfo()
 {
 	LLSD key;
 	key["task"] = "task";
-	LLSideTray::getInstance()->showPanel("sidepanel_inventory", key);	
+	LLSideTray::getInstance()->showPanel("sidepanel_inventory", key);
 	closeFloater();
 }
 

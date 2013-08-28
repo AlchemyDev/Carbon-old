@@ -59,11 +59,15 @@ void LLTransientFloaterMgr::unregisterTransientFloater(LLTransientFloater* float
 
 void LLTransientFloaterMgr::addControlView(ETransientGroup group, LLView* view)
 {
+	if (!view) return;
+
 	mGroupControls.find(group)->second.insert(view);
 }
 
 void LLTransientFloaterMgr::removeControlView(ETransientGroup group, LLView* view)
 {
+	if (!view) return;
+
 	mGroupControls.find(group)->second.erase(view);
 }
 

@@ -106,7 +106,8 @@ public:
 			{
 				LLInventoryItem* item = item_ptr.get();
 				LLPointer<LLEmbeddedLandmarkCopied> cb = new LLEmbeddedLandmarkCopied();
-				copy_inventory_from_notecard(object_id,
+				copy_inventory_from_notecard(get_folder_by_itemtype(item),
+											 object_id,
 											 notecard_inventory_id,
 											 item,
 											 gInventoryCallbacks.registerCB(cb));
@@ -1270,7 +1271,8 @@ bool LLViewerTextEditor::importStream(std::istream& str)
 
 void LLViewerTextEditor::copyInventory(const LLInventoryItem* item, U32 callback_id)
 {
-	copy_inventory_from_notecard(mObjectID,
+	copy_inventory_from_notecard(LLUUID::null,  // Don't specify a destination -- let the sim do that
+								 mObjectID,
 								 mNotecardInventoryID,
 								 item,
 								 callback_id);

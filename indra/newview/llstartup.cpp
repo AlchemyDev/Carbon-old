@@ -367,7 +367,9 @@ bool idle_startup()
 		//
 		// Initialize stuff that doesn't need data from simulators
 		//
-
+		std::string lastGPU = gSavedSettings.getString("LastGPUString");
+		std::string thisGPU = LLFeatureManager::getInstance()->getGPUString();
+		
 		if (LLFeatureManager::getInstance()->isSafe())
 		{
 			LLNotificationsUtil::add("DisplaySetToSafe");
@@ -375,12 +377,14 @@ bool idle_startup()
 		else if ((gSavedSettings.getS32("LastFeatureVersion") < LLFeatureManager::getInstance()->getVersion()) &&
 				 (gSavedSettings.getS32("LastFeatureVersion") != 0))
 		{
-			LLNotificationsUtil::add("DisplaySetToRecommended");
+			LLNotificationsUtil::add("DisplaySetToRecommendedFeatureChange");
 		}
-		else if ((gSavedSettings.getS32("LastGPUClass") != LLFeatureManager::getInstance()->getGPUClass()) &&
-				 (gSavedSettings.getS32("LastGPUClass") != -1))
+		else if ( ! lastGPU.empty() && (lastGPU != thisGPU))
 		{
-			LLNotificationsUtil::add("DisplaySetToRecommended");
+			LLSD subs;
+			subs["LAST_GPU"] = lastGPU;
+			subs["THIS_GPU"] = thisGPU;
+			LLNotificationsUtil::add("DisplaySetToRecommendedGPUChange", subs);
 		}
 		else if (!gViewerWindow->getInitAlert().empty())
 		{
@@ -396,7 +400,7 @@ bool idle_startup()
 		LLStartUp::startLLProxy();
 
 		gSavedSettings.setS32("LastFeatureVersion", LLFeatureManager::getInstance()->getVersion());
-		gSavedSettings.setS32("LastGPUClass", LLFeatureManager::getInstance()->getGPUClass());
+		gSavedSettings.setString("LastGPUString", thisGPU);
 
 		// load dynamic GPU/feature tables from website (S3)
 		LLFeatureManager::getInstance()->fetchHTTPTables();
@@ -2780,11 +2784,11 @@ void LLStartUp::cleanupNameCache()
 bool LLStartUp::dispatchURL()
 {
 	// ok, if we've gotten this far and have a startup URL
-        if (!getStartSLURL().isValid())
+    if (!getStartSLURL().isValid())
 	{
 	  return false;
 	}
-        if(getStartSLURL().getType() != LLSLURL::APP)
+    if(getStartSLURL().getType() != LLSLURL::APP)
 	{
 	    
 		// If we started with a location, but we're already

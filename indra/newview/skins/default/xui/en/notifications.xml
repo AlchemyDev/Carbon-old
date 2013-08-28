@@ -2665,9 +2665,18 @@ Display settings have been set to safe levels because you have specified the -sa
 
   <notification
    icon="alertmodal.tga"
-   name="DisplaySetToRecommended"
+   name="DisplaySetToRecommendedGPUChange"
    type="alertmodal">
-Display settings have been set to recommended levels based on your system configuration.
+Display settings have been set to recommended levels because your graphics card changed
+from &apos;[LAST_GPU]&apos;
+to &apos;[THIS_GPU]&apos;
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="DisplaySetToRecommendedFeatureChange"
+   type="alertmodal">
+Display settings have been set to recommended levels because of a change to the rendering subsystem.
   </notification>
 
   <notification
@@ -4620,6 +4629,34 @@ Are you sure you want to quit?
      name="okcancelignore"
      notext="Don&apos;t Quit"
      yestext="Quit"/>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="ConfirmRestoreToybox"
+   type="alertmodal">
+    <unique/>
+This action will restore your default buttons and toolbars.
+
+You cannot undo this action.
+    <usetemplate
+     name="okcancelbuttons"
+     notext="Cancel"
+     yestext="OK"/>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="ConfirmClearAllToybox"
+   type="alertmodal">
+    <unique/>
+This action will return all buttons to the toolbox and your toolbars will be empty.
+    
+You cannot undo this action.
+    <usetemplate
+     name="okcancelbuttons"
+     notext="Cancel"
+     yestext="OK"/>
   </notification>
 
   <notification
@@ -7536,6 +7573,20 @@ The site at &apos;&lt;nolink&gt;[HOST_NAME]&lt;/nolink&gt;&apos; in realm &apos;
    notext="Don't Quit"/>
   </notification>
 
+  <notification
+    name="ConfirmHideUI"
+    label=""
+    type="alertmodal">
+    <unique/>
+    <tag>confirm</tag>
+    This action will hide all menu items and buttons. To get them back, click [SHORTCUT] again.
+    <usetemplate
+      name="okcancelignore"
+      yestext="OK"
+      notext="Cancel"
+      ignoretext="Confirm before hiding UI"/>
+  </notification>
+  
   <global name="UnsupportedGLRequirements">
 You do not appear to have the proper hardware requirements for [APP_NAME]. [APP_NAME] requires an OpenGL graphics card that has multitexture support. If this is the case, you may want to make sure that you have the latest drivers for your graphics card, and service packs and patches for your operating system.
 
