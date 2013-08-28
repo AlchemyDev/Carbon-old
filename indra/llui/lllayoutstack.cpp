@@ -47,6 +47,19 @@ void LLLayoutStack::OrientationNames::declareValues()
 //
 // LLLayoutPanel
 //
+LLLayoutPanel::Params::Params()	
+:	expanded_min_dim("expanded_min_dim", 0),
+	min_dim("min_dim", 0),
+	max_dim("max_dim", S32_MAX),
+	user_resize("user_resize", true),
+	auto_resize("auto_resize", true)
+{
+	addSynonym(min_dim, "min_width");
+	addSynonym(min_dim, "min_height");
+	addSynonym(max_dim, "max_width");
+	addSynonym(max_dim, "max_height");
+}
+
 LLLayoutPanel::LLLayoutPanel(const Params& p)	
 :	LLPanel(p),
 	mExpandedMinDimSpecified(false),
@@ -58,7 +71,7 @@ LLLayoutPanel::LLLayoutPanel(const Params& p)
 	mCollapsed(FALSE),
 	mCollapseAmt(0.f),
 	mVisibleAmt(1.f), // default to fully visible
-	mResizeBar(NULL) 
+	mResizeBar(NULL)
 {
 	// Set the expanded min dim if it is provided, otherwise it gets the p.min_dim value
 	if (p.expanded_min_dim.isProvided())

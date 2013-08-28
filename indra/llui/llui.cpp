@@ -1623,7 +1623,7 @@ void LLUI::initClass(const settings_map_t& settings,
 
 	LLUICtrl::CommitCallbackRegistry::Registrar& reg = LLUICtrl::CommitCallbackRegistry::defaultRegistrar();
 
-	// Callbacks for associating controls with floater visibilty:
+	// Callbacks for associating controls with floater visibility:
 	reg.add("Floater.Toggle", boost::bind(&LLFloaterReg::toggleFloaterInstance, _2));
 	reg.add("Floater.Show", boost::bind(&LLFloaterReg::showFloaterInstance, _2));
 	reg.add("Floater.Hide", boost::bind(&LLFloaterReg::hideFloaterInstance, _2));
@@ -1632,7 +1632,7 @@ void LLUI::initClass(const settings_map_t& settings,
 	// Button initialization callback for toggle buttons
 	reg.add("Button.SetFloaterToggle", boost::bind(&LLButton::setFloaterToggle, _1, _2));
 	
-	// Button initialization callback for toggle buttons on dockale floaters
+	// Button initialization callback for toggle buttons on dockable floaters
 	reg.add("Button.SetDockableFloaterToggle", boost::bind(&LLButton::setDockableFloaterToggle, _1, _2));
 
 	// Display the help topic for the current context
@@ -2110,7 +2110,7 @@ namespace LLInitParam
 
 	void ParamValue<LLUIColor, TypeValues<LLUIColor> >::updateValueFromBlock()
 	{
-		if (control.isProvided())
+		if (control.isProvided() && !control().empty())
 		{
 			updateValue(LLUIColorTable::instance().getColor(control));
 		}
