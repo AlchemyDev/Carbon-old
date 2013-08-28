@@ -35,6 +35,7 @@
 #include "lluuid.h"
 //#include "llnotificationsutil.h"
 #include <set>
+#include <boost/signals2.hpp>
 
 class LLDragHandle;
 class LLResizeHandle;
@@ -61,9 +62,9 @@ const BOOL ADJUST_VERTICAL_NO = FALSE;
 
 class LLFloater : public LLPanel
 {
-friend class LLFloaterView;
-friend class LLFloaterReg;
-friend class LLMultiFloater;
+	friend class LLFloaterView;
+	friend class LLFloaterReg;
+	friend class LLMultiFloater;
 public:
 	struct KeyCompare
 	{
@@ -105,7 +106,8 @@ public:
 								save_visibility,
 								save_dock_state,
 								can_dock,
-								open_centered;
+								open_centered,
+								show_title;
 		Optional<S32>			header_height,
 								legacy_header_height; // HACK see initFromXML()
 
@@ -144,6 +146,7 @@ public:
 	bool buildFromFile(const std::string &filename, LLXMLNodePtr output_node = NULL);
 
 	boost::signals2::connection setMinimizeCallback( const commit_signal_t::slot_type& cb );
+	boost::signals2::connection setOpenCallback( const commit_signal_t::slot_type& cb );
 	boost::signals2::connection setCloseCallback( const commit_signal_t::slot_type& cb );
 
 	void initFromParams(const LLFloater::Params& p);

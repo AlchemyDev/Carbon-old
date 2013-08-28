@@ -55,7 +55,6 @@
 #include "llworldmapmessage.h"
 #include "llappviewer.h"
 #include "llviewercontrol.h"
-#include "llfloatermediabrowser.h"
 #include "llweb.h"
 #include "llhints.h"
 

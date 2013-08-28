@@ -164,6 +164,7 @@ LLFloater::Params::Params()
 	save_rect("save_rect", false),
 	save_visibility("save_visibility", false),
 	can_dock("can_dock", false),
+	show_title("show_title", true),
 	open_centered("open_centered", false),
 	header_height("header_height", 0),
 	legacy_header_height("legacy_header_height", 0),
@@ -1029,7 +1030,7 @@ void LLFloater::setMinimized(BOOL minimize)
 
 	if (minimize == mMinimized) return;
 
-	if(mMinimizeSignal)
+	if (mMinimizeSignal)
 	{
 		(*mMinimizeSignal)(this, LLSD(minimize));
 	}
@@ -1061,10 +1062,6 @@ void LLFloater::setMinimized(BOOL minimize)
 			mButtonsEnabled[BUTTON_RESTORE] = TRUE;
 		}
 
-		if (mDragHandle)
-		{
-			mDragHandle->setVisible(TRUE);
-		}
 		setBorderVisible(TRUE);
 
 		for(handle_set_iter_t dependent_it = mDependents.begin();
@@ -1215,17 +1212,7 @@ void LLFloater::setIsChrome(BOOL is_chrome)
 		mButtons[BUTTON_CLOSE]->setToolTip(LLStringExplicit(getButtonTooltip(Params(), BUTTON_CLOSE, is_chrome)));
 	}
 	
-	// no titles displayed on "chrome" floaters
-	if (mDragHandle)
-		mDragHandle->setTitleVisible(!is_chrome);
-	
 	LLPanel::setIsChrome(is_chrome);
-}
-
-void LLFloater::setTitleVisible(bool visible)
-{
-	if (mDragHandle)
-		mDragHandle->setTitleVisible(visible);
 }
 
 // Change the draw style to account for the foreground state.
@@ -1731,7 +1718,7 @@ void LLFloater::draw()
 		{
 			drawChild(mButtons[i]);
 		}
-		drawChild(mDragHandle);
+		drawChild(mDragHandle, 0, 0, TRUE);
 	}
 	else
 	{
@@ -2775,7 +2762,6 @@ void LLFloater::setInstanceName(const std::string& name)
 		{
 			mDocStateControl = LLFloaterReg::declareDockStateControl(ctrl_name);
 		}
-
 	}
 }
 
@@ -2848,7 +2834,6 @@ void LLFloater::initFromParams(const LLFloater::Params& p)
 	{
 		mVisibilityControl = "t"; // flag to build mVisibilityControl name once mInstanceName is set
 	}
-
 	if(p.save_dock_state)
 	{
 		mDocStateControl = "t"; // flag to build mDocStateControl name once mInstanceName is set
@@ -2857,12 +2842,17 @@ void LLFloater::initFromParams(const LLFloater::Params& p)
 	// open callback 
 	if (p.open_callback.isProvided())
 	{
-		mOpenSignal.connect(initCommitCallback(p.open_callback));
+		setOpenCallback(initCommitCallback(p.open_callback));
 	}
 	// close callback 
 	if (p.close_callback.isProvided())
 	{
 		setCloseCallback(initCommitCallback(p.close_callback));
+	}
+
+	if (mDragHandle)
+	{
+		mDragHandle->setTitleVisible(p.show_title);
 	}
 }
 
@@ -2870,6 +2860,11 @@ boost::signals2::connection LLFloater::setMinimizeCallback( const commit_signal_
 { 
 	if (!mMinimizeSignal) mMinimizeSignal = new commit_signal_t();
 	return mMinimizeSignal->connect(cb); 
+}
+
+boost::signals2::connection LLFloater::setOpenCallback( const commit_signal_t::slot_type& cb )
+{
+	return mOpenSignal.connect(cb);
 }
 
 boost::signals2::connection LLFloater::setCloseCallback( const commit_signal_t::slot_type& cb )

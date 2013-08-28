@@ -205,7 +205,6 @@ set(viewer_SOURCE_FILES
     llfloaterland.cpp
     llfloaterlandholdings.cpp
     llfloatermap.cpp
-    llfloatermediabrowser.cpp
     llfloatermediasettings.cpp
     llfloatermemleak.cpp
     llfloatermodelpreview.cpp
@@ -597,6 +596,7 @@ set(viewer_SOURCE_FILES
     llwearablelist.cpp
     llwearabletype.cpp
     llweb.cpp
+    llwebprofile.cpp
     llwebsharing.cpp
     llwind.cpp
     llwindowlistener.cpp
@@ -752,7 +752,6 @@ set(viewer_HEADER_FILES
     llfloaterland.h
     llfloaterlandholdings.h
     llfloatermap.h
-    llfloatermediabrowser.h
     llfloatermediasettings.h
     llfloatermemleak.h
     llfloatermodelpreview.h
@@ -1141,6 +1140,7 @@ set(viewer_HEADER_FILES
     llwearablelist.h
     llwearabletype.h
     llweb.h
+    llwebprofile.h
     llwebsharing.h
     llwind.h
     llwindowlistener.h

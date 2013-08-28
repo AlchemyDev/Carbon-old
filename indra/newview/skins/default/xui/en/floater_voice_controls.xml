@@ -3,6 +3,7 @@
  can_resize="true"
  can_minimize="true"
  can_close="false"
+ chrome="true"
  height="205"
  layout="topleft"
  min_height="124"
@@ -17,7 +18,7 @@
  width="282">
     <string
      name="title_nearby">
-        NEARBY VOICE
+        Nearby Voice
     </string>
     <string
      name="title_group">
@@ -50,6 +51,7 @@
          user_resize="false"
          auto_resize="false"
          layout="topleft"
+         min_height="20"
          height="20"
          name="my_panel">
             <avatar_icon
@@ -86,7 +88,7 @@
              visible="true"
              width="20" />
         </layout_panel>
-        <layout_panel name="leave_call_panel" height="26" auto_resize="false">
+        <layout_panel name="leave_call_panel" height="26" min_height="26" user_resize="false" auto_resize="false">
         <layout_stack
          clip="true"
          follows="left|top|right"
@@ -131,6 +133,7 @@
           height="132"
           name="callers_panel"
           user_resize="false" 
+          auto_resize="true"
           width="280">
         <avatar_list
          follows="all"

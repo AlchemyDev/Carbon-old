@@ -50,6 +50,7 @@
 #include "llvoavatar.h"
 #include "llvoavatarself.h"
 #include "llviewerregion.h"
+#include "llwebprofile.h"
 #include "llwebsharing.h"	// For LLWebSharing::setOpenIDCookie(), *TODO: find a better way to do this!
 #include "llfilepicker.h"
 #include "llnotifications.h"
@@ -68,7 +69,6 @@
 #include "llwindow.h"
 
 
-#include "llfloatermediabrowser.h"	// for handling window close requests and geometry change requests in media browser windows.
 #include "llfloaterwebcontent.h"	// for handling window close requests and geometry change requests in media browser windows.
 
 #include <boost/bind.hpp>	// for SkinFolder listener
@@ -319,6 +319,10 @@ public:
 		std::string cookie = content["set-cookie"].asString();
 
 		LLViewerMedia::getCookieStore()->setCookiesFromHost(cookie, mHost);
+
+		// Set cookie for snapshot publishing.
+		std::string auth_cookie = cookie.substr(0, cookie.find(";")); // strip path
+		LLWebProfile::setAuthCookie(auth_cookie);
 	}
 
 	 void completedRaw(
@@ -1501,6 +1505,8 @@ void LLViewerMedia::setOpenIDCookie()
 		std::string profile_url = getProfileURL("");
 		LLURL raw_profile_url( profile_url.c_str() );
 
+		LL_DEBUGS("MediaAuth") << "Requesting " << profile_url << llendl;
+		LL_DEBUGS("MediaAuth") << "sOpenIDCookie = [" << sOpenIDCookie << "]" << llendl;
 		LLHTTPClient::get(profile_url,  
 			new LLViewerMediaWebProfileResponder(raw_profile_url.getAuthority()),
 			headers);
@@ -3396,7 +3402,6 @@ void LLViewerMediaImpl::handleMediaEvent(LLPluginClassMedia* plugin, LLPluginCla
 			{
 				// This close request is directed at another instance
 				pass_through = false;
-				LLFloaterMediaBrowser::closeRequest(uuid);
 				LLFloaterWebContent::closeRequest(uuid);
 			}
 		}
@@ -3416,7 +3421,6 @@ void LLViewerMediaImpl::handleMediaEvent(LLPluginClassMedia* plugin, LLPluginCla
 			{
 				// This request is directed at another instance
 				pass_through = false;
-				LLFloaterMediaBrowser::geometryChanged(uuid, plugin->getGeometryX(), plugin->getGeometryY(), plugin->getGeometryWidth(), plugin->getGeometryHeight());
 				LLFloaterWebContent::geometryChanged(uuid, plugin->getGeometryX(), plugin->getGeometryY(), plugin->getGeometryWidth(), plugin->getGeometryHeight());
 			}
 		}

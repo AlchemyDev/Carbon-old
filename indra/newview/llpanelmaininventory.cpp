@@ -579,8 +579,13 @@ void LLPanelMainInventory::updateItemcountText()
 
 void LLPanelMainInventory::onFocusReceived()
 {
-	LLSidepanelInventory * sidepanel_inventory = LLSideTray::getInstance()->getPanel<LLSidepanelInventory>("sidepanel_inventory");
-	
+	LLSidepanelInventory *sidepanel_inventory = LLSideTray::getInstance()->getPanel<LLSidepanelInventory>("sidepanel_inventory");
+	if (!sidepanel_inventory)
+	{
+		llwarns << "Could not find Inventory Panel in Side Tray" << llendl;
+		return;
+	}
+
 	sidepanel_inventory->clearSelections(false, true, true);
 }
 

@@ -109,18 +109,22 @@ LLFloater* LLFloaterReg::getInstance(const std::string& name, const LLSD& key)
 				int index = list.size();
 
 				res = build_func(key);
-				
+				if (!res)
+				{
+					llwarns << "Failed to build floater type: '" << name << "'." << llendl;
+					return NULL;
+				}
 				bool success = res->buildFromFile(xui_file, NULL);
 				if (!success)
 				{
 					llwarns << "Failed to build floater type: '" << name << "'." << llendl;
 					return NULL;
 				}
-					
+
 				// Note: key should eventually be a non optional LLFloater arg; for now, set mKey to be safe
 				if (res->mKey.isUndefined()) 
 				{
-						res->mKey = key;
+					res->mKey = key;
 				}
 				res->setInstanceName(name);
 				res->applySavedVariables(); // Can't apply rect and dock state until setting instance name
