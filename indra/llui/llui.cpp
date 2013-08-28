@@ -2267,9 +2267,11 @@ namespace LLInitParam
 		// in this case, that is left+width and bottom+height
 		LLRect& value = getValue();
 
+		right.set(value.mRight, false);
 		left.set(value.mLeft, make_block_authoritative);
 		width.set(value.getWidth(), make_block_authoritative);
 
+		top.set(value.mTop, false);
 		bottom.set(value.mBottom, make_block_authoritative);
 		height.set(value.getHeight(), make_block_authoritative);
 	}
