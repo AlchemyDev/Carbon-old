@@ -74,7 +74,7 @@ private:
 	void	getAllowedRect		(LLRect& rect);
 
 	void	onNearbySpeakers	();
-	
+
 
 private:
 	LLHandle<LLView>	mPopupMenuHandle;
