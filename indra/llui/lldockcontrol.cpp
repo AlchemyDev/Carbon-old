@@ -208,21 +208,17 @@ void LLDockControl::moveDockable()
 	switch (mDockAt)
 	{
 	case LEFT:
-		x = dockRect.mLeft;
-		y = dockRect.mTop + mDockTongue->getHeight() + dockableRect.getHeight();
-		// check is dockable inside root view rect
-		if (x < rootRect.mLeft)
-		{
-			x = rootRect.mLeft;
-		}
-		if (x + dockableRect.getWidth() > rootRect.mRight)
-		{
-			x = rootRect.mRight - dockableRect.getWidth();
-		}
+		x = dockRect.mLeft - dockableRect.getWidth();
+		y = dockRect.getCenterY() + dockableRect.getHeight() / 2;
 		
-		mDockTongueX = x + dockableRect.getWidth()/2 - mDockTongue->getWidth() / 2;
+		if (use_tongue)
+		{
+			x -= mDockTongue->getWidth();
+		}
+
+		mDockTongueX = dockableRect.mRight;
+		mDockTongueY = dockableRect.getCenterY() - mDockTongue->getHeight() / 2;
 		
-		mDockTongueY = dockRect.mTop;
 		break;
 
 	case TOP:

@@ -1624,10 +1624,10 @@ void LLUI::initClass(const settings_map_t& settings,
 	LLUICtrl::CommitCallbackRegistry::Registrar& reg = LLUICtrl::CommitCallbackRegistry::defaultRegistrar();
 
 	// Callbacks for associating controls with floater visibility:
-	reg.add("Floater.Toggle", boost::bind(&LLFloaterReg::toggleFloaterInstance, _2));
-	reg.add("Floater.Show", boost::bind(&LLFloaterReg::showFloaterInstance, _2));
-	reg.add("Floater.Hide", boost::bind(&LLFloaterReg::hideFloaterInstance, _2));
-	reg.add("Floater.InitToVisibilityControl", boost::bind(&LLFloaterReg::initUICtrlToFloaterVisibilityControl, _1, _2));
+	reg.add("Floater.Toggle", boost::bind(&LLFloaterReg::toggleInstance, _2, LLSD()));
+	reg.add("Floater.ToggleOrBringToFront", boost::bind(&LLFloaterReg::toggleInstanceOrBringToFront, _2, LLSD()));
+	reg.add("Floater.Show", boost::bind(&LLFloaterReg::showInstance, _2, LLSD(), FALSE));
+	reg.add("Floater.Hide", boost::bind(&LLFloaterReg::hideInstance, _2, LLSD()));
 	
 	// Button initialization callback for toggle buttons
 	reg.add("Button.SetFloaterToggle", boost::bind(&LLButton::setFloaterToggle, _1, _2));
@@ -1641,8 +1641,9 @@ void LLUI::initClass(const settings_map_t& settings,
 	// Currently unused, but kept for reference:
 	reg.add("Button.ToggleFloater", boost::bind(&LLButton::toggleFloaterAndSetToggleState, _1, _2));
 	
-	// Used by menus along with Floater.Toggle to display visibility as a checkmark
-	LLUICtrl::EnableCallbackRegistry::defaultRegistrar().add("Floater.Visible", boost::bind(&LLFloaterReg::floaterInstanceVisible, _2));
+	// Used by menus along with Floater.Toggle to display visibility as a check-mark
+	LLUICtrl::EnableCallbackRegistry::defaultRegistrar().add("Floater.Visible", boost::bind(&LLFloaterReg::instanceVisible, _2, LLSD()));
+	LLUICtrl::EnableCallbackRegistry::defaultRegistrar().add("Floater.IsOpen", boost::bind(&LLFloaterReg::instanceVisible, _2, LLSD()));
 }
 
 void LLUI::cleanupClass()

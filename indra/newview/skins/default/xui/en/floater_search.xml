@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
+  open_positioning="cascading"
   legacy_header_height="18"
   can_resize="true"
   height="775"
@@ -9,7 +10,6 @@
   name="floater_search"
   help_topic="floater_search"
   save_rect="true"
-  auto_tile="true"
   save_visibility="true"
   title=""
   initial_mime_type="text/html"
