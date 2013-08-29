@@ -57,11 +57,10 @@ BOOL LLFloaterSoundDevices::postBuild()
 	LLTransientDockableFloater::postBuild();
 
 	LLView *anchor_panel = LLBottomTray::getInstance()->getChild<LLView>("flyout_btn");
-	setDockControl(new LLDockControl(anchor_panel, this, getDockTongue(), LLDockControl::TOP));
+	setDockControl(new LLDockControl(
+		anchor_panel, this, 
+		getDockTongue(), LLDockControl::TOP));
 
-	setIsChrome(TRUE);
-	if (mDragHandle)
-		mDragHandle->setTitleVisible(TRUE);
 	updateTransparency(TT_ACTIVE); // force using active floater transparency (STORM-730)
 
 	LLPanelVoiceDeviceSettings* panel = findChild<LLPanelVoiceDeviceSettings>("device_settings_panel");

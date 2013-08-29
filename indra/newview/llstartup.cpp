@@ -2127,7 +2127,7 @@ bool idle_startup()
 		show_debug_menus(); // Debug menu visiblity and First Use trigger
 		
 		// If we've got a startup URL, dispatch it
-		LLStartUp::dispatchURL();
+		//LLStartUp::dispatchURL();
 
 		// Retrieve information about the land data
 		// (just accessing this the first time will fetch it,

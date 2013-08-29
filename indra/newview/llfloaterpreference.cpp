@@ -1926,7 +1926,6 @@ BOOL LLFloaterPreferenceProxy::postBuild()
 		getChild<LLLineEditor>("socks5_password")->setValue(socks_cred->getAuthenticator()["creds"].asString());
 	}
 
-	center();
 	return TRUE;
 }
 
