@@ -1023,30 +1023,10 @@ void LLButton::resize(LLUIString label)
     // check if it need resize 
 	if (mAutoResize)
 	{ 
-		S32 min_width = label_width + mLeftHPad + mRightHPad;
-		if (mImageOverlay)
+		// <carbon> - TODO: FIGURE OUT WHY NEWER BREAKS SYSWELL
+		if (btn_width - (mRightHPad + mLeftHPad) < label_width)
 		{
-			S32 overlay_width = mImageOverlay->getWidth();
-			F32 scale_factor = (getRect().getHeight() - (mImageOverlayBottomPad + mImageOverlayTopPad)) / (F32)mImageOverlay->getHeight();
-			overlay_width = llround((F32)overlay_width * scale_factor);
-
-			switch(mImageOverlayAlignment)
-			{
-			case LLFontGL::LEFT:
-			case LLFontGL::RIGHT:
-				min_width += overlay_width + mImgOverlayLabelSpace;
-				break;
-			case LLFontGL::HCENTER:
-				min_width = llmax(min_width, overlay_width + mLeftHPad + mRightHPad);
-				break;
-			default:
-				// draw nothing
-				break;
-			}
-		}
-		if (btn_width < min_width)
-		{
-			reshape(min_width, getRect().getHeight());
+			setRect(LLRect( getRect().mLeft, getRect().mTop, getRect().mLeft + label_width + mLeftHPad + mRightHPad , getRect().mBottom));
 		}
 	} 
 }
